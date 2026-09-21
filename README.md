@@ -1,122 +1,166 @@
-# suite-kit
+# App-Suite
 
-Gemeinsame Konto-Föderation für die Tools der App-Suite (`rsvp-app`,
-`abstimmungstool`, künftig z. B. ein Sitzplatz-Tool).
+Mehrere kleine, **eigenständige** Web-Tools, die sich **optional** miteinander verzahnen lassen. Jedes Tool läuft
+allein - mit eigener Datenbank, eigenen Konten, eigenem Deployment. Sind mehrere Tools eingerichtet, greifen sie
+ineinander: gemeinsame Anmeldung, verlinkte Inhalte, Rückmeldungen zwischen den Tools.
 
-## Leitidee
+Dieses Repository (`suite-kit`) ist die gemeinsame Bibliothek dahinter und zugleich die Übersicht über die Suite.
 
-* **Jedes Tool hat eigene, lokale Konten** (E-Mail, Passwort, Rolle, Session) und ist
-  damit vollständig allein nutzbar. Diese Bibliothek berührt Konten, Passwörter und
-  Sessions nicht - das bleibt Sache der jeweiligen App.
-* **Optional** lassen sich Tools verbinden: Wer in Tool A ein Konto hat, kann sich
-  damit auch in Tool B anmelden. Jedes Tool kann gleichzeitig *Anbieter* (stellt
-  Login-Bestätigungen aus) und *Empfänger* (nimmt sie an) sein. Ohne Konfiguration
-  ist die Föderation komplett inaktiv, es erscheint nicht einmal ein Login-Button.
-* **Kein Secret-Austausch:** Bestätigungen sind mit Ed25519 signiert. Ein Tool kennt
-  von den anderen nur die öffentliche Adresse, den öffentlichen Schlüssel holt es sich
-  selbst. Ein kompromittiertes Tool kann dadurch keine Logins im Namen eines anderen
-  fälschen (anders als bei einem gemeinsamen HMAC-Secret).
+## Die Tools
 
-Nicht Teil dieses Pakets: die Gäste-Verifizierung per HMAC-Token
-(`RSVP_VERIFICATION_SECRET`, siehe README des abstimmungstool). Sie ist ein anderer
-Vertrag für einen anderen Zweck und bleibt unverändert.
+| Tool | Zweck | Repository |
+| --- | --- | --- |
+| **rsvp-app** | Zu-/Absagen zu Veranstaltungen, Gästelisten, Wartelisten, Einlass | [druXter/rsvp-app](https://github.com/druXter/rsvp-app) |
+| **abstimmungstool** | Gruppenabstimmungen mit beliebig vielen Optionen | [druXter/abstimmungstool](https://github.com/druXter/abstimmungstool) |
+| **suite-kit** | Gemeinsame Konto-Föderation (dieses Repo) | [druXter/suite-kit](https://github.com/druXter/suite-kit) |
+| *(geplant)* Sitzplatz-Tool | Sitzplätze verwalten, an rsvp-app anbindbar | - |
 
-## Ablauf
+Jedes Tool hat sein eigenes README mit Funktionen, Einrichtung und Betrieb. Hier steht, was für **alle** gilt.
+
+## Leitprinzipien
+
+1. **Eigenständig zuerst.** Ohne Konfiguration der Suite verhält sich jedes Tool wie ein einzelnes Programm - es gibt
+   nicht einmal einen Login-Button für andere Tools. Die Verzahnung ist immer ein Zusatz, nie eine Voraussetzung.
+2. **Konten gehören dem Tool.** Jedes Tool legt und verwaltet seine Konten selbst (E-Mail, Passwort, Rolle). Es gibt
+   keinen zentralen Identitätsanbieter, der ausfallen oder kompromittiert werden könnte.
+3. **Vertrauen ist ausdrücklich und einseitig konfiguriert.** Ein Tool nimmt Anmeldungen nur von Tools an, die der
+   Betreiber in `SUITE_IDPS` eingetragen hat, und stellt Anmeldungen nur für Tools aus, die in `SUITE_TRUSTED_APPS`
+   stehen.
+4. **Identität, keine Rechte.** Eine Anmeldung aus einem anderen Tool beweist nur, *wer* jemand ist. Welche Rechte das
+   Konto im Empfänger-Tool hat, entscheidet allein der Empfänger.
+5. **Kein gemeinsames Geheimnis.** Anmeldungen sind mit Ed25519 signiert; jedes Tool hat sein eigenes Schlüsselpaar und
+   veröffentlicht nur den öffentlichen Teil. Ein kompromittiertes Tool kann keine Anmeldungen im Namen eines anderen
+   fälschen.
+
+## Konten-Verbund im Überblick
+
+Ein Konto aus Tool A kann in Tool B genutzt werden. Beide bleiben vollständig getrennt (eigene Sitzungen, eigene
+Datenbank); dazwischen wandert nur eine kurz gültige, signierte Bestätigung.
 
 ```
-Browser          Empfänger (vote.example.de)            Anbieter (rsvp.example.de)
-   │  "Mit rsvp-app anmelden"                                   │
-   │ ──────────────► state erzeugen, als Cookie speichern       │
-   │ ◄── Redirect: /api/suite/authorize?app=…&state=… ─────────►│
-   │                                       lokal eingeloggt? sonst normaler Login
-   │ ◄── Redirect: vote…/api/suite/callback?assertion=…&state=… ─│
-   │ ──────────────► Signatur, aud, nonce == Cookie-state prüfen,
-   │                 Cookie löschen, eigene Session anlegen
+Browser              Tool B (Empfänger)                       Tool A (Anbieter)
+   │ "Mit A anmelden"      │                                        │
+   │ ─────────────────────►│ state erzeugen, als Cookie speichern   │
+   │ ◄─── Redirect ─────────────────────────────────────────────────►│  lokal eingeloggt? sonst normaler Login
+   │ ◄─── Redirect zurück mit signierter Bestätigung ────────────────│
+   │ ─────────────────────►│ Signatur, Audience, state prüfen,      │
+   │                       │ eigene Sitzung anlegen                 │
 ```
 
-Ist man im Anbieter bereits eingeloggt, geht der Rücksprung ohne Rückfrage - für die
-Nutzenden fühlt sich das wie Single Sign-On an.
+Wichtige Regeln (Details und Begründungen: [docs/PROTOCOL.md](docs/PROTOCOL.md)):
 
-## Login-Bestätigung
+* **Identität = (Anbieter, Konto-ID)**, nie die E-Mail. Es gibt **kein automatisches Zusammenführen** über die E-Mail: Hat
+  der Empfänger schon ein lokales Konto mit derselben Adresse, wird der Verbund-Login abgelehnt. Man verknüpft bewusst aus
+  einer bestehenden Sitzung heraus (Konto-Einstellungen).
+* **Keine Ketten:** Ein Tool bestätigt nur Konten mit lokalem Passwort, nie rein föderierte.
+* **Rollen:** `autoProvision` (erster Login legt automatisch ein Konto an) und `mapAdminRole` (Admin bleibt Admin) sind
+  **pro Anbieter** einstellbar. Sinnvolle Voreinstellung: ein Tool, dessen Konten nur Admins anlegen dürfen, setzt
+  `autoProvision: false`; `mapAdminRole` bleibt aus, Admin-Rechte vergibt man lokal.
 
-Kompaktes JWS `header.payload.signature` (base64url), ausschließlich Ed25519:
+### Zusammenspiel der Tools
 
-* Header: `{"alg":"EdDSA","typ":"suite-login+v1","kid":"<Schlüssel-ID>"}`
-* Payload: `iss` (Origin des Anbieters), `aud` (Origin des Empfängers), `sub`
-  (Konto-ID beim Anbieter, **nicht** die E-Mail - die kann sich ändern), `email`,
-  optional `name`/`role`, `nonce` (= `state`), `iat`, `exp` (Standard 60 s, höchstens 120 s)
-* Alles andere als genau dieses `alg`/`typ` wird abgelehnt (keine Algorithmus-Aushandlung).
-
-Die Bestätigung trägt **nur Identität, keine Rechte**. `role` ist die Rolle beim
-Anbieter; welche Rechte das Konto beim Empfänger bekommt, entscheidet allein der
-Empfänger (siehe `mapAdminRole`).
-
-## Discovery
-
-Jeder Anbieter liefert `GET /.well-known/suite-identity`:
-
-```json
-{ "version": 1, "issuer": "https://rsvp.example.de", "name": "rsvp-app",
-  "authorizeUrl": "https://rsvp.example.de/api/suite/authorize",
-  "keys": [{ "kid": "…", "alg": "EdDSA", "publicKey": "<SPKI-DER, base64url>" }] }
-```
-
-Mehrere Schlüssel = Rotation: `SUITE_SIGNING_KEY_PREVIOUS` bleibt so lange veröffentlicht,
-bis alle ausgestellten Bestätigungen abgelaufen sind (2 Minuten reichen).
+Die Anmeldung ist **unabhängig** von der fachlichen Kopplung: rsvp-app und das Abstimmungstool tauschen daneben weiterhin
+signierte Tokens für "Abstimmen nur mit bestätigter Zusage" und die Ergebnis-Meldung aus (`RSVP_VERIFICATION_SECRET`,
+siehe README des Abstimmungstools). Das ist ein eigener Vertrag für einen anderen Zweck - Gäste ohne Konto sind davon
+nicht betroffen und nehmen an der Konto-Föderation nicht teil.
 
 ## Konfiguration (Env)
 
+Identisch in jedem Tool der Suite:
+
 | Variable | Rolle | Bedeutung |
 | --- | --- | --- |
-| `SUITE_SIGNING_KEY` | Anbieter | Privater Ed25519-Schlüssel dieses Tools (`npx suite-keygen`). Ohne: Tool stellt keine Logins aus. |
-| `SUITE_SIGNING_KEY_PREVIOUS` | Anbieter | Optional, nur während einer Schlüsselrotation. |
-| `SUITE_TRUSTED_APPS` | Anbieter | Kommagetrennte Origins der Tools, die Bestätigungen empfangen dürfen. |
-| `SUITE_IDPS` | Empfänger | Anbieter, deren Logins akzeptiert werden: Origins kommagetrennt oder JSON `[{"issuer","label","autoProvision","mapAdminRole"}]`. |
+| `BASE_URL` | beide | Öffentliche Adresse des Tools ohne Slash. **Zugleich seine Kennung** (`iss`/`aud`) gegenüber den anderen Tools. |
+| `SUITE_APP_NAME` | Anbieter | Anzeigename auf den Login-Buttons anderer Tools. |
+| `SUITE_SIGNING_KEY` | Anbieter | Privater Ed25519-Schlüssel dieses Tools (`node node_modules/suite-kit/bin/suite-keygen.js`). Leer = stellt keine Anmeldungen aus. |
+| `SUITE_SIGNING_KEY_PREVIOUS` | Anbieter | Nur während einer Schlüsselrotation. |
+| `SUITE_TRUSTED_APPS` | Anbieter | Kommagetrennte Origins der Tools, die Anmeldungen von hier empfangen dürfen. |
+| `SUITE_IDPS` | Empfänger | Tools, deren Konten hier zugelassen sind: Origins kommagetrennt oder JSON `[{"issuer","label","autoProvision","mapAdminRole"}]`. |
+| `TRUST_PROXY_HOPS` | beide | Wie viele Reverse Proxys vor dem Tool stehen (für die IP der Anmelde-Drosselung). **Messen, nicht raten** - siehe unten. |
 
-`autoProvision` (Standard `true`): erster Login legt automatisch ein lokales Konto
-ohne Passwort an. `mapAdminRole` (Standard `false`): Admins des Anbieters werden auch
-hier Admin, sonst Creator.
+**Beispiel für zwei Tools** (`A` = `https://a.example.de`, `B` = `https://b.example.de`, beide sollen sich gegenseitig
+vertrauen): In A `SUITE_SIGNING_KEY=<Schlüssel A>`, `SUITE_TRUSTED_APPS=https://b.example.de`,
+`SUITE_IDPS=https://b.example.de`; in B entsprechend umgekehrt mit einem **eigenen** Schlüssel. Schlüssel werden nie
+zwischen Tools kopiert.
 
-## Sicherheitsregeln, die jede App einhalten muss
+## Betrieb
 
-1. **Identität = (`iss`, `sub`)**, nie die E-Mail. Kein automatisches Zusammenführen mit
-   einem bestehenden lokalen Konto über die E-Mail - Verknüpfung nur bewusst aus einer
-   bestehenden Sitzung heraus. Trifft ein neuer föderierter Login auf eine bereits
-   vergebene lokale E-Mail, wird er mit Hinweis abgelehnt.
-2. **Keine Ketten:** Ein Tool stellt Bestätigungen nur für Konten mit lokalen
-   Zugangsdaten aus, nie für Konten, die selbst föderiert sind.
-3. **`state`-Cookie** ist einmalig (nach dem Callback löschen), `HttpOnly`, `Secure`,
-   `SameSite=Lax`, kurze Lebensdauer (≈ 10 min).
-4. **Session-Cookies** mit `__Host-`-Präfix (ohne `Domain`): Die Tools laufen auf
-   Subdomains derselben Domain, so kann kein Tool einem anderen ein Cookie unterschieben.
-5. Fehlerseiten zeigen dem Nutzer nur "Anmeldung fehlgeschlagen" - der `reason` aus
-   `verifyLoginAssertion` gehört ins Server-Log.
-6. Bei `unknown-key` das Discovery-Dokument **einmal** mit `force: true` neu laden und
-   erneut prüfen (Rotation), nicht in einer Schleife.
-7. Der Callback-Endpunkt antwortet mit `Referrer-Policy: no-referrer` und
-   `Cache-Control: no-store`.
+* **Schlüssel** pro Tool einzeln erzeugen und nur in dessen `.env` ablegen.
+* **Zwei Werte müssen zur Umgebung passen:** `BASE_URL` (exakt die Adresse, unter der die anderen Tools das Tool erreichen)
+  und `TRUST_PROXY_HOPS`. Letzteres hängt von der Proxy-Kette ab; hinter Cloudflare + Nginx Proxy Manager (mit dessen
+  Real-IP-Erkennung) war die echte IP der *letzte* `X-Forwarded-For`-Eintrag, also `1`. Prüfen: einen Fehlversuch beim Login
+  machen und in der Tabelle `LoginThrottle` schauen, ob der Schlüssel `SHA-256("login:ip" + 0x00 + <eigene IP>)` existiert.
+* **Cron-Endpunkte** (Uptime Kuma o. Ä.): Jedes Tool mit automatischer Löschung stellt `/api/cron/cleanup?secret=…` bereit
+  (täglich). Ein leeres oder fehlendes `CRON_SECRET` lässt niemanden durch.
+* **Datenbank sichern** vor jedem Update (SQLite-Datei kopieren, Container dafür kurz stoppen oder sichern, wenn wenig los ist).
+* **Löschfristen** sind suite-weit gleich: Inhalte 18 Monate nach Ende, Konten nach 2 Jahren ohne Anmeldung, Admin-Konten
+  ausgenommen.
+* Wird `suite-kit` als Git-Abhängigkeit eingebunden (`"suite-kit": "github:druXter/suite-kit#v0.1.0"`), braucht der
+  Docker-Build `git` im Image (`apk add --no-cache git`); `dist/` wird beim Installieren per `prepare`-Skript gebaut.
 
-## API-Überblick
+## Ein weiteres Tool anbinden (z. B. das Sitzplatz-Tool)
 
-```ts
-import {
-  loadSignersFromEnv, issueLoginAssertion, verifyLoginAssertion,
-  buildDiscoveryDocument, fetchDiscovery,
-  randomState, buildAuthorizeRequestUrl, parseAuthorizeRequest, buildAuthorizeResponseUrl,
-  sanitizeNextPath, parseTrustedApps, parseIdpConfig
-} from 'suite-kit'
-```
+Referenzimplementierung: das **Abstimmungstool** (`app/api/suite/*`, `app/lib/{suite,suite-flow,auth,throttle,password}.ts`).
 
-Anbieter: `parseAuthorizeRequest` → (eingeloggt?) → `issueLoginAssertion` →
-`buildAuthorizeResponseUrl`. Empfänger: `randomState` → `fetchDiscovery` →
-`buildAuthorizeRequestUrl` … `verifyLoginAssertion` (mit `keys` aus der Discovery).
+1. **Abhängigkeit** `suite-kit` eintragen, `git` im Dockerfile ergänzen.
+2. **Schema:** `User` (mit nullbarem `passwordHash`), `Session` (Token nur als Hash), `ExternalIdentity(issuer, subject)`,
+   `LoginThrottle`. Einmal-Tokens (Reset, Einladung) ebenfalls nur als Hash speichern.
+3. **Endpunkte** übernehmen: `/.well-known/suite-identity`, `/api/suite/authorize`, `/api/suite/login`, `/api/suite/callback`
+   sowie die Zwischenseite, die nach einem Login im Anbieter-Ablauf einen **echten** Seitenwechsel auslöst (siehe Stolpersteine).
+4. **Login-Seite:** Buttons aus `SUITE_IDPS`; Konto-Seite: Verknüpfungen anzeigen/entfernen.
+5. **Sicherheitsregeln einhalten** (siehe [docs/PROTOCOL.md](docs/PROTOCOL.md) und die Liste unten).
+6. **Konfigurieren:** eigenes Schlüsselpaar, das neue Tool in `SUITE_TRUSTED_APPS`/`SUITE_IDPS` der anderen eintragen (und
+   umgekehrt), Neustart der betroffenen Tools.
+7. **Testen:** mindestens die Fälle aus dem Abschnitt "Was getestet wird".
 
-## Entwicklung
+### Sicherheitsregeln für jedes Tool
+
+* Passwörter mit starkem Hash, serverseitige Passwort-Regel (nicht nur `minLength` im HTML), Hashes bei Bedarf automatisch erneuern.
+* Sitzungen und Einmal-Links nur als SHA-256-Hash speichern; Cookie mit `__Host-`-Präfix (kein Cookie-Tossing zwischen Subdomains).
+* Anmelde-Drosselung pro IP **und** pro Ziel-E-Mail, den Versuch **vor** der Prüfung atomar reservieren (sonst umgehen viele
+  gleichzeitige Anfragen das Limit). Keine dauerhafte Kontosperre. Mail auslösende Formulare (Reset, Registrierung) ebenso drosseln.
+* Unbekannte Adresse: gleiche Antwort *und* gleiche Rechenzeit (Wegwerf-Hash); Reset antwortet immer neutral.
+* Berechtigungen serverseitig in **jeder** Server Action prüfen - eine Seitenprüfung schützt nicht vor direkt abgeschickten Formularen.
+* Föderations-Antworten mit `Cache-Control: no-store` und `Referrer-Policy: no-referrer`; Clickjacking-Schutz für Login, Konto, Verwaltung.
+* Cron-Secrets: leeren Wert ablehnen, mit konstantem Zeitvergleich prüfen.
+
+### Stolpersteine (alle beim Aufbau tatsächlich aufgetreten)
+
+* **Login-Fortsetzung in den Anbieter-Ablauf:** Leitet eine Next.js-Server-Action nach dem Login auf einen Route Handler weiter,
+  der selbst zu einer anderen Domain umleitet, bleibt der Browser hängen (Client-Router-Übergang). Lösung: Zwischenseite mit
+  `window.location.replace(...)`, Ziel auf `/api/suite/authorize?` beschränkt.
+* **Header-Reihenfolge:** Bei mehreren passenden `headers()`-Regeln in `next.config.ts` gewinnt für denselben Header die
+  *spätere*. Ausnahmen (z. B. `Referrer-Policy: no-referrer` für `/api/suite/*`, `frame-ancestors 'none'` für `/admin`) müssen
+  hinter den allgemeinen Regeln stehen - und `/admin` passt auch auf `/:slug`.
+* **Einbettbare Seiten:** rsvp-app bettet Event-Seiten bewusst als iFrame ein (`frame-ancestors *`). Ein globales
+  `frame-ancestors 'none'` würde das brechen - Schutz daher nur für sensible Bereiche.
+* **`'use server'`-Dateien** dürfen nur asynchrone Funktionen exportieren (keine Konstanten wie Cookie-Namen).
+* **Cookies sind nicht an Ports gebunden:** Zwei Tools auf `localhost:3001`/`localhost:3002` teilen sich Cookies gleichen Namens.
+  Für lokale Tests unterschiedliche Hostnamen nehmen (`localhost` und `127.0.0.1`).
+* **`TRUST_PROXY_HOPS`** nicht schätzen: Mit dem falschen Wert landen alle Besucher in einem gemeinsamen Zähler.
+* Formulardaten für gefälschte POSTs im Test **nach einem frischen Seitenaufruf** lesen - nach einer Client-Navigation fehlt
+  die serverseitig gerenderte `$ACTION_ID` im DOM, und der Test prüft dann nichts.
+
+## Was getestet wird
+
+Beide Tools wurden im Browser (Playwright/Chromium) gegen laufende Instanzen geprüft, einschließlich echtem HTTPS über
+Cloudflare und Reverse Proxy:
+
+* Anmeldung: Fehlermeldung und Antwortzeit für bekannte/unbekannte Adressen, Sperre pro E-Mail (11. Versuch) und pro IP
+  (21. Versuch), erfundene `X-Forwarded-For`-Werte, 30 **gleichzeitige** Versuche (höchstens 10 erreichen die Prüfung).
+* Sitzungen: Cookie-Attribute, nur Hash in der Datenbank, Beendigung anderer Sitzungen bei Passwortwechsel, Open Redirect.
+* Einmal-Links: nur einmal nutzbar, nur als Hash gespeichert, Passwort-Regel, Mail-Flut begrenzt.
+* Berechtigungen: gefälschte Formular-Posts (mit **Positivkontrolle**, dass derselbe Post als Berechtigter wirkt), CSRF mit fremdem Origin.
+* Föderation in beide Richtungen: Ablauf, Wiedergabe der Bestätigung im selben und in einem fremden Browser, manipulierte
+  Nutzlast/Signatur/Audience, nicht freigegebene App, unbekannter Anbieter, `email-taken`, bewusstes Verknüpfen.
+* Docker-Build, Datenmigration gegen eine Kopie der Produktivdaten, Mailversand.
+
+## Entwicklung des Pakets
 
 ```bash
 npm install
 npm test        # baut mit tsc und führt die Tests aus (node:test, keine Zusatz-Abhängigkeiten)
 ```
 
-Ohne Laufzeit-Abhängigkeiten, nur `node:crypto`. `dist/` wird nicht eingecheckt,
-sondern beim Installieren als Git-Abhängigkeit per `prepare`-Skript gebaut.
+Ohne Laufzeit-Abhängigkeiten, nur `node:crypto`. `dist/` wird nicht eingecheckt. Änderungen am Protokoll oder am Token-Format
+erhöhen die Version (Tag `vX.Y.Z`); die Tools pinnen ihre Version bewusst und aktualisieren sie einzeln.
