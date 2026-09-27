@@ -147,9 +147,9 @@ heißt bei Seating `/login/continue`.
   `frame-ancestors 'none'` würde das brechen - Schutz daher nur für sensible Bereiche.
 * **Fehler beim Verknüpfen nicht auf die Login-Seite leiten:** Im Modus `link` (z. B. `linked-other`, `sso`) ist die Person
   bereits eingeloggt - die Login-Seite leitet sie sofort weiter, und die Fehlermeldung erscheint nie. Im Modus `link`
-  daher auf die Konto-Seite leiten (Seating: `/account?error=…`, rsvp-app: `/admin/account?error=…`), aber nur mit
-  bestehender Sitzung - ohne Sitzung bleibt es bei der Login-Seite. Im Abstimmungstool betrifft das noch `fail()` in
-  `app/api/suite/callback/route.ts`.
+  daher auf die Konto-Seite leiten, aber **nur mit bestehender Sitzung**: Ohne Sitzung (abgelaufen, in einem anderen
+  Browser beendet) leitet die Konto-Seite selbst zum Login weiter und verliert dabei den Fehlercode - dann gleich auf
+  die Login-Seite. Referenz: `fail()` in `app/api/suite/callback/route.ts` von rsvp-app.
 * **`'use server'`-Dateien** dürfen nur asynchrone Funktionen exportieren (keine Konstanten wie Cookie-Namen).
 * **Cookies sind nicht an Ports gebunden:** Zwei Tools auf `localhost:3001`/`localhost:3002` teilen sich Cookies gleichen Namens.
   Für lokale Tests unterschiedliche Hostnamen nehmen (`localhost` und `127.0.0.1`).
