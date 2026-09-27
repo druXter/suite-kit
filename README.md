@@ -12,8 +12,8 @@ Dieses Repository (`suite-kit`) ist die gemeinsame Bibliothek dahinter und zugle
 | --- | --- | --- |
 | **rsvp-app** | Zu-/Absagen zu Veranstaltungen, Gästelisten, Wartelisten, Einlass | [druXter/rsvp-app](https://github.com/druXter/rsvp-app) |
 | **abstimmungstool** | Gruppenabstimmungen mit beliebig vielen Optionen | [druXter/abstimmungstool](https://github.com/druXter/abstimmungstool) |
+| **seating** | Raumpläne, Tischbuchung, Platzwahl, Sitzordnung; an rsvp-app anbindbar | [druXter/seating](https://github.com/druXter/seating) |
 | **suite-kit** | Gemeinsame Konto-Föderation (dieses Repo) | [druXter/suite-kit](https://github.com/druXter/suite-kit) |
-| *(geplant)* Sitzplatz-Tool | Sitzplätze verwalten, an rsvp-app anbindbar | - |
 
 Jedes Tool hat sein eigenes README mit Funktionen, Einrichtung und Betrieb. Hier steht, was für **alle** gilt.
 
@@ -55,7 +55,9 @@ Wichtige Regeln (Details und Begründungen: [docs/PROTOCOL.md](docs/PROTOCOL.md)
 * **Keine Ketten:** Ein Tool bestätigt nur Konten mit lokalem Passwort, nie rein föderierte.
 * **Rollen:** `autoProvision` (erster Login legt automatisch ein Konto an) und `mapAdminRole` (Admin bleibt Admin) sind
   **pro Anbieter** einstellbar. Sinnvolle Voreinstellung: ein Tool, dessen Konten nur Admins anlegen dürfen, setzt
-  `autoProvision: false`; `mapAdminRole` bleibt aus, Admin-Rechte vergibt man lokal.
+  `autoProvision: false`; `mapAdminRole` bleibt aus, Admin-Rechte vergibt man lokal. Ebenso tragen Tools, deren Konten
+  nur Veranstalter\*innen brauchen (Seating, genauso rsvp-app), die anderen Tools in `SUITE_IDPS` mit
+  `autoProvision: false` ein - anmelden kann sich dann nur, wer vor Ort schon ein Konto hat und es bewusst verknüpft.
 
 ### Zusammenspiel der Tools
 
@@ -63,6 +65,12 @@ Die Anmeldung ist **unabhängig** von der fachlichen Kopplung: rsvp-app und das 
 signierte Tokens für "Abstimmen nur mit bestätigter Zusage" und die Ergebnis-Meldung aus (`RSVP_VERIFICATION_SECRET`,
 siehe README des Abstimmungstools). Das ist ein eigener Vertrag für einen anderen Zweck - Gäste ohne Konto sind davon
 nicht betroffen und nehmen an der Konto-Föderation nicht teil.
+
+Ebenso haben **rsvp-app und Seating** einen eigenen fachlichen Vertrag: Platzwahl über eine Zusage, Abruf der Gästeliste,
+Rückmeldung der Plätze an rsvp-app und ein Webhook bei jeder Änderung einer Zusage. Die Nachrichten sind HMAC-signiert
+mit einem **eigenen** Secret (Seating `RSVP_SEATING_SECRET` = rsvp-app `SEATING_SECRET`) - unabhängig von der
+Konto-Föderation und nie identisch mit `RSVP_VERIFICATION_SECRET`, sonst gälte eine Nachricht der einen Kopplung auch
+in der anderen. Details: README von Seating, Abschnitt "Anbindung an rsvp-app".
 
 ## Konfiguration (Env)
 
@@ -98,9 +106,11 @@ zwischen Tools kopiert.
 * Wird `suite-kit` als Git-Abhängigkeit eingebunden (`"suite-kit": "github:druXter/suite-kit#v0.1.0"`), braucht der
   Docker-Build `git` im Image (`apk add --no-cache git`); `dist/` wird beim Installieren per `prepare`-Skript gebaut.
 
-## Ein weiteres Tool anbinden (z. B. das Sitzplatz-Tool)
+## Ein weiteres Tool anbinden
 
-Referenzimplementierung: das **Abstimmungstool** (`app/api/suite/*`, `app/lib/{suite,suite-flow,auth,throttle,password}.ts`).
+Referenzimplementierungen: das **Abstimmungstool** und **Seating**, beide mit denselben Dateien (`app/api/suite/*`,
+`app/.well-known/suite-identity`, `app/lib/{suite,suite-flow,auth,throttle,password}.ts`). Die Zwischenseite (Schritt 3)
+heißt bei Seating `/login/continue`.
 
 1. **Abhängigkeit** `suite-kit` eintragen, `git` im Dockerfile ergänzen.
 2. **Schema:** `User` (mit nullbarem `passwordHash`), `Session` (Token nur als Hash), `ExternalIdentity(issuer, subject)`,
@@ -111,7 +121,8 @@ Referenzimplementierung: das **Abstimmungstool** (`app/api/suite/*`, `app/lib/{s
 5. **Sicherheitsregeln einhalten** (siehe [docs/PROTOCOL.md](docs/PROTOCOL.md) und die Liste unten).
 6. **Konfigurieren:** eigenes Schlüsselpaar, das neue Tool in `SUITE_TRUSTED_APPS`/`SUITE_IDPS` der anderen eintragen (und
    umgekehrt), Neustart der betroffenen Tools.
-7. **Testen:** mindestens die Fälle aus dem Abschnitt "Was getestet wird".
+7. **Testen:** mindestens die Fälle aus dem Abschnitt "Was getestet wird" - als Vorlage für automatisierte Tests eignen
+   sich die Test-Doppel von Seating (`tests/e2e/suite-server.ts`, siehe dort).
 
 ### Sicherheitsregeln für jedes Tool
 
@@ -134,6 +145,11 @@ Referenzimplementierung: das **Abstimmungstool** (`app/api/suite/*`, `app/lib/{s
   hinter den allgemeinen Regeln stehen - und `/admin` passt auch auf `/:slug`.
 * **Einbettbare Seiten:** rsvp-app bettet Event-Seiten bewusst als iFrame ein (`frame-ancestors *`). Ein globales
   `frame-ancestors 'none'` würde das brechen - Schutz daher nur für sensible Bereiche.
+* **Fehler beim Verknüpfen nicht auf die Login-Seite leiten:** Im Modus `link` (z. B. `linked-other`, `sso`) ist die Person
+  bereits eingeloggt - die Login-Seite leitet sie sofort weiter, und die Fehlermeldung erscheint nie. Im Modus `link`
+  daher auf die Konto-Seite leiten (Seating: `/account?error=…`, rsvp-app: `/admin/account?error=…`), aber nur mit
+  bestehender Sitzung - ohne Sitzung bleibt es bei der Login-Seite. Im Abstimmungstool betrifft das noch `fail()` in
+  `app/api/suite/callback/route.ts`.
 * **`'use server'`-Dateien** dürfen nur asynchrone Funktionen exportieren (keine Konstanten wie Cookie-Namen).
 * **Cookies sind nicht an Ports gebunden:** Zwei Tools auf `localhost:3001`/`localhost:3002` teilen sich Cookies gleichen Namens.
   Für lokale Tests unterschiedliche Hostnamen nehmen (`localhost` und `127.0.0.1`).
@@ -143,8 +159,8 @@ Referenzimplementierung: das **Abstimmungstool** (`app/api/suite/*`, `app/lib/{s
 
 ## Was getestet wird
 
-Beide Tools wurden im Browser (Playwright/Chromium) gegen laufende Instanzen geprüft, einschließlich echtem HTTPS über
-Cloudflare und Reverse Proxy:
+rsvp-app und das Abstimmungstool wurden im Browser (Playwright/Chromium) gegen laufende Instanzen geprüft, einschließlich
+echtem HTTPS über Cloudflare und Reverse Proxy:
 
 * Anmeldung: Fehlermeldung und Antwortzeit für bekannte/unbekannte Adressen, Sperre pro E-Mail (11. Versuch) und pro IP
   (21. Versuch), erfundene `X-Forwarded-For`-Werte, 30 **gleichzeitige** Versuche (höchstens 10 erreichen die Prüfung).
@@ -154,6 +170,11 @@ Cloudflare und Reverse Proxy:
 * Föderation in beide Richtungen: Ablauf, Wiedergabe der Bestätigung im selben und in einem fremden Browser, manipulierte
   Nutzlast/Signatur/Audience, nicht freigegebene App, unbekannter Anbieter, `email-taken`, bewusstes Verknüpfen.
 * Docker-Build, Datenmigration gegen eine Kopie der Produktivdaten, Mailversand.
+
+**Seating** hat als erstes Tool **automatisierte Playwright-Tests der Föderation** (`npm run test:e2e`): Test-Doppel zweier
+anderer Tools (`tests/e2e/suite-server.ts` - beide als Anbieter, eines mit und eines ohne `autoProvision`, eines zugleich
+als Empfänger von Seating-Anmeldungen) mit festen Ed25519-Test-Schlüsseln aus einem Seed, sodass Server und Testprozess
+dieselben Schlüssel kennen, ohne sie auszutauschen. Das ist die empfohlene Vorlage für die Tests eines neuen Tools.
 
 ## Entwicklung des Pakets
 
