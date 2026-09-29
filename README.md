@@ -13,6 +13,7 @@ Dieses Repository (`suite-kit`) ist die gemeinsame Bibliothek dahinter und zugle
 | **rsvp-app** | Zu-/Absagen zu Veranstaltungen, Gästelisten, Wartelisten, Einlass | [druXter/rsvp-app](https://github.com/druXter/rsvp-app) |
 | **abstimmungstool** | Gruppenabstimmungen mit beliebig vielen Optionen | [druXter/abstimmungstool](https://github.com/druXter/abstimmungstool) |
 | **seating** | Raumpläne, Tischbuchung, Platzwahl, Sitzordnung; an rsvp-app anbindbar | [druXter/seating](https://github.com/druXter/seating) |
+| **zeitplan** | Ablauf großer Events mit Live-Prognose: Gästeansicht, Anzeigetafel, Live-Steuerung fürs Handy; an rsvp-app anbindbar | [druXter/zeitplan](https://github.com/druXter/zeitplan) |
 | **suite-kit** | Gemeinsame Konto-Föderation (dieses Repo) | [druXter/suite-kit](https://github.com/druXter/suite-kit) |
 
 Jedes Tool hat sein eigenes README mit Funktionen, Einrichtung und Betrieb. Hier steht, was für **alle** gilt.
@@ -71,6 +72,12 @@ Rückmeldung der Plätze an rsvp-app und ein Webhook bei jeder Änderung einer Z
 mit einem **eigenen** Secret (Seating `RSVP_SEATING_SECRET` = rsvp-app `SEATING_SECRET`) - unabhängig von der
 Konto-Föderation und nie identisch mit `RSVP_VERIFICATION_SECRET`, sonst gälte eine Nachricht der einen Kopplung auch
 in der anderen. Details: README von Seating, Abschnitt "Anbindung an rsvp-app".
+
+Ebenso haben **rsvp-app und Zeitplan** einen eigenen Vertrag: rsvp-app erzeugt bei jedem Klick auf „Zeitplan“ einen kurz
+gültigen, signierten Link (`timeline-link`), Zeitplan legt daraus eine Gast-Sitzung an; eine Absage (Webhook
+`rsvp-change`) beendet sie. Übertragen werden nur Kennungen, keine Namen oder Adressen. Eigenes Secret: Zeitplan
+`RSVP_TIMELINE_SECRET` = rsvp-app `TIMELINE_SECRET`, nie identisch mit dem Secret einer anderen Anbindung. Details:
+README von Zeitplan, Abschnitt „Anbindung an rsvp-app“.
 
 ## Konfiguration (Env)
 
@@ -175,6 +182,9 @@ echtem HTTPS über Cloudflare und Reverse Proxy:
 anderer Tools (`tests/e2e/suite-server.ts` - beide als Anbieter, eines mit und eines ohne `autoProvision`, eines zugleich
 als Empfänger von Seating-Anmeldungen) mit festen Ed25519-Test-Schlüsseln aus einem Seed, sodass Server und Testprozess
 dieselben Schlüssel kennen, ohne sie auszutauschen. Das ist die empfohlene Vorlage für die Tests eines neuen Tools.
+
+**Zeitplan** hat die automatisierten Föderationstests von Seating übernommen (Test-Doppel auf den Ports 2530/2531, damit
+beide Testläufe gleichzeitig laufen können).
 
 ## Entwicklung des Pakets
 
