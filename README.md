@@ -18,6 +18,9 @@ Dieses Repository (`suite-kit`) ist die gemeinsame Bibliothek dahinter und zugle
 
 Jedes Tool hat sein eigenes README mit Funktionen, Einrichtung und Betrieb. Hier steht, was für **alle** gilt.
 
+Ideen für Erweiterungen und neue Tools (noch nicht bewertet, mit Status pro Idee) sammelt
+[docs/IDEEN.md](docs/IDEEN.md), darunter das Suite-Paket für ein gemeinsames Deployment.
+
 ## Leitprinzipien
 
 1. **Eigenständig zuerst.** Ohne Konfiguration der Suite verhält sich jedes Tool wie ein einzelnes Programm - es gibt
