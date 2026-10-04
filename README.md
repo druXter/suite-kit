@@ -36,6 +36,18 @@ Ideen für Erweiterungen und neue Tools (noch nicht bewertet, mit Status pro Ide
    veröffentlicht nur den öffentlichen Teil. Ein kompromittiertes Tool kann keine Anmeldungen im Namen eines anderen
    fälschen.
 
+## Begriffe
+
+Gleich in allen Tools, READMEs und Datenschutzerklärungen (Code-Bezeichner und Pfade bleiben, wie sie sind):
+
+* **Verwaltungskonto:** Konto mit der Rolle Admin, Creator oder Moderator (Code: `User`). Damit legt man Inhalte an
+  und verwaltet sie. In der Oberfläche heißt die Kontenliste „Konten“, der Bereich „Verwaltung“.
+* **Teilnehmendenkonto:** freiwilliges Konto für Gäste und Abstimmende, ohne jede Verwaltungsrolle. Heute nur in
+  rsvp-app (`GuestUser`, unter „Mein Konto“; früher „Nutzer-Konto“).
+* **Admin** ist nur der Name einer Rolle, nie eine Kontoart: „Konto mit Admin-Rolle“, nicht „Admin-Konto“.
+
+Dieselbe Person kann ein Verwaltungs- und ein Teilnehmendenkonto haben; die beiden bleiben bewusst getrennt.
+
 ## Konten-Verbund im Überblick
 
 Ein Konto aus Tool A kann in Tool B genutzt werden. Beide bleiben vollständig getrennt (eigene Sitzungen, eigene
@@ -68,7 +80,8 @@ Wichtige Regeln (Details und Begründungen: [docs/PROTOCOL.md](docs/PROTOCOL.md)
 Die Anmeldung ist **unabhängig** von der fachlichen Kopplung: rsvp-app und das Abstimmungstool tauschen daneben weiterhin
 signierte Tokens für "Abstimmen nur mit bestätigter Zusage" und die Ergebnis-Meldung aus (`RSVP_VERIFICATION_SECRET`,
 siehe README des Abstimmungstools). Das ist ein eigener Vertrag für einen anderen Zweck - Gäste ohne Konto sind davon
-nicht betroffen und nehmen an der Konto-Föderation nicht teil.
+nicht betroffen. Am Konto-Verbund nehmen heute nur Verwaltungskonten teil; Teilnehmendenkonten sind geplant (TODO im
+Abstimmungstool, Abschnitt D1).
 
 Ebenso haben **rsvp-app und Seating** einen eigenen fachlichen Vertrag: Platzwahl über eine Zusage, Abruf der Gästeliste,
 Rückmeldung der Plätze an rsvp-app und ein Webhook bei jeder Änderung einer Zusage. Die Nachrichten sind HMAC-signiert
@@ -91,7 +104,7 @@ Identisch in jedem Tool der Suite:
 | `BASE_URL` | beide | Öffentliche Adresse des Tools ohne Slash. **Zugleich seine Kennung** (`iss`/`aud`) gegenüber den anderen Tools. |
 | `SUITE_APP_NAME` | Anbieter | Anzeigename auf den Login-Buttons anderer Tools. |
 | `SUITE_SIGNING_KEY` | Anbieter | Privater Ed25519-Schlüssel dieses Tools (`node node_modules/suite-kit/bin/suite-keygen.js`). Leer = stellt keine Anmeldungen aus. |
-| `SUITE_SIGNING_KEY_PREVIOUS` | Anbieter | Nur während einer Schlüsselrotation. |
+| `SUITE_SIGNING_KEY_PREVIOUS` | Anbieter | Nur während eines Schlüsselwechsels (Ablauf: [docs/PROTOCOL.md](docs/PROTOCOL.md#schlüsselwechsel)). |
 | `SUITE_TRUSTED_APPS` | Anbieter | Kommagetrennte Origins der Tools, die Anmeldungen von hier empfangen dürfen. |
 | `SUITE_IDPS` | Empfänger | Tools, deren Konten hier zugelassen sind: Origins kommagetrennt oder JSON `[{"issuer","label","autoProvision","mapAdminRole"}]`. |
 | `TRUST_PROXY_HOPS` | beide | Wie viele Reverse Proxys vor dem Tool stehen (für die IP der Anmelde-Drosselung). **Messen, nicht raten** - siehe unten. |
@@ -103,7 +116,9 @@ zwischen Tools kopiert.
 
 ## Betrieb
 
-* **Schlüssel** pro Tool einzeln erzeugen und nur in dessen `.env` ablegen.
+* **Schlüssel** pro Tool einzeln erzeugen und nur in dessen `.env` ablegen. **Schlüsselwechsel** (geplant oder im
+  Notfall): Ablauf in [docs/PROTOCOL.md](docs/PROTOCOL.md#schlüsselwechsel) - im Notfall auch alle Empfänger neu starten.
+* **Kein gemeinsames Abmelden:** Abmelden wirkt nur im jeweiligen Tool (bewusst, siehe docs/PROTOCOL.md).
 * **Zwei Werte müssen zur Umgebung passen:** `BASE_URL` (exakt die Adresse, unter der die anderen Tools das Tool erreichen)
   und `TRUST_PROXY_HOPS`. Letzteres hängt von der Proxy-Kette ab; hinter Cloudflare + Nginx Proxy Manager (mit dessen
   Real-IP-Erkennung) war die echte IP der *letzte* `X-Forwarded-For`-Eintrag, also `1`. Prüfen: einen Fehlversuch beim Login
@@ -111,8 +126,8 @@ zwischen Tools kopiert.
 * **Cron-Endpunkte** (Uptime Kuma o. Ä.): Jedes Tool mit automatischer Löschung stellt `/api/cron/cleanup?secret=…` bereit
   (täglich). Ein leeres oder fehlendes `CRON_SECRET` lässt niemanden durch.
 * **Datenbank sichern** vor jedem Update (SQLite-Datei kopieren, Container dafür kurz stoppen oder sichern, wenn wenig los ist).
-* **Löschfristen** sind suite-weit gleich: Inhalte 18 Monate nach Ende, Konten nach 2 Jahren ohne Anmeldung, Admin-Konten
-  ausgenommen.
+* **Löschfristen** sind suite-weit gleich: Inhalte 18 Monate nach Ende, Konten nach 2 Jahren ohne Anmeldung (Konten mit
+  Admin-Rolle ausgenommen, in rsvp-app alle Verwaltungskonten).
 * Wird `suite-kit` als Git-Abhängigkeit eingebunden (`"suite-kit": "github:druXter/suite-kit#v0.1.0"`), braucht der
   Docker-Build `git` im Image (`apk add --no-cache git`); `dist/` wird beim Installieren per `prepare`-Skript gebaut.
 

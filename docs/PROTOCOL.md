@@ -63,6 +63,29 @@ Jeder Anbieter liefert `GET /.well-known/suite-identity`:
 Mehrere Schlüssel = Rotation: `SUITE_SIGNING_KEY_PREVIOUS` bleibt so lange veröffentlicht,
 bis alle ausgestellten Bestätigungen abgelaufen sind (2 Minuten reichen).
 
+## Schlüsselwechsel
+
+**Geplant** (z.B. jährlich oder wenn jemand mit Zugriff auf die `.env` ausscheidet) - ohne dass
+eine Anmeldung fehlschlägt, die Empfänger müssen nichts tun:
+
+1. Neuen Schlüssel erzeugen (`node node_modules/suite-kit/bin/suite-keygen.js`).
+2. Im **Anbieter**: `SUITE_SIGNING_KEY=<neu>`, `SUITE_SIGNING_KEY_PREVIOUS=<bisher>`, neu starten. Ab
+   jetzt wird mit dem neuen Schlüssel signiert, beide stehen im Discovery-Dokument. Ein Empfänger
+   mit altem Dokument im Cache sieht eine unbekannte `kid`, lädt einmal neu (Sicherheitsregel 6)
+   und kennt dann beide.
+3. Nach mindestens **5 Minuten** (Cache der Empfänger; Bestätigungen leben höchstens 2 Minuten)
+   `SUITE_SIGNING_KEY_PREVIOUS` entfernen und den Anbieter erneut starten.
+
+**Notfall** (Schlüssel ist bekannt geworden): `SUITE_SIGNING_KEY=<neu>` **ohne**
+`SUITE_SIGNING_KEY_PREVIOUS`, Anbieter neu starten - und danach **alle Empfänger neu starten**.
+Sonst nehmen sie den alten Schlüssel bis zu 5 Minuten aus ihrem Cache weiter an. Anschließend die
+Server-Logs auf Anmeldungen seit dem vermuteten Zeitpunkt prüfen.
+
+Hinweise: Ein Empfänger lädt wegen unbekannter `kid` höchstens einmal pro Minute und Anbieter neu
+(Schutz gegen erzwungene Abrufe) - eine Anmeldung in dieser Minute kann einmal fehlschlagen und
+klappt beim nächsten Versuch. Den Ablauf prüfen `test/rotation.test.ts` (hier) und der Test
+"Schlüsselwechsel beim Anbieter" im Abstimmungstool (`tests/e2e/suite.spec.ts`, über Login und Callback).
+
 ## Konfiguration (Env)
 
 | Variable | Rolle | Bedeutung |
@@ -94,6 +117,16 @@ hier Admin, sonst Creator.
    erneut prüfen (Rotation), nicht in einer Schleife.
 7. Der Callback-Endpunkt antwortet mit `Referrer-Policy: no-referrer` und
    `Cache-Control: no-store`.
+
+## Bewusst nicht enthalten
+
+* **Kein gemeinsames Abmelden (Single Logout):** Jedes Tool hat seine eigene Sitzung. Wer sich in
+  einem Tool abmeldet, bleibt in den anderen angemeldet - das bräuchte Rückkanäle zwischen allen Tools
+  bei kleinem Nutzen. Auf geteilten Geräten in jedem genutzten Tool abmelden.
+* **Keine Weitergabe von Löschungen oder Sperren:** Wird ein Konto beim Anbieter gelöscht, bleibt das
+  verknüpfte Konto beim Empfänger bestehen, kann sich aber nicht mehr über den Anbieter anmelden. Es
+  verfällt dort nach der suite-weiten Löschfrist (2 Jahre ohne Anmeldung). Für die geplanten
+  Teilnehmendenkonten sind kurze Sitzungen vorgesehen (siehe TODO im Abstimmungstool, Abschnitt D).
 
 ## API-Überblick
 

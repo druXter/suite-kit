@@ -83,7 +83,7 @@ Die Suite deckt den Kern **anmelden → entscheiden → platzieren → Ablauf st
      `TIMELINE_SECRET`/`RSVP_TIMELINE_SECRET`, `POLL_VERIFICATION_SECRET`/`RSVP_VERIFICATION_SECRET`), sodass ein
      Secret nie in zwei Anbindungen landet,
    * `BASE_URL`, `*_BASE_URL`, `CRON_SECRET` und `TRUST_PROXY_HOPS` passend zum mitgelieferten Proxy,
-   * danach das erste Admin-Konto je Tool per `create-user.js --invite`.
+   * danach das erste Konto mit Admin-Rolle je Tool per `create-user.js --invite`.
 4. **Gemeinsamer Betrieb:** ein Cron-Container für alle `/api/cron/*`-Endpunkte, ein Backup-Skript für alle
    SQLite-Dateien (Container kurz anhalten), ein Update-Befehl.
 5. Optional die **Startseite** auf der Hauptdomain, siehe P2.
@@ -138,6 +138,9 @@ eingebetteten Browser mit Hinweisleiste. Erst auf echten Geräten testen (Androi
 **Kleine Änderungen in den Tools** (jeweils optional, ohne Konfiguration unsichtbar, also „eigenständig zuerst“):
 
 * `SUITE_HOME_URL`: Link „Weitere Apps“ zurück zur Startseite, z. B. in der Kopfzeile oder unter „Mein Konto“.
+* **Tool-Umschalter** (aus dem Abstimmungstool-TODO D3 hierher verschoben, 2026-10-04): ein gemeinsames Menü, um
+  zwischen den verbundenen Tools zu wechseln. Am einfachsten über diese Startseite bzw. `SUITE_HOME_URL`; ein Menü in
+  jedem Tool bräuchte die Liste der Tools in jedem Tool (Discovery liefert sie nicht vollständig, siehe oben).
 * Anpassbarer Anzeigename (heute fest: `APP_NAME` in Seating/Zeitplan, `'RSVP'` in rsvp-app), damit die Symbole auf
   dem Startbildschirm zusammengehörig benannt werden können.
 * Unterscheidbare Symbole: Alle Tools nutzen dieselbe `theme_color` (`#2563eb`). Auf dem Startbildschirm unterscheiden
