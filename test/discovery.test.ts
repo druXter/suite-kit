@@ -75,9 +75,11 @@ test('parseIdpConfig: Kurzform und JSON mit Standardwerten', () => {
   const warn = console.warn
   console.warn = () => {}
   try {
-    assert.deepEqual(parseIdpConfig('https://rsvp.example.de'), [{ issuer: ISSUER, label: undefined, autoProvision: true, mapAdminRole: false }])
-    const json = JSON.stringify([{ issuer: ISSUER, label: 'rsvp-app', autoProvision: false, mapAdminRole: true }, { issuer: ISSUER }, { issuer: 'http://x.de' }])
-    assert.deepEqual(parseIdpConfig(json), [{ issuer: ISSUER, label: 'rsvp-app', autoProvision: false, mapAdminRole: true }])
+    assert.deepEqual(parseIdpConfig('https://rsvp.example.de'), [{ issuer: ISSUER, label: undefined, autoProvision: true, mapAdminRole: false, participants: false }])
+    const json = JSON.stringify([{ issuer: ISSUER, label: 'rsvp-app', autoProvision: false, mapAdminRole: true, participants: true }, { issuer: ISSUER }, { issuer: 'http://x.de' }])
+    assert.deepEqual(parseIdpConfig(json), [{ issuer: ISSUER, label: 'rsvp-app', autoProvision: false, mapAdminRole: true, participants: true }])
+    // participants nur bei ausdrücklichem true
+    assert.equal(parseIdpConfig(JSON.stringify([{ issuer: ISSUER, participants: 'ja' }]))[0].participants, false)
     assert.deepEqual(parseIdpConfig('[kaputt'), [])
     assert.deepEqual(parseIdpConfig(''), [])
   } finally {

@@ -50,6 +50,33 @@ Die Bestätigung trägt **nur Identität, keine Rechte**. `role` ist die Rolle b
 Anbieter; welche Rechte das Konto beim Empfänger bekommt, entscheidet allein der
 Empfänger (siehe `mapAdminRole`).
 
+## Teilnehmenden-Bestätigung (ab v0.2.0)
+
+Für **Teilnehmendenkonten** (Gäste, Abstimmende, ohne jede Verwaltungsrolle - heute nur
+`GuestUser` in rsvp-app) gibt es eine eigene Bestätigung, angefordert mit
+`/api/suite/authorize?app=…&state=…&kind=participant`:
+
+* Header: `{"alg":"EdDSA","typ":"suite-participant+v1","kid":"…"}` - **eigener `typ`, kein
+  Zusatzfeld** in der Login-Bestätigung. Ein Empfänger mit älterer Version würde ein unbekanntes
+  Feld ignorieren und die Person als Verwaltungskonto anlegen (bei `autoProvision` sogar als
+  Creator); einen unbekannten `typ` lehnt dagegen jede Version ab. Umgekehrt ignoriert ein
+  älterer Anbieter `kind` und schickt eine Login-Bestätigung - der Empfänger lehnt sie als
+  falschen Typ ab. Beide Richtungen scheitern also sicher.
+* Payload: `iss`, `aud`, `sub`, `name`, `nonce`, `iat`, `exp` - **keine E-Mail, keine Rolle**.
+* `sub` ist eine **paarweise Kennung**: für jeden Empfänger eine andere, sodass Empfänger
+  Personen nicht untereinander verknüpfen können. Wie der Anbieter sie bildet, ist seine Sache
+  (rsvp-app: zufällig, gespeichert zusammen mit der Zustimmung).
+* Der Anbieter stellt sie nur aus, wenn der Empfänger in `SUITE_PARTICIPANT_APPS` steht (getrennt
+  von `SUITE_TRUSTED_APPS`), nur für bestätigte Konten und erst nach einer einmaligen Zustimmung
+  der Person pro Empfänger.
+* Der Empfänger nimmt sie nur von Anbietern mit `"participants": true` in `SUITE_IDPS` an und
+  bildet sie **nie** auf ein Verwaltungskonto ab: eigene Tabelle, eigene Sitzung (kurz, z.B.
+  24 Stunden - so kommt ein beim Anbieter gelöschtes Konto bald nicht mehr durch). Wird
+  `participants` abgeschaltet, gelten bestehende Teilnehmenden-Sitzungen sofort nicht mehr.
+
+API: `issueParticipantAssertion`, `verifyParticipantAssertion`, `buildAuthorizeRequestUrl(…, { kind: 'participant' })`,
+`parseAuthorizeRequest(url, trustedApps, participantApps)` (liefert `request.kind`).
+
 ## Discovery
 
 Jeder Anbieter liefert `GET /.well-known/suite-identity`:
@@ -93,11 +120,13 @@ klappt beim nächsten Versuch. Den Ablauf prüfen `test/rotation.test.ts` (hier)
 | `SUITE_SIGNING_KEY` | Anbieter | Privater Ed25519-Schlüssel dieses Tools (`npx suite-keygen`). Ohne: Tool stellt keine Logins aus. |
 | `SUITE_SIGNING_KEY_PREVIOUS` | Anbieter | Optional, nur während einer Schlüsselrotation. |
 | `SUITE_TRUSTED_APPS` | Anbieter | Kommagetrennte Origins der Tools, die Bestätigungen empfangen dürfen. |
-| `SUITE_IDPS` | Empfänger | Anbieter, deren Logins akzeptiert werden: Origins kommagetrennt oder JSON `[{"issuer","label","autoProvision","mapAdminRole"}]`. |
+| `SUITE_PARTICIPANT_APPS` | Anbieter | Ab v0.2.0: Origins der Tools, die Teilnehmenden-Bestätigungen bekommen. Leer = keine. |
+| `SUITE_IDPS` | Empfänger | Anbieter, deren Logins akzeptiert werden: Origins kommagetrennt oder JSON `[{"issuer","label","autoProvision","mapAdminRole","participants"}]`. |
 
 `autoProvision` (Standard `true`): erster Login legt automatisch ein lokales Konto
 ohne Passwort an. `mapAdminRole` (Standard `false`): Admins des Anbieters werden auch
-hier Admin, sonst Creator.
+hier Admin, sonst Creator. `participants` (Standard `false`, ab v0.2.0): Teilnehmendenkonten
+dieses Anbieters annehmen.
 
 ## Sicherheitsregeln, die jede App einhalten muss
 
@@ -125,8 +154,8 @@ hier Admin, sonst Creator.
   bei kleinem Nutzen. Auf geteilten Geräten in jedem genutzten Tool abmelden.
 * **Keine Weitergabe von Löschungen oder Sperren:** Wird ein Konto beim Anbieter gelöscht, bleibt das
   verknüpfte Konto beim Empfänger bestehen, kann sich aber nicht mehr über den Anbieter anmelden. Es
-  verfällt dort nach der suite-weiten Löschfrist (2 Jahre ohne Anmeldung). Für die geplanten
-  Teilnehmendenkonten sind kurze Sitzungen vorgesehen (siehe TODO im Abstimmungstool, Abschnitt D).
+  verfällt dort nach der suite-weiten Löschfrist (2 Jahre ohne Anmeldung). Teilnehmenden-Sitzungen
+  sind deshalb kurz (24 Stunden), danach geht die Anmeldung wieder über den Anbieter.
 
 ## API-Überblick
 

@@ -18,20 +18,26 @@ export type IdpConfig = {
   autoProvision: boolean
   /** Einen Admin des Anbieters hier ebenfalls als Admin führen. Standard: nein (Creator). */
   mapAdminRole: boolean
+  /**
+   * Anmeldung mit Teilnehmendenkonten dieses Anbieters annehmen (participant.ts). Standard: nein.
+   * Abschalten muss beim Empfänger bestehende Teilnehmenden-Sitzungen sofort unwirksam machen.
+   */
+  participants: boolean
 }
 
 /**
  * SUITE_TRUSTED_APPS (Anbieter-Seite): kommagetrennte Origins der Tools, die
- * Login-Bestätigungen von diesem Tool empfangen dürfen.
+ * Login-Bestätigungen von diesem Tool empfangen dürfen. Gleiches Format für
+ * SUITE_PARTICIPANT_APPS (Tools, die Teilnehmenden-Bestätigungen bekommen) - `name` nur für die Warnung.
  */
-export function parseTrustedApps(value: string | undefined): string[] {
+export function parseTrustedApps(value: string | undefined, name = 'SUITE_TRUSTED_APPS'): string[] {
   if (!value?.trim()) return []
   const origins: string[] = []
   for (const raw of value.split(',')) {
     if (!raw.trim()) continue
     const origin = normalizeOrigin(raw)
     if (origin) origins.push(origin)
-    else console.warn(`[suite-kit] SUITE_TRUSTED_APPS: "${raw.trim()}" ist kein gültiger Origin und wird ignoriert`)
+    else console.warn(`[suite-kit] ${name}: "${raw.trim()}" ist kein gültiger Origin und wird ignoriert`)
   }
   return origins
 }
@@ -40,13 +46,13 @@ export function parseTrustedApps(value: string | undefined): string[] {
  * SUITE_IDPS (Empfänger-Seite): Anbieter, deren Logins dieses Tool akzeptiert. Entweder
  * kommagetrennte Origins (`https://rsvp.example.de,https://plaetze.example.de`) mit
  * den Standardwerten, oder ein JSON-Array für Einzeleinstellungen:
- * `[{"issuer":"https://rsvp.example.de","label":"rsvp-app","autoProvision":true,"mapAdminRole":false}]`
+ * `[{"issuer":"https://rsvp.example.de","label":"rsvp-app","autoProvision":true,"mapAdminRole":false,"participants":true}]`
  */
 export function parseIdpConfig(value: string | undefined): IdpConfig[] {
   const trimmed = value?.trim()
   if (!trimmed) return []
 
-  let entries: { issuer: string; label?: string; autoProvision?: boolean; mapAdminRole?: boolean }[]
+  let entries: { issuer: string; label?: string; autoProvision?: boolean; mapAdminRole?: boolean; participants?: boolean }[]
   if (trimmed.startsWith('[')) {
     try {
       const parsed: unknown = JSON.parse(trimmed)
@@ -72,7 +78,8 @@ export function parseIdpConfig(value: string | undefined): IdpConfig[] {
       issuer,
       label: typeof entry.label === 'string' && entry.label ? entry.label.slice(0, 100) : undefined,
       autoProvision: entry.autoProvision !== false,
-      mapAdminRole: entry.mapAdminRole === true
+      mapAdminRole: entry.mapAdminRole === true,
+      participants: entry.participants === true
     })
   }
   return result

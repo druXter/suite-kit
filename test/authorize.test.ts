@@ -10,7 +10,7 @@ test('Anfrage einer vertrauten App wird akzeptiert', () => {
   const state = randomState()
   const url = buildAuthorizeRequestUrl('https://rsvp.example.de/api/suite/authorize', { app: 'https://vote.example.de', state })
   const result = parseAuthorizeRequest(url, TRUSTED)
-  assert.deepEqual(result, { ok: true, request: { app: 'https://vote.example.de', state } })
+  assert.deepEqual(result, { ok: true, request: { app: 'https://vote.example.de', state, kind: 'staff' } })
 })
 
 test('unbekannte App bekommt nie eine Weiterleitung', () => {
@@ -60,4 +60,18 @@ test('randomState erzeugt eindeutige, gültige Werte', () => {
   const a = randomState()
   assert.notEqual(a, randomState())
   assert.match(a, /^[A-Za-z0-9_-]{43}$/)
+})
+
+test('Teilnehmende: eigene Allowlist, unbekannte kind-Werte abgelehnt', () => {
+  const state = randomState()
+  const PARTICIPANTS = ['https://vote.example.de']
+  const url = buildAuthorizeRequestUrl('https://rsvp.example.de/api/suite/authorize', { app: 'https://vote.example.de', state, kind: 'participant' })
+  assert.equal(new URL(url).searchParams.get('kind'), 'participant')
+  assert.deepEqual(parseAuthorizeRequest(url, [], PARTICIPANTS), { ok: true, request: { app: 'https://vote.example.de', state, kind: 'participant' } })
+  // In SUITE_TRUSTED_APPS (Login), aber nicht für Teilnehmende freigegeben -> abgelehnt, und umgekehrt.
+  assert.deepEqual(parseAuthorizeRequest(url, TRUSTED, []), { ok: false, reason: 'untrusted-app' })
+  const staff = buildAuthorizeRequestUrl('https://rsvp.example.de/api/suite/authorize', { app: 'https://vote.example.de', state })
+  assert.equal(new URL(staff).searchParams.has('kind'), false)
+  assert.deepEqual(parseAuthorizeRequest(staff, [], PARTICIPANTS), { ok: false, reason: 'untrusted-app' })
+  assert.deepEqual(parseAuthorizeRequest(`${staff}&kind=admin`, TRUSTED, PARTICIPANTS), { ok: false, reason: 'invalid-kind' })
 })

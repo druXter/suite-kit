@@ -52,9 +52,6 @@ export function issueLoginAssertion(
   input: LoginAssertionInput,
   opts: { ttlSeconds?: number; now?: number } = {}
 ): string {
-  const now = opts.now ?? Math.floor(Date.now() / 1000)
-  const ttl = Math.min(Math.max(1, opts.ttlSeconds ?? DEFAULT_TTL_SECONDS), MAX_TTL_SECONDS)
-
   const claims: LoginClaims = {
     iss: input.issuer,
     aud: input.audience,
@@ -63,14 +60,9 @@ export function issueLoginAssertion(
     ...(input.name ? { name: input.name } : {}),
     ...(input.role ? { role: input.role } : {}),
     nonce: input.nonce,
-    iat: now,
-    exp: now + ttl
+    ...lifetime(opts)
   }
-
-  const header = b64uEncode(JSON.stringify({ alg: ASSERTION_ALG, typ: ASSERTION_TYP, kid: signer.kid }))
-  const payload = b64uEncode(JSON.stringify(claims))
-  const signature = b64uEncode(sign(null, Buffer.from(`${header}.${payload}`), signer.privateKeyObject))
-  return `${header}.${payload}.${signature}`
+  return signCompact(signer, ASSERTION_TYP, claims)
 }
 
 export type VerifyFailure =
@@ -118,15 +110,22 @@ function safeEqual(a: string, b: string): boolean {
   return ab.length === bb.length && timingSafeEqual(ab, bb)
 }
 
+/** Ergebnis der gemeinsamen Prüfung: die Payload, Kopf/Signatur/iss/aud/nonce/Zeiten schon geprüft. */
+type SignedResult = { ok: true; payload: Record<string, unknown>; iat: number; exp: number } | { ok: false; reason: VerifyFailure }
+
 /**
- * Gibt statt zu werfen ein Ergebnis mit Grund zurück - "Login nicht gültig" ist ein
- * normaler Zustand (abgelaufener Link, Tab zu lange offen), der Grund hilft nur beim
- * Loggen/Debuggen und gehört NICHT ungefiltert in eine Fehlermeldung für den Nutzer.
- * `unknown-key` bedeutet: der Aufrufer sollte das Discovery-Dokument EINMAL frisch
- * laden und erneut prüfen (Schlüsselrotation).
+ * Gemeinsame Prüfung aller Bestätigungsarten (Login und Teilnehmende, siehe participant.ts):
+ * genau dieses `alg`/`typ`, bekannter Schlüssel, gültige Signatur, dann die Felder, die jede Art
+ * hat. `checkClaims` prüft die artspezifischen Felder VOR iss/aud/nonce/Zeiten (Reihenfolge der
+ * Gründe wie bisher).
  */
-export function verifyLoginAssertion(token: string, expect: VerifyExpectation): VerifyResult {
-  const fail = (reason: VerifyFailure): VerifyResult => ({ ok: false, reason })
+export function verifySigned(
+  token: string,
+  typ: string,
+  expect: VerifyExpectation,
+  checkClaims: (payload: Record<string, unknown>) => boolean
+): SignedResult {
+  const fail = (reason: VerifyFailure): SignedResult => ({ ok: false, reason })
 
   const parts = token.split('.')
   if (parts.length !== 3) return fail('malformed')
@@ -134,7 +133,7 @@ export function verifyLoginAssertion(token: string, expect: VerifyExpectation): 
 
   const header = parseJsonObject(b64uDecode(headerPart))
   if (!header) return fail('malformed')
-  if (header.alg !== ASSERTION_ALG || header.typ !== ASSERTION_TYP || typeof header.kid !== 'string') {
+  if (header.alg !== ASSERTION_ALG || header.typ !== typ || typeof header.kid !== 'string') {
     return fail('unsupported-header')
   }
 
@@ -150,13 +149,10 @@ export function verifyLoginAssertion(token: string, expect: VerifyExpectation): 
   const payload = parseJsonObject(b64uDecode(payloadPart))
   if (!payload) return fail('malformed')
 
-  const { iss, aud, sub, email, name, role, nonce, iat, exp } = payload
+  const { iss, aud, sub, nonce, iat, exp } = payload
   if (
     !isNonEmptyString(iss, 300) || !isNonEmptyString(aud, 300) || !isNonEmptyString(sub, 128) ||
-    !isNonEmptyString(email, 254) || !isNonEmptyString(nonce, 128) ||
-    (name !== undefined && !isNonEmptyString(name, 200)) ||
-    (role !== undefined && !isNonEmptyString(role, 64)) ||
-    !Number.isInteger(iat) || !Number.isInteger(exp)
+    !isNonEmptyString(nonce, 128) || !Number.isInteger(iat) || !Number.isInteger(exp) || !checkClaims(payload)
   ) {
     return fail('bad-claims')
   }
@@ -172,16 +168,50 @@ export function verifyLoginAssertion(token: string, expect: VerifyExpectation): 
   if (issuedAt > now + CLOCK_SKEW_SECONDS) return fail('not-yet-valid')
   if (expiresAt + CLOCK_SKEW_SECONDS < now) return fail('expired')
 
+  return { ok: true, payload, iat: issuedAt, exp: expiresAt }
+}
+
+/** Signiert beliebige Claims als kompaktes JWS mit festem `typ` (gemeinsam für alle Bestätigungsarten). */
+export function signCompact(signer: Signer, typ: string, claims: Record<string, unknown>): string {
+  const header = b64uEncode(JSON.stringify({ alg: ASSERTION_ALG, typ, kid: signer.kid }))
+  const payload = b64uEncode(JSON.stringify(claims))
+  const signature = b64uEncode(sign(null, Buffer.from(`${header}.${payload}`), signer.privateKeyObject))
+  return `${header}.${payload}.${signature}`
+}
+
+/** Zeitfenster einer neuen Bestätigung (Standard 60 s, höchstens MAX_TTL_SECONDS). */
+export function lifetime(opts: { ttlSeconds?: number; now?: number } = {}): { iat: number; exp: number } {
+  const now = opts.now ?? Math.floor(Date.now() / 1000)
+  const ttl = Math.min(Math.max(1, opts.ttlSeconds ?? DEFAULT_TTL_SECONDS), MAX_TTL_SECONDS)
+  return { iat: now, exp: now + ttl }
+}
+
+/**
+ * Gibt statt zu werfen ein Ergebnis mit Grund zurück - "Login nicht gültig" ist ein
+ * normaler Zustand (abgelaufener Link, Tab zu lange offen), der Grund hilft nur beim
+ * Loggen/Debuggen und gehört NICHT ungefiltert in eine Fehlermeldung für den Nutzer.
+ * `unknown-key` bedeutet: der Aufrufer sollte das Discovery-Dokument EINMAL frisch
+ * laden und erneut prüfen (Schlüsselrotation). Eine Teilnehmenden-Bestätigung
+ * (`suite-participant+v1`) scheitert hier an `unsupported-header` - nie als Login.
+ */
+export function verifyLoginAssertion(token: string, expect: VerifyExpectation): VerifyResult {
+  const result = verifySigned(token, ASSERTION_TYP, expect, ({ email, name, role }) =>
+    isNonEmptyString(email, 254) &&
+    (name === undefined || isNonEmptyString(name, 200)) &&
+    (role === undefined || isNonEmptyString(role, 64))
+  )
+  if (!result.ok) return result
+  const { iss, aud, sub, email, name, role, nonce } = result.payload as Record<string, string>
   return {
     ok: true,
     claims: {
       iss, aud, sub,
       email: email.toLowerCase(),
-      ...(name !== undefined ? { name: name as string } : {}),
-      ...(role !== undefined ? { role: role as string } : {}),
+      ...(name !== undefined ? { name } : {}),
+      ...(role !== undefined ? { role } : {}),
       nonce,
-      iat: issuedAt,
-      exp: expiresAt
+      iat: result.iat,
+      exp: result.exp
     }
   }
 }

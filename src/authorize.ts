@@ -30,11 +30,20 @@ export function randomState(): string {
   return randomBytes(32).toString('base64url')
 }
 
+/**
+ * Welche Art Konto angefragt wird: `staff` = Verwaltungskonto (Login-Bestätigung, assertion.ts),
+ * `participant` = Teilnehmendenkonto (participant.ts). In der URL als `kind=participant`; ohne
+ * den Parameter ist es wie bisher ein Login. Ein Anbieter mit älterer Version ignoriert den
+ * Parameter und schickt eine Login-Bestätigung - die der Empfänger dann als falschen Typ ablehnt.
+ */
+export type AccountKind = 'staff' | 'participant'
+
 /** RP-Seite: Adresse, zu der der Browser für den Login weitergeleitet wird. */
-export function buildAuthorizeRequestUrl(authorizeUrl: string, input: { app: string; state: string }): string {
+export function buildAuthorizeRequestUrl(authorizeUrl: string, input: { app: string; state: string; kind?: AccountKind }): string {
   const url = new URL(authorizeUrl)
   url.searchParams.set('app', input.app)
   url.searchParams.set('state', input.state)
+  if (input.kind === 'participant') url.searchParams.set('kind', 'participant')
   return url.toString()
 }
 
@@ -42,33 +51,38 @@ export type AuthorizeRequest = {
   /** Origin des anfragenden Tools = `aud` der auszustellenden Bestätigung. */
   app: string
   state: string
+  kind: AccountKind
 }
 
 export type AuthorizeRequestResult =
   | { ok: true; request: AuthorizeRequest }
-  | { ok: false; reason: 'missing-params' | 'invalid-state' | 'untrusted-app' }
+  | { ok: false; reason: 'missing-params' | 'invalid-state' | 'invalid-kind' | 'untrusted-app' }
 
 /**
  * IdP-Seite: prüft eine eingehende Anfrage. `trustedApps` ist die Allowlist der
- * Tools, die Bestätigungen empfangen dürfen (Env SUITE_TRUSTED_APPS) - eine
+ * Tools, die Login-Bestätigungen empfangen dürfen (Env SUITE_TRUSTED_APPS),
+ * `participantApps` die getrennte Allowlist für Teilnehmende (SUITE_PARTICIPANT_APPS) - eine
  * unbekannte `app` bekommt NIE eine Weiterleitung, sondern eine Fehlerseite, sonst
  * wäre der Endpunkt ein offener Redirect, der Bestätigungen an Fremde schickt.
  */
-export function parseAuthorizeRequest(url: URL | string, trustedApps: string[]): AuthorizeRequestResult {
+export function parseAuthorizeRequest(url: URL | string, trustedApps: string[], participantApps: string[] = []): AuthorizeRequestResult {
   const params = (typeof url === 'string' ? new URL(url) : url).searchParams
   const appParam = params.get('app')
   const state = params.get('state')
+  const kindParam = params.get('kind')
   if (!appParam || !state) return { ok: false, reason: 'missing-params' }
   if (!STATE_PATTERN.test(state)) return { ok: false, reason: 'invalid-state' }
+  if (kindParam !== null && kindParam !== 'participant') return { ok: false, reason: 'invalid-kind' }
+  const kind: AccountKind = kindParam === 'participant' ? 'participant' : 'staff'
 
   const app = normalizeOrigin(appParam)
-  if (!app || !trustedApps.includes(app)) return { ok: false, reason: 'untrusted-app' }
+  if (!app || !(kind === 'participant' ? participantApps : trustedApps).includes(app)) return { ok: false, reason: 'untrusted-app' }
 
-  return { ok: true, request: { app, state } }
+  return { ok: true, request: { app, state, kind } }
 }
 
 /** IdP-Seite: Rücksprung-Adresse - der Pfad ist fest, nur der Origin kommt aus der Allowlist. */
-export function buildAuthorizeResponseUrl(request: AuthorizeRequest, assertion: string): string {
+export function buildAuthorizeResponseUrl(request: Pick<AuthorizeRequest, 'app' | 'state'>, assertion: string): string {
   const url = new URL(CALLBACK_PATH, request.app)
   url.searchParams.set('assertion', assertion)
   url.searchParams.set('state', request.state)

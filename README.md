@@ -80,8 +80,9 @@ Wichtige Regeln (Details und Begründungen: [docs/PROTOCOL.md](docs/PROTOCOL.md)
 Die Anmeldung ist **unabhängig** von der fachlichen Kopplung: rsvp-app und das Abstimmungstool tauschen daneben weiterhin
 signierte Tokens für "Abstimmen nur mit bestätigter Zusage" und die Ergebnis-Meldung aus (`RSVP_VERIFICATION_SECRET`,
 siehe README des Abstimmungstools). Das ist ein eigener Vertrag für einen anderen Zweck - Gäste ohne Konto sind davon
-nicht betroffen. Am Konto-Verbund nehmen heute nur Verwaltungskonten teil; Teilnehmendenkonten sind geplant (TODO im
-Abstimmungstool, Abschnitt D1).
+nicht betroffen. **Teilnehmendenkonten** (ab v0.2.0) nehmen getrennt davon teil: rsvp-app bestätigt sie dem
+Abstimmungstool (Modus „Nur mit Konto“) mit eigenem Bestätigungstyp, paarweiser Kennung und ohne E-Mail, nur nach Zustimmung
+der Person - Details in [docs/PROTOCOL.md](docs/PROTOCOL.md#teilnehmenden-bestätigung-ab-v020).
 
 Ebenso haben **rsvp-app und Seating** einen eigenen fachlichen Vertrag: Platzwahl über eine Zusage, Abruf der Gästeliste,
 Rückmeldung der Plätze an rsvp-app und ein Webhook bei jeder Änderung einer Zusage. Die Nachrichten sind HMAC-signiert
@@ -106,7 +107,8 @@ Identisch in jedem Tool der Suite:
 | `SUITE_SIGNING_KEY` | Anbieter | Privater Ed25519-Schlüssel dieses Tools (`node node_modules/suite-kit/bin/suite-keygen.js`). Leer = stellt keine Anmeldungen aus. |
 | `SUITE_SIGNING_KEY_PREVIOUS` | Anbieter | Nur während eines Schlüsselwechsels (Ablauf: [docs/PROTOCOL.md](docs/PROTOCOL.md#schlüsselwechsel)). |
 | `SUITE_TRUSTED_APPS` | Anbieter | Kommagetrennte Origins der Tools, die Anmeldungen von hier empfangen dürfen. |
-| `SUITE_IDPS` | Empfänger | Tools, deren Konten hier zugelassen sind: Origins kommagetrennt oder JSON `[{"issuer","label","autoProvision","mapAdminRole"}]`. |
+| `SUITE_PARTICIPANT_APPS` | Anbieter | Tools, die Anmeldungen mit **Teilnehmendenkonten** von hier bekommen (ab v0.2.0, heute nur rsvp-app als Anbieter). |
+| `SUITE_IDPS` | Empfänger | Tools, deren Konten hier zugelassen sind: Origins kommagetrennt oder JSON `[{"issuer","label","autoProvision","mapAdminRole","participants"}]`. `participants: true` nimmt zusätzlich Teilnehmendenkonten an (ab v0.2.0). |
 | `TRUST_PROXY_HOPS` | beide | Wie viele Reverse Proxys vor dem Tool stehen (für die IP der Anmelde-Drosselung). **Messen, nicht raten** - siehe unten. |
 
 **Beispiel für zwei Tools** (`A` = `https://a.example.de`, `B` = `https://b.example.de`, beide sollen sich gegenseitig
@@ -128,7 +130,7 @@ zwischen Tools kopiert.
 * **Datenbank sichern** vor jedem Update (SQLite-Datei kopieren, Container dafür kurz stoppen oder sichern, wenn wenig los ist).
 * **Löschfristen** sind suite-weit gleich: Inhalte 18 Monate nach Ende, Konten nach 2 Jahren ohne Anmeldung (Konten mit
   Admin-Rolle ausgenommen, in rsvp-app alle Verwaltungskonten).
-* Wird `suite-kit` als Git-Abhängigkeit eingebunden (`"suite-kit": "github:druXter/suite-kit#v0.1.0"`), braucht der
+* Wird `suite-kit` als Git-Abhängigkeit eingebunden (`"suite-kit": "github:druXter/suite-kit#v0.2.0"`, ältere Tools dürfen auf `v0.1.0` bleiben - sie fragen nie nach Teilnehmenden), braucht der
   Docker-Build `git` im Image (`apk add --no-cache git`); `dist/` wird beim Installieren per `prepare`-Skript gebaut.
 
 ## Ein weiteres Tool anbinden
