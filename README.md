@@ -109,6 +109,7 @@ Identisch in jedem Tool der Suite:
 | `SUITE_TRUSTED_APPS` | Anbieter | Kommagetrennte Origins der Tools, die Anmeldungen von hier empfangen dürfen. |
 | `SUITE_PARTICIPANT_APPS` | Anbieter | Tools, die Anmeldungen mit **Teilnehmendenkonten** von hier bekommen (ab v0.2.0, heute nur rsvp-app als Anbieter). |
 | `SUITE_IDPS` | Empfänger | Tools, deren Konten hier zugelassen sind: Origins kommagetrennt oder JSON `[{"issuer","label","autoProvision","mapAdminRole","participants"}]`. `participants: true` nimmt zusätzlich Teilnehmendenkonten an (ab v0.2.0). |
+| `SUITE_LOGIN_REDIRECT` | Empfänger | Optional: bevorzugter Anbieter, ein Origin aus `SUITE_IDPS`. Die Login-Seite leitet ohne Sitzung direkt dorthin weiter (Regeln unten unter „Ein weiteres Tool anbinden“). Leer = Formular wie bisher. |
 | `TRUST_PROXY_HOPS` | beide | Wie viele Reverse Proxys vor dem Tool stehen (für die IP der Anmelde-Drosselung). **Messen, nicht raten** - siehe unten. |
 
 **Beispiel für zwei Tools** (`A` = `https://a.example.de`, `B` = `https://b.example.de`, beide sollen sich gegenseitig
@@ -144,7 +145,13 @@ heißt bei Seating `/login/continue`.
    `LoginThrottle`. Einmal-Tokens (Reset, Einladung) ebenfalls nur als Hash speichern.
 3. **Endpunkte** übernehmen: `/.well-known/suite-identity`, `/api/suite/authorize`, `/api/suite/login`, `/api/suite/callback`
    sowie die Zwischenseite, die nach einem Login im Anbieter-Ablauf einen **echten** Seitenwechsel auslöst (siehe Stolpersteine).
-4. **Login-Seite:** Buttons aus `SUITE_IDPS`; Konto-Seite: Verknüpfungen anzeigen/entfernen.
+4. **Login-Seite:** Buttons aus `SUITE_IDPS`; Konto-Seite: Verknüpfungen anzeigen/entfernen. Optional
+   `SUITE_LOGIN_REDIRECT` (`loginRedirectIdp`/`shouldAutoRedirect` in `app/lib/suite.ts` der anderen Tools):
+   weiterleiten nur beim schlichten Aufruf (höchstens `next`), nie mit `error` (sonst Schleife nach einem Fehlschlag),
+   `reset` oder `local`, und nie, wenn `next` auf `/api/suite/` zeigt - dann ist das Tool selbst als Anbieter gefragt
+   und braucht ein lokales Konto mit Passwort (keine Ketten). Weiterleiten per echtem Seitenwechsel
+   (`window.location.replace`), Link „Stattdessen mit E-Mail und Passwort anmelden“ auf `?local=1`. Führt das Abmelden
+   auf die Login-Seite, dorthin ebenfalls mit `?local=1`, sonst ist man sofort wieder angemeldet.
 5. **Sicherheitsregeln einhalten** (siehe [docs/PROTOCOL.md](docs/PROTOCOL.md) und die Liste unten).
 6. **Konfigurieren:** eigenes Schlüsselpaar, das neue Tool in `SUITE_TRUSTED_APPS`/`SUITE_IDPS` der anderen eintragen (und
    umgekehrt), Neustart der betroffenen Tools.

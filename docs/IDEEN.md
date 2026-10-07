@@ -41,7 +41,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [Q2](#q2-mehrsprachigkeit) | Mehrsprachigkeit (mindestens Deutsch/Englisch) | alle Tools | L | zurückgestellt |
 | [Q3](#q3-fotos-der-gäste-über-immich) | Fotos der Gäste über Immich statt eigener App | rsvp-app / zeitplan | S | angenommen |
 | [Q4](#q4-vorlagen-pro-event-typ-über-alle-tools) | Vorlagen pro Event-Typ über alle Tools | alle Tools | M–L | zurückgestellt |
-| [Q5](#q5-direkt-weiter-zum-einzigen-anbieter) | Login: direkt weiter zum einzigen Anbieter | suite-kit, alle Tools | S | angenommen |
+| [Q5](#q5-direkt-weiter-zum-einzigen-anbieter) | Login: direkt weiter zum einzigen Anbieter | suite-kit, alle Tools | S | umgesetzt |
 | [Q6](#q6-bot-schutz-für-öffentliche-formulare) | Bot-Schutz für öffentliche Formulare (Turnstile o. Ä.) | seating, ggf. alle Tools | S je Tool | zurückgestellt |
 
 ### Wo die Ideen ansetzen
@@ -433,6 +433,12 @@ Sitzordnung und Ablauf. Setzt Q1 voraus.
 ### Q5: Direkt weiter zum einzigen Anbieter
 
 **Bewertung (2026-10-07): angenommen.** Quick Win: spart in jedem Tool einen Klick, kleine Änderung in suite-kit plus Schalter je Tool.
+
+**Umgesetzt (2026-10-07), verallgemeinert:** In der eigenen Installation hat jedes Tool alle drei anderen als Anbieter
+eingetragen, „genau ein Anbieter“ hätte also nie gegriffen. Stattdessen nennt `SUITE_LOGIN_REDIRECT` einen
+**bevorzugten** Anbieter aus `SUITE_IDPS` (der Fall mit einem Anbieter ist darin enthalten). Umgesetzt in allen vier
+Tools, nicht in suite-kit selbst (wenige Zeilen je Tool, keine neue Paketversion nötig); Regeln im README unter „Ein
+weiteres Tool anbinden“, Schritt 4. E2E-Tests je Tool mit einer zweiten Instanz (`login-redirect.spec.ts`).
 
 **Problem:** Auch mit Föderation klickt man in jedem Tool „Mit … anmelden“.
 
