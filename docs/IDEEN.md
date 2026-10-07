@@ -25,6 +25,10 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L7](#l7-sitzungsmodus-für-versammlungen) | Sitzungsmodus für Versammlungen | abstimmungstool, rsvp-app, zeitplan | L | offen |
 | [L8](#l8-fragebogen-feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | offen |
 | [L9](#l9-teams-bei-der-anmeldung) | Teams bei der Anmeldung (Teamname, Teamgröße) | rsvp-app / seating | S–M | offen |
+| [L10](#l10-öffentliche-sitzordnung-mit-namen) | Öffentliche Sitzordnung mit Namen („Wo sitze ich?“) | seating | S–M | offen |
+| [L11](#l11-kürzbare-programmpunkte) | Kürzbare Programmpunkte mit Mindestdauer | zeitplan | M | offen |
+| [L12](#l12-benachrichtigungen-an-gäste-im-zeitplan) | Benachrichtigungen an Gäste im Zeitplan (Push/Mail) | zeitplan | M | offen |
+| [L13](#l13-echtzeit-per-sse-im-zeitplan) | Echtzeit per SSE statt Polling im Zeitplan | zeitplan | S–M | offen |
 | [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu | L | offen |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | offen |
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | offen |
@@ -35,6 +39,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [Q3](#q3-fotos-der-gäste-über-immich) | Fotos der Gäste über Immich statt eigener App | rsvp-app / zeitplan | S | offen |
 | [Q4](#q4-vorlagen-pro-event-typ-über-alle-tools) | Vorlagen pro Event-Typ über alle Tools | alle Tools | M–L | offen |
 | [Q5](#q5-direkt-weiter-zum-einzigen-anbieter) | Login: direkt weiter zum einzigen Anbieter | suite-kit, alle Tools | S | offen |
+| [Q6](#q6-bot-schutz-für-öffentliche-formulare) | Bot-Schutz für öffentliche Formulare (Turnstile o. Ä.) | seating, ggf. alle Tools | S je Tool | offen |
 
 ### Wo die Ideen ansetzen
 
@@ -247,6 +252,50 @@ schickt nach dem Event automatisch den Link an alle Eingecheckten (bzw. alle Zus
 **Idee:** Anmeldung als Team mit Teamname und Teamgröße. Eine Tischbuchung in Seating (`TABLE`) deckt den Teamtisch
 schon ab; es fehlen Teamname und die Übergabe an N2.
 
+### L10: Öffentliche Sitzordnung mit Namen
+
+*Aus dem Konzept von Seating übernommen (2026-10-07), dort in Phase 6 bewusst zurückgestellt.*
+
+**Problem:** Die öffentliche Plan-Ansicht zeigt nur „belegt“, nie Namen. Bei einer Hochzeit mit Sitzordnung wollen Gäste
+aber wissen, wo sie sitzen; heute gibt es das nur im Druck (Tischkarten, Tischliste) und im Export.
+
+**Idee:** Schalter pro Event (aus als Voreinstellung): Die Gästeansicht zeigt die Sitzordnung mit Namen, dazu eine Suche
+„Wo sitze ich?“. Nur für Events mit Zugangsschutz (Code oder `RSVP`), nicht für offene Pläne. Datenschutzerklärung und
+Hinweis beim Einschalten ergänzen.
+
+### L11: Kürzbare Programmpunkte
+
+*Aus dem Konzept von Zeitplan übernommen (2026-10-07), Abschnitt „Später“.*
+
+**Problem:** Bei Verspätung schiebt Zeitplan alle folgenden Punkte nach hinten, bis zum nächsten Anker. Dass sich
+manche Punkte (Kaffee, Reden) kürzen lassen, um die Verspätung aufzuholen, weiß das Tool nicht; heute zeigt es nur den
+Konflikt fürs Team an („kürzen?“).
+
+**Idee:** Optionale Mindestdauer pro Punkt. Die Prognose kürzt kürzbare Punkte bis zur Mindestdauer, bevor sie
+Folgepunkte verschiebt, und zeigt dem Team, wo gekürzt wurde.
+
+### L12: Benachrichtigungen an Gäste im Zeitplan
+
+*Aus dem Konzept von Zeitplan übernommen (2026-10-07), Abschnitt „Später“.*
+
+**Problem:** Gäste sehen Änderungen nur, wenn sie die Gästeansicht offen haben. Zeitplan verschickt weder Push noch Mails
+an Gäste und kennt bewusst keine Namen oder Adressen.
+
+**Idee:** Push in der installierten PWA (wie in rsvp-app und dem Abstimmungstool) für ausgewählte Punkte („Gleich geht's
+los: Trauung in 10 Minuten“) und bei größeren Verschiebungen. Mails nur über rsvp-app, das die Adressen kennt.
+
+**Offene Fragen:** Lohnt sich Push für einen einzigen Eventtag? Auf iOS nur in der installierten PWA (siehe P2).
+
+### L13: Echtzeit per SSE im Zeitplan
+
+*Aus dem Konzept von Zeitplan übernommen (2026-10-07), Abschnitt „Später“.*
+
+**Problem:** Gästeansicht und Tafel fragen per Polling nach (bis zu 30 Sekunden Verzögerung, sofort beim Zurückkehren in
+den Tab). Bewusst so gewählt, weil es hinter Cloudflare und bei schlechtem Empfang robuster ist.
+
+**Idee:** Server-Sent Events als Zusatz für Tafel und Live-Steuerung, Polling bleibt als Rückfall. Das Abstimmungstool
+löst dasselbe für Live-Runden mit Long-Polling ohne Zusatzdienst, das wäre die naheliegende Vorlage.
+
 ---
 
 ## Mögliche neue Tools
@@ -337,3 +386,13 @@ Sitzordnung und Ablauf. Setzt Q1 voraus.
 **Idee:** Optionale Einstellung je Tool: Ist genau ein Anbieter eingetragen und die Person nicht angemeldet, leitet die
 Login-Seite direkt dorthin weiter (lokaler Login bleibt über einen Link erreichbar). Kein zentraler
 Identitätsanbieter, nur weniger Klicks.
+
+### Q6: Bot-Schutz für öffentliche Formulare
+
+*Aus dem README von Seating übernommen (2026-10-07): „Später evtl.: `TURNSTILE_*`“.*
+
+**Problem:** Öffentliche Formulare ohne Konto (Buchung in Seating, Zusage in rsvp-app, Mail-Bestätigung im
+Abstimmungstool) sind heute nur gedrosselt (pro IP und pro E-Mail). Gegen verteilte Bots hilft das wenig.
+
+**Idee:** Optionales Cloudflare Turnstile (oder ein anderer datensparsamer Dienst), nur aktiv, wenn `TURNSTILE_*` gesetzt
+ist. Einmal als Muster festlegen und in allen Tools gleich umsetzen. Datenschutzerklärung ergänzen (Drittanbieter).
