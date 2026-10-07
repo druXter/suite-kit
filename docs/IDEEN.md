@@ -4,8 +4,8 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 (rsvp-app, abstimmungstool, seating, zeitplan) im Oktober 2026. Am 2026-10-07 wurden alle Ideen ein erstes Mal
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
-**Reihenfolge der angenommenen Ideen:** zuerst die Quick Wins Q5, Q3, L5 und L10, danach L1–L4 als große Phase
-(Reihenfolge Hochzeit/Ball nach Termin). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+**Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), als Nächstes
+L1–L4 als große Phase (Reihenfolge Hochzeit/Ball nach Termin). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -23,12 +23,12 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L2](#l2-einladungen-pro-haushalt-mehrere-begleitungen) | Einladungen pro Haushalt, mehrere Begleitungen | rsvp-app (+ seating) | L | angenommen |
 | [L3](#l3-angaben-pro-person-und-menüwahl) | Essen/Allergien pro Person, Menüwahl pro Gang | rsvp-app | M | angenommen |
 | [L4](#l4-ticketkategorien-und-kontingente) | Ticketkategorien und Kontingente | rsvp-app | M | angenommen |
-| [L5](#l5-mitbringliste-mit-slots) | Mitbringliste mit Slots zum Beanspruchen | rsvp-app | S–M | angenommen |
+| [L5](#l5-mitbringliste-mit-slots) | Mitbringliste mit Slots zum Beanspruchen | rsvp-app | S–M | umgesetzt |
 | [L6](#l6-session-anmeldung-mit-kapazität) | Session-Anmeldung mit Kapazität pro Programmpunkt | zeitplan (+ rsvp-app) | M–L | zurückgestellt |
 | [L7](#l7-sitzungsmodus-für-versammlungen) | Sitzungsmodus für Versammlungen | abstimmungstool, rsvp-app, zeitplan | L | zurückgestellt |
 | [L8](#l8-fragebogen-feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | zurückgestellt |
 | [L9](#l9-teams-bei-der-anmeldung) | Teams bei der Anmeldung (Teamname, Teamgröße) | rsvp-app / seating | S–M | zurückgestellt |
-| [L10](#l10-öffentliche-sitzordnung-mit-namen) | Öffentliche Sitzordnung mit Namen („Wo sitze ich?“) | seating | S–M | angenommen |
+| [L10](#l10-öffentliche-sitzordnung-mit-namen) | Öffentliche Sitzordnung mit Namen („Wo sitze ich?“) | seating | S–M | umgesetzt |
 | [L11](#l11-kürzbare-programmpunkte) | Kürzbare Programmpunkte mit Mindestdauer | zeitplan | M | zurückgestellt |
 | [L12](#l12-benachrichtigungen-an-gäste-im-zeitplan) | Benachrichtigungen an Gäste im Zeitplan (Push/Mail) | zeitplan | M | zurückgestellt |
 | [L13](#l13-echtzeit-per-sse-im-zeitplan) | Echtzeit per SSE statt Polling im Zeitplan | zeitplan | S–M | verworfen |
@@ -39,7 +39,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [N5](#n5-mitfahrgelegenheiten) | Mitfahrgelegenheiten (eigenes Tool oder Teil von rsvp-app) | neu / rsvp-app | M | zurückgestellt |
 | [Q1](#q1-einmal-anlegen-überall-verknüpfen) | Einmal anlegen, überall verknüpfen | alle Tools | M je Paar | zurückgestellt |
 | [Q2](#q2-mehrsprachigkeit) | Mehrsprachigkeit (mindestens Deutsch/Englisch) | alle Tools | L | zurückgestellt |
-| [Q3](#q3-fotos-der-gäste-über-immich) | Fotos der Gäste über Immich statt eigener App | rsvp-app / zeitplan | S | angenommen |
+| [Q3](#q3-fotos-der-gäste-über-immich) | Fotos der Gäste über Immich statt eigener App | rsvp-app / zeitplan | S | umgesetzt |
 | [Q4](#q4-vorlagen-pro-event-typ-über-alle-tools) | Vorlagen pro Event-Typ über alle Tools | alle Tools | M–L | zurückgestellt |
 | [Q5](#q5-direkt-weiter-zum-einzigen-anbieter) | Login: direkt weiter zum einzigen Anbieter | suite-kit, alle Tools | S | umgesetzt |
 | [Q6](#q6-bot-schutz-für-öffentliche-formulare) | Bot-Schutz für öffentliche Formulare (Turnstile o. Ä.) | seating, ggf. alle Tools | S je Tool | zurückgestellt |
@@ -228,6 +228,10 @@ bleibt als Obergrenze. Kategorie im Einlass sichtbar.
 
 **Bewertung (2026-10-07): angenommen.** Quick Win: echtes Alltagsproblem der Freundesrunde, überschaubarer Umfang.
 
+**Umgesetzt (2026-10-07) in rsvp-app:** Einträge mit Anzahl pro Termin (`2x Salat`), Ankreuzen beim Zusagen, volle
+Einträge gesperrt (atomare SQL-Anweisung, auch bei gleichzeitigen Zusagen), Absage und Warteliste geben frei. Anzeige in
+Gästeliste, Verwaltung und CSV. Noch offen: Vorlage für Reihen (Liste beim neuen Termin übernehmen).
+
 **Problem:** „Mitbringsel“ ist Freitext, dadurch bringen fünf Leute Nudelsalat.
 
 **Idee:** Liste mit Einträgen und Anzahl („Salat 2/2, Getränke 1/3, Nachtisch 0/2“), Gäste beanspruchen einen Slot
@@ -280,6 +284,11 @@ schon ab; es fehlen Teamname und die Übergabe an N2.
 ### L10: Öffentliche Sitzordnung mit Namen
 
 **Bewertung (2026-10-07): angenommen.** Quick Win: Daten gibt es schon (Druck, Export); wichtig für die anstehende Hochzeit.
+
+**Umgesetzt (2026-10-07) in engerer Form:** Seating kennt keinen Zugangscode, öffentliche Seiten sind für alle mit dem
+Link offen. Deshalb sehen die Namen nur Gäste mit Zusage, die über „Sitzplatz“ aus rsvp-app kommen (signierter Link),
+mit Schalter pro Event (`guestSeatingVisible`, nur Modus ASSIGNED, nur veröffentlichte Events). Gezeigt werden nur Namen
+und Plätze, der eigene Platz hervorgehoben. Die öffentliche Eventseite zeigt weiterhin nie Namen.
 
 *Aus dem Konzept von Seating übernommen (2026-10-07), dort in Phase 6 bewusst zurückgestellt.*
 
@@ -419,6 +428,10 @@ Deutsch) und es in allen Tools gleich umsetzen. Sprache pro Event oder aus dem B
 ### Q3: Fotos der Gäste über Immich
 
 **Bewertung (2026-10-07): angenommen.** Quick Win: Immich läuft schon auf dem Server, im Kern ein Feld und ein Datenschutzhinweis.
+
+**Umgesetzt (2026-10-07) in rsvp-app:** Feld „Foto-Link“ pro Event/Termin (nur http(s)). Sichtbar nur für Gäste mit
+Zusage (nicht Warteliste) und erst ab dem Ende des Termins, damit ein offener Upload-Link nicht vorher herumliegt.
+Zeitplan bekommt keinen eigenen Link: Gäste erreichen die Fotos über ihre rsvp-app-Seite.
 
 **Idee:** Keine eigene App: ein geteiltes Immich-Album mit Upload-Link pro Event, den rsvp-app oder Zeitplan nach dem
 Event anzeigen (Feld „Foto-Link“, ab Eventende sichtbar). Datenschutzhinweis ergänzen.
