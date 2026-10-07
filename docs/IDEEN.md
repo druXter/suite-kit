@@ -1,8 +1,11 @@
 # Ideen für die Suite
 
 Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus einer Bestandsaufnahme der vier Tools
-(rsvp-app, abstimmungstool, seating, zeitplan) im Oktober 2026. **Nichts davon ist beschlossen.** Jede Idee wird
-später nach Machbarkeit und Nutzen bewertet und dann angenommen, zurückgestellt oder verworfen.
+(rsvp-app, abstimmungstool, seating, zeitplan) im Oktober 2026. Am 2026-10-07 wurden alle Ideen ein erstes Mal
+bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
+
+**Reihenfolge der angenommenen Ideen:** zuerst die Quick Wins Q5, Q3, L5 und L10, danach L1–L4 als große Phase
+(Reihenfolge Hochzeit/Ball nach Termin). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -14,32 +17,32 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 
 | ID | Idee | Betrifft | Aufwand | Status |
 | --- | --- | --- | --- | --- |
-| [P1](#p1-suite-paket) | Suite-Paket: gemeinsames Deployment der Einzel-Apps | neu (Deploy-Repo) | L | offen |
-| [P2](#p2-pwas-und-gemeinsame-startseite) | PWAs und gemeinsame Startseite | Paket, alle Tools | M | offen |
-| [L1](#l1-geld-preise-bezahlstatus-kasse) | Geld: Preise, Bezahlstatus, GiroCode, Abendkasse | rsvp-app | L | offen |
-| [L2](#l2-einladungen-pro-haushalt-mehrere-begleitungen) | Einladungen pro Haushalt, mehrere Begleitungen | rsvp-app (+ seating) | L | offen |
-| [L3](#l3-angaben-pro-person-und-menüwahl) | Essen/Allergien pro Person, Menüwahl pro Gang | rsvp-app | M | offen |
-| [L4](#l4-ticketkategorien-und-kontingente) | Ticketkategorien und Kontingente | rsvp-app | M | offen |
-| [L5](#l5-mitbringliste-mit-slots) | Mitbringliste mit Slots zum Beanspruchen | rsvp-app | S–M | offen |
-| [L6](#l6-session-anmeldung-mit-kapazität) | Session-Anmeldung mit Kapazität pro Programmpunkt | zeitplan (+ rsvp-app) | M–L | offen |
-| [L7](#l7-sitzungsmodus-für-versammlungen) | Sitzungsmodus für Versammlungen | abstimmungstool, rsvp-app, zeitplan | L | offen |
-| [L8](#l8-fragebogen-feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | offen |
-| [L9](#l9-teams-bei-der-anmeldung) | Teams bei der Anmeldung (Teamname, Teamgröße) | rsvp-app / seating | S–M | offen |
-| [L10](#l10-öffentliche-sitzordnung-mit-namen) | Öffentliche Sitzordnung mit Namen („Wo sitze ich?“) | seating | S–M | offen |
-| [L11](#l11-kürzbare-programmpunkte) | Kürzbare Programmpunkte mit Mindestdauer | zeitplan | M | offen |
-| [L12](#l12-benachrichtigungen-an-gäste-im-zeitplan) | Benachrichtigungen an Gäste im Zeitplan (Push/Mail) | zeitplan | M | offen |
-| [L13](#l13-echtzeit-per-sse-im-zeitplan) | Echtzeit per SSE statt Polling im Zeitplan | zeitplan | S–M | offen |
-| [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu | L | offen |
-| [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | offen |
-| [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | offen |
-| [N4](#n4-wunschliste--geschenke) | Neues Tool: Wunschliste/Geschenke | neu | M | offen |
-| [N5](#n5-mitfahrgelegenheiten) | Mitfahrgelegenheiten (eigenes Tool oder Teil von rsvp-app) | neu / rsvp-app | M | offen |
-| [Q1](#q1-einmal-anlegen-überall-verknüpfen) | Einmal anlegen, überall verknüpfen | alle Tools | M je Paar | offen |
-| [Q2](#q2-mehrsprachigkeit) | Mehrsprachigkeit (mindestens Deutsch/Englisch) | alle Tools | L | offen |
-| [Q3](#q3-fotos-der-gäste-über-immich) | Fotos der Gäste über Immich statt eigener App | rsvp-app / zeitplan | S | offen |
-| [Q4](#q4-vorlagen-pro-event-typ-über-alle-tools) | Vorlagen pro Event-Typ über alle Tools | alle Tools | M–L | offen |
-| [Q5](#q5-direkt-weiter-zum-einzigen-anbieter) | Login: direkt weiter zum einzigen Anbieter | suite-kit, alle Tools | S | offen |
-| [Q6](#q6-bot-schutz-für-öffentliche-formulare) | Bot-Schutz für öffentliche Formulare (Turnstile o. Ä.) | seating, ggf. alle Tools | S je Tool | offen |
+| [P1](#p1-suite-paket) | Suite-Paket: gemeinsames Deployment der Einzel-Apps | neu (Deploy-Repo) | L | zurückgestellt |
+| [P2](#p2-pwas-und-gemeinsame-startseite) | PWAs und gemeinsame Startseite | Paket, alle Tools | M | zurückgestellt |
+| [L1](#l1-geld-preise-bezahlstatus-kasse) | Geld: Preise, Bezahlstatus, GiroCode, Abendkasse | rsvp-app | L | angenommen |
+| [L2](#l2-einladungen-pro-haushalt-mehrere-begleitungen) | Einladungen pro Haushalt, mehrere Begleitungen | rsvp-app (+ seating) | L | angenommen |
+| [L3](#l3-angaben-pro-person-und-menüwahl) | Essen/Allergien pro Person, Menüwahl pro Gang | rsvp-app | M | angenommen |
+| [L4](#l4-ticketkategorien-und-kontingente) | Ticketkategorien und Kontingente | rsvp-app | M | angenommen |
+| [L5](#l5-mitbringliste-mit-slots) | Mitbringliste mit Slots zum Beanspruchen | rsvp-app | S–M | angenommen |
+| [L6](#l6-session-anmeldung-mit-kapazität) | Session-Anmeldung mit Kapazität pro Programmpunkt | zeitplan (+ rsvp-app) | M–L | zurückgestellt |
+| [L7](#l7-sitzungsmodus-für-versammlungen) | Sitzungsmodus für Versammlungen | abstimmungstool, rsvp-app, zeitplan | L | zurückgestellt |
+| [L8](#l8-fragebogen-feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | zurückgestellt |
+| [L9](#l9-teams-bei-der-anmeldung) | Teams bei der Anmeldung (Teamname, Teamgröße) | rsvp-app / seating | S–M | zurückgestellt |
+| [L10](#l10-öffentliche-sitzordnung-mit-namen) | Öffentliche Sitzordnung mit Namen („Wo sitze ich?“) | seating | S–M | angenommen |
+| [L11](#l11-kürzbare-programmpunkte) | Kürzbare Programmpunkte mit Mindestdauer | zeitplan | M | zurückgestellt |
+| [L12](#l12-benachrichtigungen-an-gäste-im-zeitplan) | Benachrichtigungen an Gäste im Zeitplan (Push/Mail) | zeitplan | M | zurückgestellt |
+| [L13](#l13-echtzeit-per-sse-im-zeitplan) | Echtzeit per SSE statt Polling im Zeitplan | zeitplan | S–M | verworfen |
+| [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu | L | zurückgestellt |
+| [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
+| [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
+| [N4](#n4-wunschliste--geschenke) | Neues Tool: Wunschliste/Geschenke | neu | M | zurückgestellt |
+| [N5](#n5-mitfahrgelegenheiten) | Mitfahrgelegenheiten (eigenes Tool oder Teil von rsvp-app) | neu / rsvp-app | M | zurückgestellt |
+| [Q1](#q1-einmal-anlegen-überall-verknüpfen) | Einmal anlegen, überall verknüpfen | alle Tools | M je Paar | zurückgestellt |
+| [Q2](#q2-mehrsprachigkeit) | Mehrsprachigkeit (mindestens Deutsch/Englisch) | alle Tools | L | zurückgestellt |
+| [Q3](#q3-fotos-der-gäste-über-immich) | Fotos der Gäste über Immich statt eigener App | rsvp-app / zeitplan | S | angenommen |
+| [Q4](#q4-vorlagen-pro-event-typ-über-alle-tools) | Vorlagen pro Event-Typ über alle Tools | alle Tools | M–L | zurückgestellt |
+| [Q5](#q5-direkt-weiter-zum-einzigen-anbieter) | Login: direkt weiter zum einzigen Anbieter | suite-kit, alle Tools | S | angenommen |
+| [Q6](#q6-bot-schutz-für-öffentliche-formulare) | Bot-Schutz für öffentliche Formulare (Turnstile o. Ä.) | seating, ggf. alle Tools | S je Tool | zurückgestellt |
 
 ### Wo die Ideen ansetzen
 
@@ -63,6 +66,8 @@ Die Suite deckt den Kern **anmelden → entscheiden → platzieren → Ablauf st
 ## Suite-Paket
 
 ### P1: Suite-Paket
+
+**Bewertung (2026-10-07): zurückgestellt.** Heute betreibt nur eine Person alle Tools auf einem Server; lohnt sich erst, wenn andere die Suite installieren wollen.
 
 **Ziel:** Wer mehrere Tools betreiben will, installiert sie mit einem Paket, ohne dass die Tools selbst einen
 „Suite-Modus“ bekommen. Mögliche Betreiber\*innen:
@@ -117,6 +122,8 @@ DNS: Wildcard-Eintrag empfehlen? Wie aktualisiert man einzelne Tools, die eine n
 
 ### P2: PWAs und gemeinsame Startseite
 
+**Bewertung (2026-10-07): zurückgestellt.** Hängt an P1 (Startseite) und an Tests auf echten Geräten; im Alltag kein Engpass.
+
 **Ausgangslage:** Jedes Tool ist eine eigene PWA (`app/manifest.ts`, `public/sw.js`, Offline-Seite außer rsvp-app),
 alle mit `scope: '/'`. rsvp-app startet auf der neutralen Startseite (Admin und Gäste), Seating und Zeitplan starten in
 `/admin`, das Abstimmungstool auf `/`. Push gibt es in rsvp-app (Admin und Gäste) und im Abstimmungstool, jeweils mit
@@ -168,6 +175,8 @@ innerhalb desselben Kontexts angemeldet ist. Vor einer Entscheidung auf echtem G
 
 ### L1: Geld: Preise, Bezahlstatus, Kasse
 
+**Bewertung (2026-10-07): angenommen.** Für den anstehenden Ball (Eintritt). Zusammen mit L4 planen.
+
 **Problem:** Kein Tool kennt Preise, Eintritt oder Bezahlstatus. Winterball (Tickets), Pubquiz (Startgeld) und
 Freizeiten (Beitrag) brauchen das.
 
@@ -184,6 +193,8 @@ in Seating erst nach Zahlung?
 
 ### L2: Einladungen pro Haushalt, mehrere Begleitungen
 
+**Bewertung (2026-10-07): angenommen.** Für die anstehende Hochzeit. Zusammen mit L3 planen, Vertrag mit Seating mitdenken.
+
 **Problem:** rsvp-app ist offene Anmeldung (ggf. mit PIN). Bei Hochzeiten lädt man aber gezielt Haushalte ein.
 Außerdem erlaubt `companions` höchstens **eine** Begleitung, Familien mit Kindern passen nicht hinein.
 
@@ -196,6 +207,8 @@ und mit Zeitplan (unverändert, dort zählt nur die Zusage). L3.
 
 ### L3: Angaben pro Person und Menüwahl
 
+**Bewertung (2026-10-07): angenommen.** Für Hochzeit und Ball (Menüwahl, Allergien pro Person). Zusammen mit L2.
+
 **Problem:** Essenswunsch und Allergien hängen an der Antwort, nicht an jeder Person (die Begleitung hat keine eigenen).
 Für Ball und Hochzeit fehlt eine Menüwahl pro Gang.
 
@@ -204,6 +217,8 @@ Fisch/Fleisch/vegetarisch), Auswertung für die Küche (Anzahl je Option, Liste 
 
 ### L4: Ticketkategorien und Kontingente
 
+**Bewertung (2026-10-07): angenommen.** Für den anstehenden Ball (Kategorien, Kontingente). Grundlage für Preise in L1.
+
 **Problem:** Eine Kapazität pro Event reicht beim Ball nicht (Studi/Gast/Ermäßigt, „Ball mit Dinner“ vs. „nur Ball“).
 
 **Idee:** Kategorien pro Event mit eigenem Kontingent, eigenem Preis (L1) und eigener Warteliste; Gesamtkapazität
@@ -211,12 +226,16 @@ bleibt als Obergrenze. Kategorie im Einlass sichtbar.
 
 ### L5: Mitbringliste mit Slots
 
+**Bewertung (2026-10-07): angenommen.** Quick Win: echtes Alltagsproblem der Freundesrunde, überschaubarer Umfang.
+
 **Problem:** „Mitbringsel“ ist Freitext, dadurch bringen fünf Leute Nudelsalat.
 
 **Idee:** Liste mit Einträgen und Anzahl („Salat 2/2, Getränke 1/3, Nachtisch 0/2“), Gäste beanspruchen einen Slot
 beim Zusagen oder später über ihren persönlichen Link. Optional als Vorlage für Reihen (Freundesrunde).
 
 ### L6: Session-Anmeldung mit Kapazität
+
+**Bewertung (2026-10-07): zurückgestellt.** Kein Workshop- oder Barcamp-Event in Sicht; offene Grundsatzfrage (Zeitplan oder rsvp-app).
 
 **Szenario:** Workshops, Ersti-Woche, Barcamp, Tag der offenen Tür: parallele Slots, Gäste wählen Sessions.
 
@@ -229,6 +248,8 @@ Namen von Gästen.
 
 ### L7: Sitzungsmodus für Versammlungen
 
+**Bewertung (2026-10-07): zurückgestellt.** Kein konkreter Anlass; großer Umbau über drei Tools.
+
 **Szenario:** Mitgliederversammlung, Fachschaftsrat, StuPa.
 
 **Idee:** Die Bausteine verbinden: Tagesordnung (Zeitplan), Anwesenheit über den Check-in (rsvp-app),
@@ -239,6 +260,8 @@ mit wenig Klicks, Beschlussfähigkeit live (Quorum gibt es schon), Rednerliste. 
 
 ### L8: Fragebogen / Feedback nach dem Event
 
+**Bewertung (2026-10-07): zurückgestellt.** Kein konkreter Anlass; Freitext gibt es inzwischen in den Live-Runden als möglichen Baustein.
+
 **Problem:** Eine Abstimmung hat genau eine Frage, Freitext gibt es nicht.
 
 **Idee:** Abstimmungsart „Fragebogen“ mit mehreren Fragen (Auswahl, Skala, Freitext) im Abstimmungstool. rsvp-app
@@ -247,12 +270,16 @@ schickt nach dem Event automatisch den Link an alle Eingecheckten (bzw. alle Zus
 
 ### L9: Teams bei der Anmeldung
 
+**Bewertung (2026-10-07): zurückgestellt.** Erst mit N2 oder einem konkreten Turnier sinnvoll.
+
 **Szenario:** Pubquiz, Turniere.
 
 **Idee:** Anmeldung als Team mit Teamname und Teamgröße. Eine Tischbuchung in Seating (`TABLE`) deckt den Teamtisch
 schon ab; es fehlen Teamname und die Übergabe an N2.
 
 ### L10: Öffentliche Sitzordnung mit Namen
+
+**Bewertung (2026-10-07): angenommen.** Quick Win: Daten gibt es schon (Druck, Export); wichtig für die anstehende Hochzeit.
 
 *Aus dem Konzept von Seating übernommen (2026-10-07), dort in Phase 6 bewusst zurückgestellt.*
 
@@ -265,6 +292,8 @@ Hinweis beim Einschalten ergänzen.
 
 ### L11: Kürzbare Programmpunkte
 
+**Bewertung (2026-10-07): zurückgestellt.** Der Konfliktanzeige fürs Team reicht bisher; nach dem ersten echten Einsatz neu bewerten.
+
 *Aus dem Konzept von Zeitplan übernommen (2026-10-07), Abschnitt „Später“.*
 
 **Problem:** Bei Verspätung schiebt Zeitplan alle folgenden Punkte nach hinten, bis zum nächsten Anker. Dass sich
@@ -275,6 +304,8 @@ Konflikt fürs Team an („kürzen?“).
 Folgepunkte verschiebt, und zeigt dem Team, wo gekürzt wurde.
 
 ### L12: Benachrichtigungen an Gäste im Zeitplan
+
+**Bewertung (2026-10-07): zurückgestellt.** Für einen Eventtag fraglicher Nutzen; nach dem ersten echten Einsatz neu bewerten.
 
 *Aus dem Konzept von Zeitplan übernommen (2026-10-07), Abschnitt „Später“.*
 
@@ -287,6 +318,8 @@ los: Trauung in 10 Minuten“) und bei größeren Verschiebungen. Mails nur übe
 **Offene Fragen:** Lohnt sich Push für einen einzigen Eventtag? Auf iOS nur in der installierten PWA (siehe P2).
 
 ### L13: Echtzeit per SSE im Zeitplan
+
+**Bewertung (2026-10-07): verworfen.** Polling reicht laut Lasttest (200 Gäste). Falls es schneller werden muss, Long-Polling wie bei den Live-Runden des Abstimmungstools statt SSE (Cloudflare puffert SSE teils).
 
 *Aus dem Konzept von Zeitplan übernommen (2026-10-07), Abschnitt „Später“.*
 
@@ -305,6 +338,8 @@ suite-kit, optionale Anbindung an rsvp-app mit eigenem Secret.
 
 ### N1: Dienste / Schichten
 
+**Bewertung (2026-10-07): zurückgestellt.** Größte Lücke für große Events, aber kein solches Event in Sicht. Erste Wahl für die nächste große Phase nach L1–L4.
+
 **Problem:** Mittlere und große Events (Bar, Einlass, Garderobe, Aufbau, Abbau) brauchen Helfer\*innen. Zeitplan hat
 Team-Spuren, aber niemand kann sich in einen Dienst eintragen. Das ist die größte fehlende Funktion für mittlere und
 große Events.
@@ -317,6 +352,8 @@ Buchungen in Seating), Tauschbörse, Erinnerungen per Mail/Push, Übersicht „w
 
 ### N2: Wertung / Scoreboard
 
+**Bewertung (2026-10-07): zurückgestellt.** Überschneidet sich teilweise mit den Live-Runden im Abstimmungstool; erst bei einem konkreten Turnier oder Papier-Quiz.
+
 **Szenario:** Pubquiz, Turniere, Spieleabend, Sportfest.
 
 **Idee:** Teams, Runden, Punkteeingabe am Handy (mehrere Moderator\*innen gleichzeitig, wie die Live-Steuerung in
@@ -326,6 +363,8 @@ K.-o.-Baum, Gruppenphase, Schweizer System.
 **Anbindungen:** Teams aus L9 bzw. Tischbuchungen in Seating.
 
 ### N3: Kasse / Abrechnung
+
+**Bewertung (2026-10-07): verworfen.** Gute selbst gehostete Tools gibt es (z. B. Spliit, IHateMoney). Einziger Suite-Mehrwert wäre die Übernahme der Teilnehmenden, das rechtfertigt kein eigenes Tool.
 
 **Szenario:** Freundesrunde, Freizeiten, WG-Abend; eventuell Budget und Belege für Veranstalter\*innen (Fachschaftsgeld,
 Hochzeitsbudget).
@@ -338,12 +377,16 @@ zusammen nur, wenn es wirklich gebraucht wird.
 
 ### N4: Wunschliste / Geschenke
 
+**Bewertung (2026-10-07): zurückgestellt.** Für die Hochzeit nicht zwingend; L2/L3 gehen vor.
+
 **Szenario:** Hochzeit, Geburtstag.
 
 **Idee:** Liste von Wünschen (auch Teilbeträge, z. B. für die Hochzeitsreise), Gäste reservieren, ohne dass die
 Beschenkten sehen, wer was nimmt. Zugang über rsvp-app-Zusage oder Link mit Code.
 
 ### N5: Mitfahrgelegenheiten
+
+**Bewertung (2026-10-07): zurückgestellt.** Kein konkreter Anlass.
 
 **Szenario:** Hochzeit auf dem Land, Freizeiten, Ausflüge.
 
@@ -356,6 +399,8 @@ Klein genug, um als Teil von rsvp-app zu beginnen.
 
 ### Q1: Einmal anlegen, überall verknüpfen
 
+**Bewertung (2026-10-07): zurückgestellt.** Nützlich, aber bei wenigen Events pro Jahr ist das Verknüpfen von Hand verkraftbar; nach L1–L4 neu bewerten.
+
 **Problem:** Für eine Hochzeit legt man heute vier Events in vier Tools an und verknüpft sie über IDs auf beiden Seiten.
 
 **Idee:** Das Muster der Terminabstimmung übertragen (das Abstimmungstool legt ein rsvp-app-Event an, wenn das Konto
@@ -364,6 +409,8 @@ entsteht dort mit Titel, Datum und Zugang `RSVP`.
 
 ### Q2: Mehrsprachigkeit
 
+**Bewertung (2026-10-07): zurückgestellt.** Großer Aufwand in allen Tools; erst bei konkretem internationalem Publikum.
+
 **Problem:** Alle Tools sind nur deutsch (Erasmus-Studierende in der Kneipe, Hochzeit mit Familie im Ausland).
 
 **Idee:** Einmal ein Muster festlegen (mindestens Gästeseiten und Mails in Deutsch/Englisch, Verwaltung zunächst nur
@@ -371,15 +418,21 @@ Deutsch) und es in allen Tools gleich umsetzen. Sprache pro Event oder aus dem B
 
 ### Q3: Fotos der Gäste über Immich
 
+**Bewertung (2026-10-07): angenommen.** Quick Win: Immich läuft schon auf dem Server, im Kern ein Feld und ein Datenschutzhinweis.
+
 **Idee:** Keine eigene App: ein geteiltes Immich-Album mit Upload-Link pro Event, den rsvp-app oder Zeitplan nach dem
 Event anzeigen (Feld „Foto-Link“, ab Eventende sichtbar). Datenschutzhinweis ergänzen.
 
 ### Q4: Vorlagen pro Event-Typ über alle Tools
 
+**Bewertung (2026-10-07): zurückgestellt.** Setzt Q1 voraus.
+
 **Idee:** „Pubquiz“ ergibt Teamanmeldung, Tischplan, Ablauf mit Runden und Scoreboard; „Hochzeit“ ergibt Einladungen,
 Sitzordnung und Ablauf. Setzt Q1 voraus.
 
 ### Q5: Direkt weiter zum einzigen Anbieter
+
+**Bewertung (2026-10-07): angenommen.** Quick Win: spart in jedem Tool einen Klick, kleine Änderung in suite-kit plus Schalter je Tool.
 
 **Problem:** Auch mit Föderation klickt man in jedem Tool „Mit … anmelden“.
 
@@ -388,6 +441,8 @@ Login-Seite direkt dorthin weiter (lokaler Login bleibt über einen Link erreich
 Identitätsanbieter, nur weniger Klicks.
 
 ### Q6: Bot-Schutz für öffentliche Formulare
+
+**Bewertung (2026-10-07): zurückgestellt.** Drosselung pro IP und E-Mail reicht bisher; erst bei beobachtetem Missbrauch (Drittanbieter, Datenschutz).
 
 *Aus dem README von Seating übernommen (2026-10-07): „Später evtl.: `TURNSTILE_*`“.*
 
