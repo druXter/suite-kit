@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), als Nächstes L2 und L3 für die Hochzeit. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), jetzt L2 und L3 für die Hochzeit (seit 2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -20,8 +20,8 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [P1](#p1-suite-paket) | Suite-Paket: gemeinsames Deployment der Einzel-Apps | neu (Deploy-Repo) | L | zurückgestellt |
 | [P2](#p2-pwas-und-gemeinsame-startseite) | PWAs und gemeinsame Startseite | Paket, alle Tools | M | zurückgestellt |
 | [L1](#l1-geld-preise-bezahlstatus-kasse) | Geld: Preise, Bezahlstatus, GiroCode, Abendkasse | rsvp-app | L | umgesetzt |
-| [L2](#l2-einladungen-pro-haushalt-mehrere-begleitungen) | Einladungen pro Haushalt, mehrere Begleitungen | rsvp-app (+ seating) | L | angenommen |
-| [L3](#l3-angaben-pro-person-und-menüwahl) | Essen/Allergien pro Person, Menüwahl pro Gang | rsvp-app | M | angenommen |
+| [L2](#l2-einladungen-pro-haushalt-mehrere-begleitungen) | Einladungen pro Haushalt, mehrere Begleitungen | rsvp-app (+ seating) | L | in Arbeit |
+| [L3](#l3-angaben-pro-person-und-menüwahl) | Essen/Allergien pro Person, Menüwahl pro Gang | rsvp-app | M | in Arbeit |
 | [L4](#l4-ticketkategorien-und-kontingente) | Ticketkategorien und Kontingente | rsvp-app | M | umgesetzt |
 | [L5](#l5-mitbringliste-mit-slots) | Mitbringliste mit Slots zum Beanspruchen | rsvp-app | S–M | umgesetzt |
 | [L6](#l6-session-anmeldung-mit-kapazität) | Session-Anmeldung mit Kapazität pro Programmpunkt | zeitplan (+ rsvp-app) | M–L | zurückgestellt |
@@ -204,6 +204,13 @@ in Seating erst nach Zahlung?
 ### L2: Einladungen pro Haushalt, mehrere Begleitungen
 
 **Bewertung (2026-10-07): angenommen.** Für die anstehende Hochzeit. Zusammen mit L3 planen, Vertrag mit Seating mitdenken.
+
+**Stand (2026-10-10): in Arbeit**, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`. Entschieden: mehrere Begleitungen
+auch bei offener Anmeldung („bis zu N“, ersetzt „+1“), Einladungslinks per Mail und als Druckliste mit QR-Codes,
+Zusatzpersonen pro Einladung freigebbar, optionale Antwortfrist pro Termin (danach nur noch die Verwaltung, mit
+Erinnerung). **Schritt 1 umgesetzt:** Begleitungen mit Altersgruppe, Essen und Allergien pro Person, Plätze zählen
+Personen (Kleinkinder nicht), Seating bekommt alle Namen. Der Vertrag mit Seating blieb unverändert (`companions` war
+schon eine Liste). Offen: Menü (L3), Einladungen, Antwortfrist.
 
 **Problem:** rsvp-app ist offene Anmeldung (ggf. mit PIN). Bei Hochzeiten lädt man aber gezielt Haushalte ein.
 Außerdem erlaubt `companions` höchstens **eine** Begleitung, Familien mit Kindern passen nicht hinein.
