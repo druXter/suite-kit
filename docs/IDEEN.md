@@ -32,6 +32,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L11](#l11-kürzbare-programmpunkte) | Kürzbare Programmpunkte mit Mindestdauer | zeitplan | M | zurückgestellt |
 | [L12](#l12-benachrichtigungen-an-gäste-im-zeitplan) | Benachrichtigungen an Gäste im Zeitplan (Push/Mail) | zeitplan | M | zurückgestellt |
 | [L13](#l13-echtzeit-per-sse-im-zeitplan) | Echtzeit per SSE statt Polling im Zeitplan | zeitplan | S–M | verworfen |
+| [L14](#l14-online-zahlung-paypal) | Online-Zahlung per PayPal neben der Überweisung | rsvp-app | M | offen |
 | [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu | L | zurückgestellt |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
@@ -181,8 +182,10 @@ innerhalb desselben Kontexts angemeldet ist. Vor einer Entscheidung auf echtem G
 den offenen Fragen: Die Zahlfrist wird **nur angezeigt**, überfällige Zusagen storniert die Verwaltung per Klick (kein
 automatischer Verfall). Moderator\*innen dürfen den Bezahlstatus setzen (Abendkasse). Die Sitzplatzwahl in Seating
 lässt sich pro Termin bis zur Zahlung sperren (Vertrag mit Seating unverändert, nur die Regel „zählt bei Seating“).
-Rückerstattung nur als Status („Erstattung offen“ → „erstattet“). Noch offen: **CSV-Import eines Kontoauszugs**
-(Verwendungszweck → Zusage) und eine Zahlungserinnerung per Mail vor Ablauf der Frist.
+Rückerstattung nur als Status („Erstattung offen“ → „erstattet“). Ebenfalls am 2026-10-10 nachgezogen:
+**Kontoauszug-Import** (beliebiges Bank-CSV oder CAMT.053, Abgleich über den Verwendungszweck, Vorschau mit
+Betragsprüfung, Datei wird nicht gespeichert) und **Zahlungserinnerung** (automatisch X Tage vor Fristende per Mail und
+Push, oder per Knopf).
 
 **Problem:** Kein Tool kennt Preise, Eintritt oder Bezahlstatus. Winterball (Tickets), Pubquiz (Startgeld) und
 Freizeiten (Beitrag) brauchen das.
@@ -348,6 +351,29 @@ den Tab). Bewusst so gewählt, weil es hinter Cloudflare und bei schlechtem Empf
 
 **Idee:** Server-Sent Events als Zusatz für Tafel und Live-Steuerung, Polling bleibt als Rückfall. Das Abstimmungstool
 löst dasselbe für Live-Runden mit Long-Polling ohne Zusatzdienst, das wäre die naheliegende Vorlage.
+
+### L14: Online-Zahlung (PayPal)
+
+*Aufgenommen 2026-10-10 als Erweiterung von L1.* **Status: offen** (Aufwand geschätzt, Entscheidung steht aus).
+
+**Idee:** Neben Überweisung/GiroCode optional „Mit PayPal bezahlen“, mit derselben Funktionalität: Betrag pro Zusage,
+Zuordnung, Status „bezahlt“ (Zahlart PayPal), Erstattung.
+
+**Varianten:**
+
+* **PayPal.Me-Link** (Aufwand S): Knopf `paypal.me/<name>/25EUR` neben dem GiroCode. Den Verwendungszweck muss die
+  zahlende Person selbst als Notiz eintippen (lässt sich nicht vorbelegen), der Abgleich liefe über den PayPal-Export
+  im Kontoauszug-Import. Nachteile: vergessene Notizen, für Ticketverkauf nur als „Waren und Dienstleistungen“
+  zulässig (Gebühren für die Empfänger\*in), kein automatischer Status.
+* **PayPal Checkout (Orders API v2)** (Aufwand M, etwa 2–3 Tage mit Tests): Server legt eine Bestellung mit Betrag und
+  Verwendungszweck an, Gast bestätigt bei PayPal, Server bucht ab; ein signierter Webhook (Prüfung über PayPals API)
+  markiert automatisch „bezahlt“, Erstattungen über die API möglich. Braucht ein PayPal-Geschäftskonto, Client-ID,
+  Secret und Webhook-ID in der `.env`, eine Ausnahme in der CSP für das PayPal-Skript auf den (einbettbaren)
+  Event-Seiten, einen Schein-PayPal-Server für die E2E-Tests und einen Abschnitt in der Datenschutzerklärung (PayPal als
+  eigene Verantwortliche). Gebühren pro Zahlung trägt die Veranstaltung.
+
+**Offene Fragen:** Gibt es ein PayPal-Geschäftskonto der empfangenden Stelle (Fachschaft/Verein)? Gebühren auf den
+Ticketpreis umlegen?
 
 ---
 
