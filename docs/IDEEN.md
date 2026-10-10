@@ -4,8 +4,8 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 (rsvp-app, abstimmungstool, seating, zeitplan) im Oktober 2026. Am 2026-10-07 wurden alle Ideen ein erstes Mal
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
-**Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), als Nächstes
-L1–L4 als große Phase (Reihenfolge Hochzeit/Ball nach Termin). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+**Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), als Nächstes L2 und L3 für die Hochzeit. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -19,10 +19,10 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | --- | --- | --- | --- | --- |
 | [P1](#p1-suite-paket) | Suite-Paket: gemeinsames Deployment der Einzel-Apps | neu (Deploy-Repo) | L | zurückgestellt |
 | [P2](#p2-pwas-und-gemeinsame-startseite) | PWAs und gemeinsame Startseite | Paket, alle Tools | M | zurückgestellt |
-| [L1](#l1-geld-preise-bezahlstatus-kasse) | Geld: Preise, Bezahlstatus, GiroCode, Abendkasse | rsvp-app | L | angenommen |
+| [L1](#l1-geld-preise-bezahlstatus-kasse) | Geld: Preise, Bezahlstatus, GiroCode, Abendkasse | rsvp-app | L | umgesetzt |
 | [L2](#l2-einladungen-pro-haushalt-mehrere-begleitungen) | Einladungen pro Haushalt, mehrere Begleitungen | rsvp-app (+ seating) | L | angenommen |
 | [L3](#l3-angaben-pro-person-und-menüwahl) | Essen/Allergien pro Person, Menüwahl pro Gang | rsvp-app | M | angenommen |
-| [L4](#l4-ticketkategorien-und-kontingente) | Ticketkategorien und Kontingente | rsvp-app | M | angenommen |
+| [L4](#l4-ticketkategorien-und-kontingente) | Ticketkategorien und Kontingente | rsvp-app | M | umgesetzt |
 | [L5](#l5-mitbringliste-mit-slots) | Mitbringliste mit Slots zum Beanspruchen | rsvp-app | S–M | umgesetzt |
 | [L6](#l6-session-anmeldung-mit-kapazität) | Session-Anmeldung mit Kapazität pro Programmpunkt | zeitplan (+ rsvp-app) | M–L | zurückgestellt |
 | [L7](#l7-sitzungsmodus-für-versammlungen) | Sitzungsmodus für Versammlungen | abstimmungstool, rsvp-app, zeitplan | L | zurückgestellt |
@@ -177,6 +177,13 @@ innerhalb desselben Kontexts angemeldet ist. Vor einer Entscheidung auf echtem G
 
 **Bewertung (2026-10-07): angenommen.** Für den anstehenden Ball (Eintritt). Zusammen mit L4 planen.
 
+**Umgesetzt (2026-10-10) in rsvp-app** zusammen mit L4, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`. Entscheidungen zu
+den offenen Fragen: Die Zahlfrist wird **nur angezeigt**, überfällige Zusagen storniert die Verwaltung per Klick (kein
+automatischer Verfall). Moderator\*innen dürfen den Bezahlstatus setzen (Abendkasse). Die Sitzplatzwahl in Seating
+lässt sich pro Termin bis zur Zahlung sperren (Vertrag mit Seating unverändert, nur die Regel „zählt bei Seating“).
+Rückerstattung nur als Status („Erstattung offen“ → „erstattet“). Noch offen: **CSV-Import eines Kontoauszugs**
+(Verwendungszweck → Zusage) und eine Zahlungserinnerung per Mail vor Ablauf der Frist.
+
 **Problem:** Kein Tool kennt Preise, Eintritt oder Bezahlstatus. Winterball (Tickets), Pubquiz (Startgeld) und
 Freizeiten (Beitrag) brauchen das.
 
@@ -218,6 +225,10 @@ Fisch/Fleisch/vegetarisch), Auswertung für die Küche (Anzahl je Option, Liste 
 ### L4: Ticketkategorien und Kontingente
 
 **Bewertung (2026-10-07): angenommen.** Für den anstehenden Ball (Kategorien, Kontingente). Grundlage für Preise in L1.
+
+**Umgesetzt (2026-10-10) in rsvp-app** wie beschrieben, mit eigener Warteliste je Kategorie (eine volle Kategorie
+blockiert die anderen nicht; die Nachrück-Regel liegt jetzt an einer Stelle). Bei Terminen mit Kategorien gibt es
+bis L2 keine Begleitung, jede Person meldet sich selbst an.
 
 **Problem:** Eine Kapazität pro Event reicht beim Ball nicht (Studi/Gast/Ermäßigt, „Ball mit Dinner“ vs. „nur Ball“).
 
