@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`). Als Nächstes wäre N1 (Dienste/Schichten) die erste große Phase, sobald ein großes Event ansteht. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Als Nächstes wäre N1 (Dienste/Schichten) die erste große Phase, sobald ein großes Event ansteht. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -36,7 +36,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu | L | zurückgestellt |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
-| [N4](#n4-wunschliste--geschenke) | Neues Tool: Wunschliste/Geschenke | neu | M | zurückgestellt |
+| [N4](#n4-wunschliste--geschenke) | Wunschliste/Geschenke (als Teil von rsvp-app) | rsvp-app | M | umgesetzt |
 | [N5](#n5-mitfahrgelegenheiten) | Mitfahrgelegenheiten (eigenes Tool oder Teil von rsvp-app) | neu / rsvp-app | M | zurückgestellt |
 | [Q1](#q1-einmal-anlegen-überall-verknüpfen) | Einmal anlegen, überall verknüpfen | alle Tools | M je Paar | zurückgestellt |
 | [Q2](#q2-mehrsprachigkeit) | Mehrsprachigkeit (mindestens Deutsch/Englisch) | alle Tools | L | zurückgestellt |
@@ -211,8 +211,9 @@ mit QR-Codes, Zusatzpersonen pro Einladung freigebbar, optionale Antwortfrist pr
 Verwaltung, mit Erinnerung an Haushalte ohne Antwort). Umgesetzt in vier Schritten: Begleitungen mit Altersgruppe,
 Essen und Allergien pro Person (Plätze zählen Personen, Kleinkinder nicht); Menü mit Küchenübersicht (L3);
 Einladungsmodus mit Antwort pro Person; Antwortfrist. Der Vertrag mit Seating blieb unverändert (`companions` war schon
-eine Liste), Zeitplan und Abstimmungstool sind nicht betroffen. Später: Einlass pro Person, Küchenliste pro Tisch
-(braucht den Tisch pro Person von Seating), Einladungsmodus für Reihen.
+eine Liste), Zeitplan und Abstimmungstool sind nicht betroffen. Nachgezogen am 2026-10-11: Einlass und Alkohol pro
+Person, Küchenliste pro Tisch (Seating meldet Tisch und Platz pro Person, `placements[].persons`) und der
+Einladungsmodus für Reihen (eine Einladungsliste pro Reihe, ein Link pro Haushalt für alle oder ausgewählte Termine).
 
 **Problem:** rsvp-app ist offene Anmeldung (ggf. mit PIN). Bei Hochzeiten lädt man aber gezielt Haushalte ein.
 Außerdem erlaubt `companions` höchstens **eine** Begleitung, Familien mit Kindern passen nicht hinein.
@@ -438,6 +439,12 @@ zusammen nur, wenn es wirklich gebraucht wird.
 ### N4: Wunschliste / Geschenke
 
 **Bewertung (2026-10-07): zurückgestellt.** Für die Hochzeit nicht zwingend; L2/L3 gehen vor.
+
+**Stand (2026-10-11): umgesetzt** als Teil von rsvp-app statt als eigenes Tool (Gäste, Links und Einladungen gibt es
+dort schon), Konzept in `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`: pro Termin Geschenke mit Anzahl oder Geldwünsche mit
+Zielbetrag und Teilbeträgen, Reservieren über den persönlichen Link (nach Antwort bzw. mit Einladung), Stückzahl
+atomar begrenzt, „Überraschung“ (Standard) verbirgt die Namen auch vor der Verwaltung. Später: eine Liste für eine
+ganze Reihe, Kontoverbindung/GiroCode für Geldwünsche.
 
 **Szenario:** Hochzeit, Geburtstag.
 
