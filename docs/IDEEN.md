@@ -399,7 +399,7 @@ suite-kit, optionale Anbindung an rsvp-app mit eigenem Secret.
 
 ### N1: Dienste / Schichten
 
-**Stand (2026-10-12): umgesetzt** als eigenes Tool „Schichten“ (`schichten.ramonroeser.de`, Repo `schichten`) für den Winterball, Konzept in `schichten/docs/KONZEPT.md`; Anbindung an Zeitplan als Abruf durch Schichten (die Prognose ändert sich auch ohne Klick). Später (Konzept „Später“): Rundmail, Leitstand-Link ohne Konto, Reihen, Push, Wünsche mit automatischer Verteilung. Entschieden: Eintragen per Link mit optionalem Code (ohne Konto, Adresse per Mail bestätigt), Tauschbörse, Abhaken vor Ort, Regeln pro Person, Anbindung an Zeitplan (Schicht folgt Programmpunkt) und an rsvp-app (Helfer\*innen bekommen automatisch eine Zusage, Ticketkategorie nach Stufen „ab N Schichten“).
+**Stand (2026-10-12): umgesetzt** als eigenes Tool „Schichten“ (`schichten.ramonroeser.de`, Repo `schichten`) für den Winterball, Konzept in `schichten/docs/KONZEPT.md`; Anbindung an Zeitplan als Abruf durch Schichten (die Prognose ändert sich auch ohne Klick). Nachgereicht am selben Tag: Mitverwaltung als zweite Freigabe, Schichtleitungen einzelner Schichten, Ansicht und CSV nach Schicht, optionale Namen für Helfer\*innen, Bildschirm-Link ohne Konto (Leitstand). Später (Konzept „Später“): Rundmail, Reihen, Push, Wünsche mit automatischer Verteilung. Entschieden: Eintragen per Link mit optionalem Code (ohne Konto, Adresse per Mail bestätigt), Tauschbörse, Abhaken vor Ort, Regeln pro Person, Anbindung an Zeitplan (Schicht folgt Programmpunkt) und an rsvp-app (Helfer\*innen bekommen automatisch eine Zusage, Ticketkategorie nach Stufen „ab N Schichten“).
 
 *Bewertung (2026-10-07): zurückgestellt.* Größte Lücke für große Events, aber kein solches Event in Sicht.
 
