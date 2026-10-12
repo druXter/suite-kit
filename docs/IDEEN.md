@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Als Nächstes wäre N1 (Dienste/Schichten) die erste große Phase, sobald ein großes Event ansteht. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Seit 2026-10-12 in Arbeit: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -32,8 +32,8 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L11](#l11-kürzbare-programmpunkte) | Kürzbare Programmpunkte mit Mindestdauer | zeitplan | M | zurückgestellt |
 | [L12](#l12-benachrichtigungen-an-gäste-im-zeitplan) | Benachrichtigungen an Gäste im Zeitplan (Push/Mail) | zeitplan | M | zurückgestellt |
 | [L13](#l13-echtzeit-per-sse-im-zeitplan) | Echtzeit per SSE statt Polling im Zeitplan | zeitplan | S–M | verworfen |
-| [L14](#l14-online-zahlung-paypal) | Online-Zahlung per PayPal neben der Überweisung | rsvp-app | M | offen |
-| [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu | L | zurückgestellt |
+| [L14](#l14-online-zahlung-paypal) | Online-Zahlung per PayPal neben der Überweisung | rsvp-app | M | zurückgestellt |
+| [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu (schichten) | L | in Arbeit |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
 | [N4](#n4-wunschliste--geschenke) | Wunschliste/Geschenke (als Teil von rsvp-app) | rsvp-app | M | umgesetzt |
@@ -369,7 +369,7 @@ löst dasselbe für Live-Runden mit Long-Polling ohne Zusatzdienst, das wäre di
 
 ### L14: Online-Zahlung (PayPal)
 
-*Aufgenommen 2026-10-10 als Erweiterung von L1.* **Status: offen** (Aufwand geschätzt, Entscheidung steht aus).
+*Aufgenommen 2026-10-10 als Erweiterung von L1.* **Bewertung (2026-10-12): zurückgestellt.** Der AStA hat noch kein PayPal-Konto; neu bewerten, sobald es eins gibt.
 
 **Idee:** Neben Überweisung/GiroCode optional „Mit PayPal bezahlen“, mit derselben Funktionalität: Betrag pro Zusage,
 Zuordnung, Status „bezahlt“ (Zahlart PayPal), Erstattung.
@@ -399,7 +399,9 @@ suite-kit, optionale Anbindung an rsvp-app mit eigenem Secret.
 
 ### N1: Dienste / Schichten
 
-**Bewertung (2026-10-07): zurückgestellt.** Größte Lücke für große Events, aber kein solches Event in Sicht. Erste Wahl für die nächste große Phase nach L1–L4.
+**Stand (2026-10-12): in Arbeit** als eigenes Tool „Schichten“ (`schichten.ramonroeser.de`) für den Winterball, Konzept in `schichten/docs/KONZEPT.md`. Entschieden: Eintragen per Link mit optionalem Code (ohne Konto, Adresse per Mail bestätigt), Tauschbörse, Abhaken vor Ort, Regeln pro Person, Anbindung an Zeitplan (Schicht folgt Programmpunkt) und an rsvp-app (Helfer\*innen bekommen automatisch eine Zusage, Ticketkategorie nach Stufen „ab N Schichten“).
+
+*Bewertung (2026-10-07): zurückgestellt.* Größte Lücke für große Events, aber kein solches Event in Sicht.
 
 **Problem:** Mittlere und große Events (Bar, Einlass, Garderobe, Aufbau, Abbau) brauchen Helfer\*innen. Zeitplan hat
 Team-Spuren, aber niemand kann sich in einen Dienst eintragen. Das ist die größte fehlende Funktion für mittlere und
