@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; zuerst umgesetzt werden L15, L20 und L24. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20 und L24. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -33,16 +33,16 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L12](#l12-benachrichtigungen-an-gäste-im-zeitplan) | Benachrichtigungen an Gäste im Zeitplan (Push/Mail) | zeitplan | M | angenommen |
 | [L13](#l13-echtzeit-per-sse-im-zeitplan) | Echtzeit per SSE statt Polling im Zeitplan | zeitplan | S–M | verworfen |
 | [L14](#l14-online-zahlung-paypal) | Online-Zahlung per PayPal neben der Überweisung | rsvp-app | M | zurückgestellt |
-| [L15](#l15-durchsagen-im-zeitplan) | Durchsagen an Gäste und Tafel | zeitplan | S | in Arbeit |
+| [L15](#l15-durchsagen-im-zeitplan) | Durchsagen an Gäste und Tafel | zeitplan | S | umgesetzt |
 | [L16](#l16-zuständigkeiten-pro-programmpunkt) | Zuständigkeiten pro Programmpunkt, „Meine Punkte“ | zeitplan | S–M | angenommen |
 | [L17](#l17-vorwarnung-fürs-team) | Vorwarnung fürs Team (Push vor eigenen Punkten) | zeitplan | M | angenommen |
 | [L18](#l18-lesezugang-für-dienstleister) | Lesezugang ohne Konto für Dienstleister | zeitplan | S | angenommen |
 | [L19](#l19-was-wäre-wenn-vorschau) | „Was wäre wenn“-Vorschau in der Planung | zeitplan | M | angenommen |
-| [L20](#l20-block-verschieben) | Block verschieben (Punkt und alle folgenden) | zeitplan | S | in Arbeit |
+| [L20](#l20-block-verschieben) | Block verschieben (Punkt und alle folgenden) | zeitplan | S | umgesetzt |
 | [L21](#l21-regieplan-und-programmheft-zum-drucken) | Regieplan und Programmheft zum Drucken | zeitplan | S | angenommen |
 | [L22](#l22-orte-mit-adresse-und-kartenlink) | Orte mit Adresse und Kartenlink | zeitplan | S | angenommen |
 | [L23](#l23-weitere-vorlagen-im-zeitplan) | Weitere Vorlagen im Zeitplan (Winterball, Pubquiz, Versammlung) | zeitplan | S je Vorlage | angenommen |
-| [L24](#l24-rückblick-plan-gegen-ist) | Rückblick: Plan gegen Ist, auch als Sitzungsdokumentation | zeitplan | S–M | in Arbeit |
+| [L24](#l24-rückblick-plan-gegen-ist) | Rückblick: Plan gegen Ist, auch als Sitzungsdokumentation | zeitplan | S–M | umgesetzt |
 | [L25](#l25-kalender-export-ics) | Kalender-Export (ICS) | zeitplan | S | angenommen |
 | [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu (schichten) | L | umgesetzt |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
@@ -413,7 +413,7 @@ Ticketpreis umlegen?
 
 ### L15: Durchsagen im Zeitplan
 
-**Bewertung (2026-10-13): angenommen**, wird umgesetzt.
+**Stand (2026-10-13): umgesetzt** in `zeitplan` (Live-Steuerung, Gästeansicht, Tafel, Offline-Seite; eine Durchsage zur Zeit, 15–120 Min oder ohne Ablauf, im Verlauf).
 
 **Problem:** Das Team kann Gästen nur über Programmpunkte etwas mitteilen. Kurzfristige Hinweise („Bitte zum
 Gruppenfoto in den Garten“, „Bus fährt 23:30 ab Haupteingang“) haben keinen Platz.
@@ -460,7 +460,7 @@ billig. Eine Art Generalprobe für die Puffer.
 
 ### L20: Block verschieben
 
-**Bewertung (2026-10-13): angenommen**, wird umgesetzt.
+**Stand (2026-10-13): umgesetzt** in `zeitplan` (Seite eines Punkts; bis vor den nächsten Anker oder bis zum Ende der Spur, `shiftBlock` im Kern).
 
 **Problem:** Verschiebt sich ein Teil des Ablaufs (Trauung eine halbe Stunde später), ändert man heute jede Uhrzeit
 einzeln oder tauscht mit Nachbarn.
@@ -490,7 +490,7 @@ Events an mehreren Orten (Kirche → Location).
 
 ### L24: Rückblick: Plan gegen Ist
 
-**Bewertung (2026-10-13): angenommen**, wird umgesetzt.
+**Stand (2026-10-13): umgesetzt** in `zeitplan` (`/admin/events/<id>/rueckblick`: Plan gegen Ist, Zusammenfassung, Verlauf, Druck, CSV; Protokollnotiz je Punkt im Rückblick und live beim laufenden Punkt).
 
 **Problem:** Ursprungsplan, tatsächliche Zeiten und der Verlauf liegen vor, werden nach dem Event aber nicht ausgewertet.
 
