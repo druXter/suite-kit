@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20 und L24. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -34,13 +34,13 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L13](#l13-echtzeit-per-sse-im-zeitplan) | Echtzeit per SSE statt Polling im Zeitplan | zeitplan | S–M | verworfen |
 | [L14](#l14-online-zahlung-paypal) | Online-Zahlung per PayPal neben der Überweisung | rsvp-app | M | zurückgestellt |
 | [L15](#l15-durchsagen-im-zeitplan) | Durchsagen an Gäste und Tafel | zeitplan | S | umgesetzt |
-| [L16](#l16-zuständigkeiten-pro-programmpunkt) | Zuständigkeiten pro Programmpunkt, „Meine Punkte“ | zeitplan | S–M | angenommen |
+| [L16](#l16-zuständigkeiten-pro-programmpunkt) | Zuständigkeiten pro Programmpunkt, „Meine Punkte“ | zeitplan | S–M | umgesetzt |
 | [L17](#l17-vorwarnung-fürs-team) | Vorwarnung fürs Team (Push vor eigenen Punkten) | zeitplan | M | angenommen |
-| [L18](#l18-lesezugang-für-dienstleister) | Lesezugang ohne Konto für Dienstleister | zeitplan | S | angenommen |
+| [L18](#l18-lesezugang-für-dienstleister) | Lesezugang ohne Konto für Dienstleister | zeitplan | S | umgesetzt |
 | [L19](#l19-was-wäre-wenn-vorschau) | „Was wäre wenn“-Vorschau in der Planung | zeitplan | M | angenommen |
 | [L20](#l20-block-verschieben) | Block verschieben (Punkt und alle folgenden) | zeitplan | S | umgesetzt |
-| [L21](#l21-regieplan-und-programmheft-zum-drucken) | Regieplan und Programmheft zum Drucken | zeitplan | S | angenommen |
-| [L22](#l22-orte-mit-adresse-und-kartenlink) | Orte mit Adresse und Kartenlink | zeitplan | S | angenommen |
+| [L21](#l21-regieplan-und-programmheft-zum-drucken) | Regieplan und Programmheft zum Drucken | zeitplan | S | umgesetzt |
+| [L22](#l22-orte-mit-adresse-und-kartenlink) | Orte mit Adresse und Kartenlink | zeitplan | S | umgesetzt |
 | [L23](#l23-weitere-vorlagen-im-zeitplan) | Weitere Vorlagen im Zeitplan (Winterball, Pubquiz, Versammlung) | zeitplan | S je Vorlage | angenommen |
 | [L24](#l24-rückblick-plan-gegen-ist) | Rückblick: Plan gegen Ist, auch als Sitzungsdokumentation | zeitplan | S–M | umgesetzt |
 | [L25](#l25-kalender-export-ics) | Kalender-Export (ICS) | zeitplan | S | angenommen |
@@ -423,7 +423,7 @@ von Hand entfernt. Läuft über das bestehende Polling (ETag), kein Push nötig.
 
 ### L16: Zuständigkeiten pro Programmpunkt
 
-**Bewertung (2026-10-13): angenommen.**
+**Stand (2026-10-13): umgesetzt** in `zeitplan` (Zuständige im Punkt-Formular, bei geheimen Punkten nur aus „Geheim für“; „Meine Punkte“ oben in der Team-Ansicht mit erwarteter Zeit, Filter `?meine=1`; auch im Regieplan und im Team-Link).
 
 **Problem:** Wer für einen Punkt zuständig ist („Ansprechperson“), steht heute als Freitext in der internen Notiz.
 
@@ -442,7 +442,7 @@ hat die PWA ohnehin installiert, damit entfällt der iOS-Einwand aus L12 weitgeh
 
 ### L18: Lesezugang für Dienstleister
 
-**Bewertung (2026-10-13): angenommen.**
+**Stand (2026-10-13): umgesetzt** in `zeitplan` (Team-Link `/<adresse>/team?k=…`, standardmäßig aus, per HMAC aus `DISPLAY_LINK_SECRET` mit eigener Version; geheime Punkte als Platzhalter, Zuständige nur mit Namen).
 
 **Problem:** DJ, Fotograf\*in oder Catering brauchen die Team-Sicht (Team-Punkte, interne Notizen), heute aber dafür
 ein Konto mit Freigabe.
@@ -469,14 +469,14 @@ einzeln oder tauscht mit Nachbarn.
 
 ### L21: Regieplan und Programmheft zum Drucken
 
-**Bewertung (2026-10-13): angenommen.**
+**Stand (2026-10-13): umgesetzt** in `zeitplan` (`/admin/events/<id>/druck`: Regieplan pro Spur, zusammen oder eine Spur; Programmheft mit QR-Code zur Gästeansicht).
 
 **Idee:** Ablauf als A4-Druck fürs Team (Uhrzeiten, Orte, interne Notizen, Zuständige, pro Spur) als Rückfall bei
 ausgefallenem Netz oder leerem Akku, optional als Programmheft für Gäste (nur öffentliche Punkte).
 
 ### L22: Orte mit Adresse und Kartenlink
 
-**Bewertung (2026-10-13): angenommen.**
+**Stand (2026-10-13): umgesetzt** in `zeitplan` (Orte je Event in der Planung, Zuordnung über den Namen im Feld „Ort“; „Route öffnen“ zu Google Maps oder eigenem Link; in Export und Duplizieren).
 
 **Idee:** Orte als eigene Einträge mit Adresse; in der Gästeansicht „Route öffnen“ am Punkt. Vor allem für Reihen und
 Events an mehreren Orten (Kirche → Location).
