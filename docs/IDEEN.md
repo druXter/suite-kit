@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; zuerst umgesetzt werden L15, L20 und L24. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -24,15 +24,26 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L3](#l3-angaben-pro-person-und-menüwahl) | Essen/Allergien pro Person, Menüwahl pro Gang | rsvp-app | M | umgesetzt |
 | [L4](#l4-ticketkategorien-und-kontingente) | Ticketkategorien und Kontingente | rsvp-app | M | umgesetzt |
 | [L5](#l5-mitbringliste-mit-slots) | Mitbringliste mit Slots zum Beanspruchen | rsvp-app | S–M | umgesetzt |
-| [L6](#l6-session-anmeldung-mit-kapazität) | Session-Anmeldung mit Kapazität pro Programmpunkt | zeitplan (+ rsvp-app) | M–L | zurückgestellt |
-| [L7](#l7-sitzungsmodus-für-versammlungen) | Sitzungsmodus für Versammlungen | abstimmungstool, rsvp-app, zeitplan | L | zurückgestellt |
+| [L6](#l6-session-anmeldung-mit-kapazität) | Session-Anmeldung mit Kapazität pro Programmpunkt | zeitplan (+ rsvp-app) | M–L | angenommen |
+| [L7](#l7-sitzungsmodus-für-versammlungen) | Sitzungsmodus für Versammlungen | abstimmungstool, rsvp-app, zeitplan | L | angenommen |
 | [L8](#l8-fragebogen-feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | zurückgestellt |
 | [L9](#l9-teams-bei-der-anmeldung) | Teams bei der Anmeldung (Teamname, Teamgröße) | rsvp-app / seating | S–M | zurückgestellt |
 | [L10](#l10-öffentliche-sitzordnung-mit-namen) | Öffentliche Sitzordnung mit Namen („Wo sitze ich?“) | seating | S–M | umgesetzt |
-| [L11](#l11-kürzbare-programmpunkte) | Kürzbare Programmpunkte mit Mindestdauer | zeitplan | M | zurückgestellt |
-| [L12](#l12-benachrichtigungen-an-gäste-im-zeitplan) | Benachrichtigungen an Gäste im Zeitplan (Push/Mail) | zeitplan | M | zurückgestellt |
+| [L11](#l11-kürzbare-programmpunkte) | Kürzbare Programmpunkte mit Mindestdauer | zeitplan | M | angenommen |
+| [L12](#l12-benachrichtigungen-an-gäste-im-zeitplan) | Benachrichtigungen an Gäste im Zeitplan (Push/Mail) | zeitplan | M | angenommen |
 | [L13](#l13-echtzeit-per-sse-im-zeitplan) | Echtzeit per SSE statt Polling im Zeitplan | zeitplan | S–M | verworfen |
 | [L14](#l14-online-zahlung-paypal) | Online-Zahlung per PayPal neben der Überweisung | rsvp-app | M | zurückgestellt |
+| [L15](#l15-durchsagen-im-zeitplan) | Durchsagen an Gäste und Tafel | zeitplan | S | in Arbeit |
+| [L16](#l16-zuständigkeiten-pro-programmpunkt) | Zuständigkeiten pro Programmpunkt, „Meine Punkte“ | zeitplan | S–M | angenommen |
+| [L17](#l17-vorwarnung-fürs-team) | Vorwarnung fürs Team (Push vor eigenen Punkten) | zeitplan | M | angenommen |
+| [L18](#l18-lesezugang-für-dienstleister) | Lesezugang ohne Konto für Dienstleister | zeitplan | S | angenommen |
+| [L19](#l19-was-wäre-wenn-vorschau) | „Was wäre wenn“-Vorschau in der Planung | zeitplan | M | angenommen |
+| [L20](#l20-block-verschieben) | Block verschieben (Punkt und alle folgenden) | zeitplan | S | in Arbeit |
+| [L21](#l21-regieplan-und-programmheft-zum-drucken) | Regieplan und Programmheft zum Drucken | zeitplan | S | angenommen |
+| [L22](#l22-orte-mit-adresse-und-kartenlink) | Orte mit Adresse und Kartenlink | zeitplan | S | angenommen |
+| [L23](#l23-weitere-vorlagen-im-zeitplan) | Weitere Vorlagen im Zeitplan (Winterball, Pubquiz, Versammlung) | zeitplan | S je Vorlage | angenommen |
+| [L24](#l24-rückblick-plan-gegen-ist) | Rückblick: Plan gegen Ist, auch als Sitzungsdokumentation | zeitplan | S–M | in Arbeit |
+| [L25](#l25-kalender-export-ics) | Kalender-Export (ICS) | zeitplan | S | angenommen |
 | [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu (schichten) | L | umgesetzt |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
@@ -54,10 +65,10 @@ Die Suite deckt den Kern **anmelden → entscheiden → platzieren → Ablauf st
 | --- | --- |
 | Regelmäßige Freundesrunde | L5, N3 |
 | Pubquiz in der Studikneipe | L1 (Startgeld), L9, N2, N1 |
-| Winterball | L1, L3, L4, N1 |
-| Hochzeit | L2, L3, N4, N5, Q3 |
+| Winterball | L1, L3, L4, N1, L23 |
+| Hochzeit | L2, L3, N4, N5, Q3, L15, L16, L18, L22 |
 | Workshops, Ersti-Woche, Barcamp, Tag der offenen Tür | L6 (+ abstimmungstool für Session-Vorschläge) |
-| Mitgliederversammlung, Fachschaft, StuPa | L7 |
+| Mitgliederversammlung, Fachschaft, StuPa | L7, L24 |
 | Freizeiten, Ersti-Fahrt, Vereinsausflug | N5, N3, Zimmerverteilung über seating `ASSIGNED` (schon möglich) |
 | Turniere, Spieleabend, Sportfest | N2 |
 | Internationales Publikum | Q2 |
@@ -268,6 +279,8 @@ beim Zusagen oder später über ihren persönlichen Link. Optional als Vorlage f
 
 ### L6: Session-Anmeldung mit Kapazität
 
+**Neu bewertet (2026-10-13): angenommen.** Mit den Zeitplan-Ideen L15–L25 auf die Liste; Reihenfolge offen.
+
 **Bewertung (2026-10-07): zurückgestellt.** Kein Workshop- oder Barcamp-Event in Sicht; offene Grundsatzfrage (Zeitplan oder rsvp-app).
 
 **Szenario:** Workshops, Ersti-Woche, Barcamp, Tag der offenen Tür: parallele Slots, Gäste wählen Sessions.
@@ -281,13 +294,16 @@ Namen von Gästen.
 
 ### L7: Sitzungsmodus für Versammlungen
 
+**Neu bewertet (2026-10-13): angenommen.** Mit den Zeitplan-Ideen L15–L25 auf die Liste; Reihenfolge offen.
+
 **Bewertung (2026-10-07): zurückgestellt.** Kein konkreter Anlass; großer Umbau über drei Tools.
 
 **Szenario:** Mitgliederversammlung, Fachschaftsrat, StuPa.
 
 **Idee:** Die Bausteine verbinden: Tagesordnung (Zeitplan), Anwesenheit über den Check-in (rsvp-app),
 **„nur Eingecheckte dürfen abstimmen“** (Check-in → Stimmlinks, auch geheim), viele kurze Abstimmungen hintereinander
-mit wenig Klicks, Beschlussfähigkeit live (Quorum gibt es schon), Rednerliste. Später: Protokoll-Export.
+mit wenig Klicks, Beschlussfähigkeit live (Quorum gibt es schon), Rednerliste. Später: Protokoll-Export (ein erster Baustein ist L24: Tagesordnung als Programmpunkte, Ist-Zeiten und
+Protokollnotizen aus dem Zeitplan).
 
 **Abhängigkeiten:** neuer Vertrag rsvp-app → abstimmungstool (Liste der Eingecheckten bzw. Token beim Check-in).
 
@@ -330,6 +346,8 @@ Hinweis beim Einschalten ergänzen.
 
 ### L11: Kürzbare Programmpunkte
 
+**Neu bewertet (2026-10-13): angenommen.** Mit den Zeitplan-Ideen L15–L25 auf die Liste; Reihenfolge offen.
+
 **Bewertung (2026-10-07): zurückgestellt.** Der Konfliktanzeige fürs Team reicht bisher; nach dem ersten echten Einsatz neu bewerten.
 
 *Aus dem Konzept von Zeitplan übernommen (2026-10-07), Abschnitt „Später“.*
@@ -343,6 +361,8 @@ Folgepunkte verschiebt, und zeigt dem Team, wo gekürzt wurde.
 
 ### L12: Benachrichtigungen an Gäste im Zeitplan
 
+**Neu bewertet (2026-10-13): angenommen.** Mit den Zeitplan-Ideen L15–L25 auf die Liste; Reihenfolge offen.
+
 **Bewertung (2026-10-07): zurückgestellt.** Für einen Eventtag fraglicher Nutzen; nach dem ersten echten Einsatz neu bewerten.
 
 *Aus dem Konzept von Zeitplan übernommen (2026-10-07), Abschnitt „Später“.*
@@ -353,7 +373,8 @@ an Gäste und kennt bewusst keine Namen oder Adressen.
 **Idee:** Push in der installierten PWA (wie in rsvp-app und dem Abstimmungstool) für ausgewählte Punkte („Gleich geht's
 los: Trauung in 10 Minuten“) und bei größeren Verschiebungen. Mails nur über rsvp-app, das die Adressen kennt.
 
-**Offene Fragen:** Lohnt sich Push für einen einzigen Eventtag? Auf iOS nur in der installierten PWA (siehe P2).
+**Offene Fragen:** Lohnt sich Push für einen einzigen Eventtag? Auf iOS nur in der installierten PWA (siehe P2). Für
+das Team, das die PWA ohnehin installiert hat, siehe L17.
 
 ### L13: Echtzeit per SSE im Zeitplan
 
@@ -389,6 +410,101 @@ Zuordnung, Status „bezahlt“ (Zahlart PayPal), Erstattung.
 
 **Offene Fragen:** Gibt es ein PayPal-Geschäftskonto der empfangenden Stelle (Fachschaft/Verein)? Gebühren auf den
 Ticketpreis umlegen?
+
+### L15: Durchsagen im Zeitplan
+
+**Bewertung (2026-10-13): angenommen**, wird umgesetzt.
+
+**Problem:** Das Team kann Gästen nur über Programmpunkte etwas mitteilen. Kurzfristige Hinweise („Bitte zum
+Gruppenfoto in den Garten“, „Bus fährt 23:30 ab Haupteingang“) haben keinen Platz.
+
+**Idee:** Kurze Durchsage aus der Live-Steuerung, als Banner oben in Gästeansicht und auf der Tafel, mit Ablaufzeit oder
+von Hand entfernt. Läuft über das bestehende Polling (ETag), kein Push nötig.
+
+### L16: Zuständigkeiten pro Programmpunkt
+
+**Bewertung (2026-10-13): angenommen.**
+
+**Problem:** Wer für einen Punkt zuständig ist („Ansprechperson“), steht heute als Freitext in der internen Notiz.
+
+**Idee:** Pro Punkt zuständige Konten (Auswahl aus den Konten mit Zugriff). Jedes Konto sieht „Meine Punkte“ mit
+Prognose („Deine Rede: ca. 21:40, in 25 Min“). Grundlage für L17.
+
+### L17: Vorwarnung fürs Team
+
+**Bewertung (2026-10-13): angenommen.** Variante von L12 für das Team statt für Gäste.
+
+**Problem:** Wer gleich dran ist, rechnet die Prognose im Trubel selbst nach.
+
+**Idee:** Push in der installierten PWA an Moderator\*innen und Zuständige (L16) eine einstellbare Zeit vor dem
+erwarteten Beginn („In 10 Min: Eröffnungstanz, Musik bereit?“), nach der Prognose statt nach der Planzeit. Das Team
+hat die PWA ohnehin installiert, damit entfällt der iOS-Einwand aus L12 weitgehend.
+
+### L18: Lesezugang für Dienstleister
+
+**Bewertung (2026-10-13): angenommen.**
+
+**Problem:** DJ, Fotograf\*in oder Catering brauchen die Team-Sicht (Team-Punkte, interne Notizen), heute aber dafür
+ein Konto mit Freigabe.
+
+**Idee:** Ein per HMAC abgeleiteter, neu erzeugbarer Link wie bei der Tafel bzw. dem Leitstand in Schichten: Team-Ansicht
+nur lesend, ohne geheime Punkte.
+
+### L19: „Was wäre wenn“-Vorschau
+
+**Bewertung (2026-10-13): angenommen.**
+
+**Idee:** In der Planung eine Verspätung simulieren („Trauung +20“) und sehen, welche Puffer sie schlucken und wo
+Konflikte mit Ankern entstehen – ohne etwas zu speichern. Der Prognose-Kern ist eine reine Funktion, das macht es
+billig. Eine Art Generalprobe für die Puffer.
+
+### L20: Block verschieben
+
+**Bewertung (2026-10-13): angenommen**, wird umgesetzt.
+
+**Problem:** Verschiebt sich ein Teil des Ablaufs (Trauung eine halbe Stunde später), ändert man heute jede Uhrzeit
+einzeln oder tauscht mit Nachbarn.
+
+**Idee:** In der Planung „diesen und alle folgenden Punkte der Spur um X Minuten verschieben“.
+
+### L21: Regieplan und Programmheft zum Drucken
+
+**Bewertung (2026-10-13): angenommen.**
+
+**Idee:** Ablauf als A4-Druck fürs Team (Uhrzeiten, Orte, interne Notizen, Zuständige, pro Spur) als Rückfall bei
+ausgefallenem Netz oder leerem Akku, optional als Programmheft für Gäste (nur öffentliche Punkte).
+
+### L22: Orte mit Adresse und Kartenlink
+
+**Bewertung (2026-10-13): angenommen.**
+
+**Idee:** Orte als eigene Einträge mit Adresse; in der Gästeansicht „Route öffnen“ am Punkt. Vor allem für Reihen und
+Events an mehreren Orten (Kirche → Location).
+
+### L23: Weitere Vorlagen im Zeitplan
+
+**Bewertung (2026-10-13): angenommen.** Vorstufe zu Q4.
+
+**Idee:** Neben „Hochzeit“ Vorlagen für „Winterball“ (passend zur Anbindung an Schichten), „Pubquiz“ und
+„Mitgliederversammlung“ (Tagesordnung, siehe L24).
+
+### L24: Rückblick: Plan gegen Ist
+
+**Bewertung (2026-10-13): angenommen**, wird umgesetzt.
+
+**Problem:** Ursprungsplan, tatsächliche Zeiten und der Verlauf liegen vor, werden nach dem Event aber nicht ausgewertet.
+
+**Idee:** Pro Punkt geplanter und tatsächlicher Beginn, geplante und tatsächliche Dauer, Abweichung, Ausfälle und
+Einschübe, mit CSV-Export. Hilft beim nächsten Event der Reihe und beim Einschätzen der Puffer. Zugleich eine
+**Dokumentation für Sitzungen**: Tagesordnungspunkte als Programmpunkte, der Rückblick hält fest, wann welcher Punkt
+behandelt wurde – zusammen mit einer Protokollnotiz pro Punkt ein erster Baustein für L7.
+
+### L25: Kalender-Export (ICS)
+
+**Bewertung (2026-10-13): angenommen.**
+
+**Idee:** Ablauf als ICS zu Planzeiten, für Gäste nur öffentliche Punkte, fürs Team alle (ohne geheime). Aktualisiert
+sich nicht live, also eher zur Vorbereitung, z. B. bei mehrtägigen Reihen.
 
 ---
 
