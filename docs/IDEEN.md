@@ -26,7 +26,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L5](#l5-mitbringliste-mit-slots) | Mitbringliste mit Slots zum Beanspruchen | rsvp-app | S–M | umgesetzt |
 | [L6](#l6-session-anmeldung-mit-kapazität) | Session-Anmeldung mit Kapazität pro Programmpunkt | zeitplan (+ rsvp-app) | M–L | angenommen |
 | [L7](#l7-sitzungsmodus-für-versammlungen) | Sitzungsmodus für Versammlungen | abstimmungstool, rsvp-app, zeitplan | L | angenommen |
-| [L8](#l8-fragebogen--feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | in Arbeit |
+| [L8](#l8-fragebogen--feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | teilweise umgesetzt |
 | [L9](#l9-teams-bei-der-anmeldung) | Teams bei der Anmeldung (Teamname, Teamgröße) | rsvp-app / seating | S–M | zurückgestellt |
 | [L10](#l10-öffentliche-sitzordnung-mit-namen) | Öffentliche Sitzordnung mit Namen („Wo sitze ich?“) | seating | S–M | umgesetzt |
 | [L11](#l11-kürzbare-programmpunkte) | Kürzbare Programmpunkte mit Mindestdauer | zeitplan | M | angenommen |
@@ -316,6 +316,13 @@ Nextcloud Forms), später in weiteren Apps unter `*.ramonroeser.de`. Erster Teil
 Abstimmungstool (Einfach-/Mehrfachauswahl, Freitext, lineare Skala), anonym oder einmal pro Gerät, einbettbar nur über
 eine eigene Route mit erlaubten Domains. Der Versand über rsvp-app (Identität `RSVP`) bleibt der zweite Teil. Konzept in
 `abstimmungstool/docs/KONZEPT-FRAGEBOGEN.md`.
+
+**Teil 1 umgesetzt (2026-10-14):** Fragebögen im Abstimmungstool mit Einfach-/Mehrfachauswahl (auch mit Textfeld,
+z.B. "Sonstiges"), Freitext, linearer Skala, Raster, Skalen-Raster (Gegensatzpaare, UEQ-S-Vorlage, Ausweich-Antwort) und
+Überschrift/Text-Blöcken; anonym oder einmal pro Gerät; Oberfläche auf Deutsch und Englisch; einbettbar nur auf
+freigegebenen Seiten; gegen Skripte und Manipulation gehärtet (Einmal-Token, zweistufige IP-Drosselung, Angriffstests).
+Die Campus-App bettet ihren Feedback-Fragebogen seitdem von dort ein statt aus Nextcloud Forms. Offen bleibt Teil 2:
+Versand über rsvp-app an Eingecheckte mit Identität `RSVP`.
 
 **Problem:** Eine Abstimmung hat genau eine Frage, Freitext gibt es nicht.
 
