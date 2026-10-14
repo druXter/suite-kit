@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -29,15 +29,15 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L8](#l8-fragebogen--feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | teilweise umgesetzt |
 | [L9](#l9-teams-bei-der-anmeldung) | Teams bei der Anmeldung (Teamname, Teamgröße) | rsvp-app / seating | S–M | zurückgestellt |
 | [L10](#l10-öffentliche-sitzordnung-mit-namen) | Öffentliche Sitzordnung mit Namen („Wo sitze ich?“) | seating | S–M | umgesetzt |
-| [L11](#l11-kürzbare-programmpunkte) | Kürzbare Programmpunkte mit Mindestdauer | zeitplan | M | angenommen |
+| [L11](#l11-kürzbare-programmpunkte) | Kürzbare Programmpunkte mit Mindestdauer | zeitplan | M | umgesetzt |
 | [L12](#l12-benachrichtigungen-an-gäste-im-zeitplan) | Benachrichtigungen an Gäste im Zeitplan (Push/Mail) | zeitplan | M | angenommen |
 | [L13](#l13-echtzeit-per-sse-im-zeitplan) | Echtzeit per SSE statt Polling im Zeitplan | zeitplan | S–M | verworfen |
 | [L14](#l14-online-zahlung-paypal) | Online-Zahlung per PayPal neben der Überweisung | rsvp-app | M | zurückgestellt |
 | [L15](#l15-durchsagen-im-zeitplan) | Durchsagen an Gäste und Tafel | zeitplan | S | umgesetzt |
 | [L16](#l16-zuständigkeiten-pro-programmpunkt) | Zuständigkeiten pro Programmpunkt, „Meine Punkte“ | zeitplan | S–M | umgesetzt |
-| [L17](#l17-vorwarnung-fürs-team) | Vorwarnung fürs Team (Push vor eigenen Punkten) | zeitplan | M | angenommen |
+| [L17](#l17-vorwarnung-fürs-team) | Vorwarnung fürs Team (Push vor eigenen Punkten) | zeitplan | M | umgesetzt |
 | [L18](#l18-lesezugang-für-dienstleister) | Lesezugang ohne Konto für Dienstleister | zeitplan | S | umgesetzt |
-| [L19](#l19-was-wäre-wenn-vorschau) | „Was wäre wenn“-Vorschau in der Planung | zeitplan | M | angenommen |
+| [L19](#l19-was-wäre-wenn-vorschau) | „Was wäre wenn“-Vorschau in der Planung | zeitplan | M | umgesetzt |
 | [L20](#l20-block-verschieben) | Block verschieben (Punkt und alle folgenden) | zeitplan | S | umgesetzt |
 | [L21](#l21-regieplan-und-programmheft-zum-drucken) | Regieplan und Programmheft zum Drucken | zeitplan | S | umgesetzt |
 | [L22](#l22-orte-mit-adresse-und-kartenlink) | Orte mit Adresse und Kartenlink | zeitplan | S | umgesetzt |
@@ -359,6 +359,8 @@ Hinweis beim Einschalten ergänzen.
 
 ### L11: Kürzbare Programmpunkte
 
+**Umgesetzt (2026-10-14):** Feld „kürzbar bis“ (Mindestdauer) je Punkt. Die Prognose kürzt einen verspäteten Punkt höchstens um seine Verspätung und nur so weit, dass der nächste Punkt (bzw. Punkte, die auf ihn warten) zur Planzeit beginnen kann – Puffer schlucken zuerst, eine Meldung „läuft länger“ hebt das Kürzen auf. Team-Ansicht und Live-Steuerung zeigen „gekürzt um X Min“, Gäste nur die Zeiten. Export/Import, Vorlage „Hochzeit“ (Kaffee, Reden). Regeln in `zeitplan/docs/KONZEPT.md` Abschnitt 2 und „Entschieden“.
+
 **Neu bewertet (2026-10-13): angenommen.** Mit den Zeitplan-Ideen L15–L25 auf die Liste; Reihenfolge offen.
 
 **Bewertung (2026-10-07): zurückgestellt.** Der Konfliktanzeige fürs Team reicht bisher; nach dem ersten echten Einsatz neu bewerten.
@@ -445,6 +447,8 @@ Prognose („Deine Rede: ca. 21:40, in 25 Min“). Grundlage für L17.
 
 ### L17: Vorwarnung fürs Team
 
+**Umgesetzt (2026-10-14):** Web Push wie im Abstimmungstool (VAPID, Ende-zu-Ende verschlüsselt, Abo an der Sitzung). Jedes Konto stellt in der Team-Ansicht je Event ein: „meine Punkte“ (Zuständige aus L16) oder „alle Punkte“, 5–30 Minuten vorher – nach der Prognose. Einmal je Punkt, neu, wenn der Punkt danach um mehr als den Vorlauf rutscht; geheime Punkte nur für Eingetragene. Zeitgeber: minütlicher Aufruf von `/api/cron/alerts` (crontab). L12 (Push an Gäste) bleibt offen.
+
 **Bewertung (2026-10-13): angenommen.** Variante von L12 für das Team statt für Gäste.
 
 **Problem:** Wer gleich dran ist, rechnet die Prognose im Trubel selbst nach.
@@ -464,6 +468,8 @@ ein Konto mit Freigabe.
 nur lesend, ohne geheime Punkte.
 
 ### L19: „Was wäre wenn“-Vorschau
+
+**Umgesetzt (2026-10-14):** Seite „Was wäre wenn?“ (aus Eventseite, Planung und Live-Steuerung): Punkt wählen, „+20“ – zeigt Verschiebungen, wo Puffer und kürzbare Punkte (L11) die Verspätung schlucken, neue Konflikte mit Ankern und das Ende je Spur. Rechnet vom aktuellen Stand wie der Live-Knopf „+X“, speichert nichts (reine Funktion `whatIf` im Prognose-Kern).
 
 **Bewertung (2026-10-13): angenommen.**
 
