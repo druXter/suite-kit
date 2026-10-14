@@ -26,7 +26,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L5](#l5-mitbringliste-mit-slots) | Mitbringliste mit Slots zum Beanspruchen | rsvp-app | S–M | umgesetzt |
 | [L6](#l6-session-anmeldung-mit-kapazität) | Session-Anmeldung mit Kapazität pro Programmpunkt | zeitplan (+ rsvp-app) | M–L | angenommen |
 | [L7](#l7-sitzungsmodus-für-versammlungen) | Sitzungsmodus für Versammlungen | abstimmungstool, rsvp-app, zeitplan | L | angenommen |
-| [L8](#l8-fragebogen-feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | zurückgestellt |
+| [L8](#l8-fragebogen-feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | in Arbeit |
 | [L9](#l9-teams-bei-der-anmeldung) | Teams bei der Anmeldung (Teamname, Teamgröße) | rsvp-app / seating | S–M | zurückgestellt |
 | [L10](#l10-öffentliche-sitzordnung-mit-namen) | Öffentliche Sitzordnung mit Namen („Wo sitze ich?“) | seating | S–M | umgesetzt |
 | [L11](#l11-kürzbare-programmpunkte) | Kürzbare Programmpunkte mit Mindestdauer | zeitplan | M | angenommen |
@@ -310,6 +310,12 @@ Protokollnotizen aus dem Zeitplan).
 ### L8: Fragebogen / Feedback nach dem Event
 
 **Bewertung (2026-10-07): zurückgestellt.** Kein konkreter Anlass; Freitext gibt es inzwischen in den Live-Runden als möglichen Baustein.
+
+**Neu bewertet (2026-10-14): angenommen, in Arbeit.** Anlass: Feedback-Fragebogen per iFrame in der Campus-App (statt
+Nextcloud Forms), später in weiteren Apps unter `*.ramonroeser.de`. Erster Teil: Fragebogen als eigenes Modell im
+Abstimmungstool (Einfach-/Mehrfachauswahl, Freitext, lineare Skala), anonym oder einmal pro Gerät, einbettbar nur über
+eine eigene Route mit erlaubten Domains. Der Versand über rsvp-app (Identität `RSVP`) bleibt der zweite Teil. Konzept in
+`abstimmungstool/docs/KONZEPT-FRAGEBOGEN.md`.
 
 **Problem:** Eine Abstimmung hat genau eine Frage, Freitext gibt es nicht.
 
