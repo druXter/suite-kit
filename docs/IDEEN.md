@@ -25,7 +25,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L4](#l4-ticketkategorien-und-kontingente) | Ticketkategorien und Kontingente | rsvp-app | M | umgesetzt |
 | [L5](#l5-mitbringliste-mit-slots) | Mitbringliste mit Slots zum Beanspruchen | rsvp-app | S–M | umgesetzt |
 | [L6](#l6-session-anmeldung-mit-kapazität) | Session-Anmeldung mit Kapazität pro Programmpunkt | zeitplan (+ rsvp-app) | M–L | angenommen |
-| [L7](#l7-sitzungsmodus-für-versammlungen) | Sitzungsmodus für Versammlungen | abstimmungstool, rsvp-app, zeitplan | L | angenommen |
+| [L7](#l7-sitzungsmodus-für-versammlungen) | Sitzungsmodus für Versammlungen | abstimmungstool, rsvp-app, zeitplan | L | in Arbeit |
 | [L8](#l8-fragebogen--feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | umgesetzt |
 | [L9](#l9-teams-bei-der-anmeldung) | Teams bei der Anmeldung (Teamname, Teamgröße) | rsvp-app / seating | S–M | zurückgestellt |
 | [L10](#l10-öffentliche-sitzordnung-mit-namen) | Öffentliche Sitzordnung mit Namen („Wo sitze ich?“) | seating | S–M | umgesetzt |
@@ -297,6 +297,19 @@ Abstimmungstool (`allowVoterOptions`), Gewinner landen als Punkte im Zeitplan.
 Namen von Gästen.
 
 ### L7: Sitzungsmodus für Versammlungen
+
+**In Arbeit (2026-10-15).** Konzept in `abstimmungstool/docs/KONZEPT-SITZUNG.md`. Grundsatz: jede Funktion einzeln
+schaltbar, kein Gesamtpaket. Umgesetzt:
+
+- **rsvp-app – Kommen und Gehen:** Option „Kommen und Gehen protokollieren“ (mit QR-Einlass). Auschecken heißt „geht“,
+  Wiederkommen per Scan oder Klick, jeder Wechsel mit Uhrzeit, dazu der Reiter „Anwesenheit“ mit Druck und CSV.
+  Fehlscans lassen sich zurücknehmen. Dazu kommt die Vorlage „Sitzung oder Versammlung“.
+- **Abstimmungstool – Sitzung:** Mitglieder über einen Termin in rsvp-app („🗳️ Zur Sitzung“) und schnelle Abstimmungen
+  (Ja/Nein/Enthaltung oder Wahl), geheim oder namentlich. Optional abstimmen nur für Anwesende: Die Anwesenheit wird bei
+  jeder Stimme frisch aus rsvp-app geholt, ohne Antwort darf niemand abstimmen. Optional auch die Beschlussfähigkeit live,
+  die bei jedem Beschluss festgehalten wird, und eine Rednerliste mit GO-Anträgen. Die Beschlüsse gibt es als CSV.
+
+Offen: Kommen, Gehen und Beschlüsse im Protokoll des Zeitplans (Rückblick) an der Stelle der Tagesordnung.
 
 **Neu bewertet (2026-10-13): angenommen.** Mit den Zeitplan-Ideen L15–L25 auf die Liste; Reihenfolge offen.
 
