@@ -26,7 +26,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L5](#l5-mitbringliste-mit-slots) | Mitbringliste mit Slots zum Beanspruchen | rsvp-app | S–M | umgesetzt |
 | [L6](#l6-session-anmeldung-mit-kapazität) | Session-Anmeldung mit Kapazität pro Programmpunkt | zeitplan (+ rsvp-app) | M–L | angenommen |
 | [L7](#l7-sitzungsmodus-für-versammlungen) | Sitzungsmodus für Versammlungen | abstimmungstool, rsvp-app, zeitplan | L | angenommen |
-| [L8](#l8-fragebogen--feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | teilweise umgesetzt |
+| [L8](#l8-fragebogen--feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | umgesetzt |
 | [L9](#l9-teams-bei-der-anmeldung) | Teams bei der Anmeldung (Teamname, Teamgröße) | rsvp-app / seating | S–M | zurückgestellt |
 | [L10](#l10-öffentliche-sitzordnung-mit-namen) | Öffentliche Sitzordnung mit Namen („Wo sitze ich?“) | seating | S–M | umgesetzt |
 | [L11](#l11-kürzbare-programmpunkte) | Kürzbare Programmpunkte mit Mindestdauer | zeitplan | M | umgesetzt |
@@ -270,7 +270,11 @@ bleibt als Obergrenze. Kategorie im Einlass sichtbar.
 
 **Umgesetzt (2026-10-07) in rsvp-app:** Einträge mit Anzahl pro Termin (`2x Salat`), Ankreuzen beim Zusagen, volle
 Einträge gesperrt (atomare SQL-Anweisung, auch bei gleichzeitigen Zusagen), Absage und Warteliste geben frei. Anzeige in
-Gästeliste, Verwaltung und CSV. Noch offen: Vorlage für Reihen (Liste beim neuen Termin übernehmen).
+Gästeliste, Verwaltung und CSV.
+
+**Vorlage für Reihen umgesetzt (2026-10-15):** Die Reihe hat eine Mitbringliste als Vorlage; neue Termine übernehmen
+sie und lassen sich danach einzeln ändern. Auf Wunsch übernehmen auch kommende Termine ohne eigene Liste die Vorlage
+(bestehende Listen bleiben unangetastet), und ein Termin kann seine Liste als neue Vorlage speichern.
 
 **Problem:** „Mitbringsel“ ist Freitext, dadurch bringen fünf Leute Nudelsalat.
 
@@ -321,8 +325,12 @@ eine eigene Route mit erlaubten Domains. Der Versand über rsvp-app (Identität 
 z.B. "Sonstiges"), Freitext, linearer Skala, Raster, Skalen-Raster (Gegensatzpaare, UEQ-S-Vorlage, Ausweich-Antwort) und
 Überschrift/Text-Blöcken; anonym oder einmal pro Gerät; Oberfläche auf Deutsch und Englisch; einbettbar nur auf
 freigegebenen Seiten; gegen Skripte und Manipulation gehärtet (Einmal-Token, zweistufige IP-Drosselung, Angriffstests).
-Die Campus-App bettet ihren Feedback-Fragebogen seitdem von dort ein statt aus Nextcloud Forms. Offen bleibt Teil 2:
-Versand über rsvp-app an Eingecheckte mit Identität `RSVP`.
+Die Campus-App bettet ihren Feedback-Fragebogen seitdem von dort ein statt aus Nextcloud Forms.
+
+**Teil 2 umgesetzt (2026-10-15):** Fragebögen im Abstimmungstool mit „Gäste aus rsvp-app“ (`RSVP`): Antworten nur über
+einen signierten Link aus rsvp-app, eine Antwort pro Zusage (Pseudonym, kein Name, keine E-Mail), änderbar. rsvp-app
+verknüpft den Fragebogen pro Termin, zeigt Gästen mit Zusage (mit QR-Einlass nur Eingecheckten) ab dem Ende „Feedback
+geben“ und verschickt den Link einstellbar 0–48 Stunden nach dem Ende einmal per Mail und Push (Erinnerungs-Cron).
 
 **Problem:** Eine Abstimmung hat genau eine Frage, Freitext gibt es nicht.
 
