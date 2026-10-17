@@ -1,7 +1,7 @@
 {
   "name": "suite-kit",
-  "version": "0.2.0",
-  "description": "Gemeinsame Konto-Föderation für die eigenständigen Tools der App-Suite (rsvp-app, abstimmungstool, ...)",
+  "version": "0.3.0",
+  "description": "Gemeinsame Grundlage der eigenständigen Tools der App-Suite: Konto-Föderation und Oberfläche (rsvp-app, abstimmungstool, seating, zeitplan, schichten)",
   "private": true,
   "type": "module",
   "main": "./dist/src/index.js",
@@ -10,6 +10,14 @@
     ".": {
       "types": "./dist/src/index.d.ts",
       "default": "./dist/src/index.js"
+    },
+    "./ui": {
+      "types": "./dist/ui/index.d.ts",
+      "default": "./dist/ui/index.js"
+    },
+    "./theme.css": {
+      "style": "./ui/theme.css",
+      "default": "./ui/theme.css"
     }
   },
   "bin": {
@@ -17,6 +25,8 @@
   },
   "files": [
     "dist/src",
+    "dist/ui",
+    "ui/theme.css",
     "bin"
   ],
   "engines": {
@@ -29,6 +39,19 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/react": "^19",
     "typescript": "^5"
+  },
+  "peerDependencies": {
+    "next": ">=15",
+    "react": ">=19"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
   }
 }

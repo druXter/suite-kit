@@ -1,0 +1,112 @@
+# Design der Suite
+
+Alle Tools der Suite sehen gleich aus und bedienen sich gleich: Wer eins kennt, findet sich in den anderen sofort
+zurecht. Dieses Dokument hält die Regeln fest; der Code dazu liegt in `suite-kit/ui` (Bausteine) und
+`suite-kit/theme.css` (Grundregeln). **Gestaltung ändert man hier, nicht in den Tools** - siehe
+[Änderungen an alle Tools verteilen](#änderungen-an-alle-tools-verteilen).
+
+Entstanden aus den Neugestaltungen im Oktober 2026 (rsvp-app, Abstimmungstool, Schichten, Zeitplan, Seating; deren
+`docs/KONZEPT-OBERFLAECHE.md` beschreiben, wie das jeweilige Tool die Regeln umsetzt).
+
+## Grundsätze
+
+1. **Ruhig.** Weiß und Grau, Blau (`blue-600`) als einzige Akzentfarbe - für die Hauptaktion einer Seite, den aktiven
+   Reiter und Links. Keine Emojis an Knöpfen, keine Verläufe, keine Schatten außer dem dezenten der Karten.
+2. **Farbe trägt Bedeutung.** Sonst nichts: grün = gut/bestätigt/veröffentlicht, amber = offen/unbestätigt/Achtung,
+   rot = Problem/Absage/live, grau = Entwurf/vorbei/neutral, blau = Information/Warteliste. Je Tool feste Farben für
+   Verknüpfungen: **pink = rsvp-app**, **lila = Schichten** bzw. Geheimes/Internes, **türkis = freigegeben**. Farbe nie
+   allein: immer mit Text (Badge, Beschriftung).
+3. **Handy zuerst.** Gäste und Helfer*innen nutzen fast nur das Telefon, Verwaltung am Tag selbst auch.
+4. **Gleicher Aufbau.** Übersicht → Detailseite mit Reitern → Einstellungen in einklappbaren Abschnitten.
+5. **Eigenständig.** Das Design kommt aus suite-kit, die Inhalte (Navigation, Menüpunkte, Texte) bestimmt jedes Tool
+   selbst. Kein Tool hängt zur Laufzeit von einem anderen ab.
+
+## Aufbau einer Seite
+
+| Teil | Baustein | Regeln |
+| --- | --- | --- |
+| Kopfzeile | `AppHeader` | Marke (Buchstabe im blauen Quadrat, Name ab `sm`), für angemeldete Konten die Hauptnavigation und rechts das Konto-Menü (Kürzel, Name ab `md`; im Menü E-Mail und Rolle, „Mein Konto“, zuletzt „Abmelden“ unter einer Linie), sonst nur „Anmelden“. Klebt oben, beim Drucken weg. Auf Seiten für Gäste ohne Anmeldung gar keine Kopfzeile (jedes Tool mit eigenem `HeaderGate`). |
+| Inhalt | `Main` | `wide` (max-w-5xl) für Listen und Übersichten, `narrow` (max-w-3xl) für Formulare, `full` (max-w-7xl) für Arbeitsflächen (Plan-Editor, Sitzungsleitung). Kopfzeile und Inhalt gleich breit. |
+| Seitenkopf | `PageHeader` | Optional „← Zurück“, Titel (`text-2xl font-semibold`), Untertitel mit Datum und Badges, Aktionen rechts (auf dem Handy darunter). |
+| Reiter | `Tabs` | Unter dem Seitenkopf einer Detailseite (Event, Abstimmung, Reihe). Seitlich scrollbar, der aktive scrollt ins Bild. Unterseiten eines Reiters haben kein eigenes `<main>` und keinen eigenen Zurück-Link zur Detailseite. |
+| Fußzeile | `AppFooter` | Impressum · Datenschutz, auf jeder Seite (Art. 13 DSGVO), eingebettet in neuem Tab. |
+
+**Übersichten** (Events, Abstimmungen, Raumpläne): Karten (`li` mit `rounded-xl border bg-white shadow-sm`) mit
+Datumsblock, Titel, Status-Badge, Merkmalen und Kennzahlen; getrennt nach *Aktuell* und eingeklappt *Vergangen*
+(`sectionTitleClass`). Leere Listen: `EmptyState` mit einem Satz, was zu tun ist.
+
+**Detailseiten**: oben Kennzahlen (`Stat`, auf dem Handy zweispaltig), dann Karten (`Card`) mit Status und
+Aktionen. Statuswechsel als Knöpfe (der naheliegende blau), nicht als Auswahlfeld.
+
+**Einstellungen**: `SettingsSection` je Thema - Titel, rechts ein Kurzstand („aus“, „nur mit Code“, „2 Konten“) und
+optional eine Themenmarke in der Bedeutungsfarbe. Zugeklappt bleiben die Felder im DOM und werden mitgeschickt;
+`?section=<id>` (bzw. das Pendant des Tools) öffnet einen Abschnitt. Ein großes Formular über mehrere Abschnitte hat
+eine Speichern-Leiste, die unten sichtbar bleibt (`sticky bottom-0`). Gefährliches (Löschen) zuletzt in einer eigenen
+Karte mit `buttonClass('danger')`.
+
+## Bausteine (`suite-kit/ui`)
+
+| Baustein | Zweck |
+| --- | --- |
+| `Card`, `EmptyState` | Fläche für einen Inhaltsblock, leere Liste. |
+| `Badge` (`Tone`) | Status und Merkmale; Töne gray, green, orange, red, blue, indigo, pink, amber, purple, lime, teal. |
+| `buttonClass(variant, size)`, `ButtonLink`, `SubmitButton`, `PrintButton` | Knöpfe: `primary` (eine Hauptaktion pro Bereich), `secondary`, `ghost`, `danger`; `sm` nur für Nebenaktionen in Listen. `SubmitButton` ist volle Breite (Formulare), `inline` daneben. |
+| `inputClass`, `labelClass`, `hintClass` | Eingabefelder (16 px auf dem Handy, sonst zoomt iOS hinein), Beschriftung, Hinweis darunter. |
+| `Notice` | Rückmeldung: info, success, warning, error (`role="alert"`). |
+| `Stat`, `ProgressBar` | Kennzahl mit Beschriftung, optional Balken (voll = orange). |
+| `PageHeader`, `Main`, `Tabs`, `Segmented`, `sectionTitleClass` | Seitenaufbau; `Segmented` schaltet Ansichten einer Seite um (Spuren, Druckart, Filter). |
+| `SettingsSection`, `Disclosure` | Einklappbare Abschnitte, die ihren Zustand selbst halten (klappen nach dem Speichern nicht zu). |
+| `AppHeader`, `AppFooter`, `NavLink`, `AccountMenu`, `menuItemClass`, `menuSeparatorClass` | Rahmen. |
+| `CopyableField`, `ConfirmForm`, `FooterLink` | Link zum Kopieren (mit Knopf), Formular mit Rückfrage, Fußzeilen-Link. |
+| `InstallHint`, `PwaRegister` | „Als App installieren“ und Service Worker (`public/sw.js` des Tools). |
+
+Eigene Bausteine eines Tools (z. B. `formatShortDate`, `SlotsBadge`) liegen in dessen `app/ui/kit.tsx`, das die
+gemeinsamen re-exportiert. Seiten importieren nur aus `app/ui/kit` - nie Farben oder Knopf-Klassen von Hand
+zusammenbauen, wenn es dafür einen Baustein gibt. Was in zwei Tools gebraucht wird, gehört hierher.
+
+## Handy
+
+* Eingabefelder `text-base` (16 px) unter `sm`, Knöpfe vor Ort mindestens 40-44 px hoch.
+* Aktionen unter dem Inhalt statt daneben; Tabellen werden zu Zeilen bzw. Karten (kein seitliches Scrollen der Seite).
+* Telefonnummern und E-Mail-Adressen antippbar (`tel:`, `mailto:`).
+* Was nach einer Auswahl folgt (Formular, Ziel wählen), hängt unten am Bildschirm oder scrollt ins Bild, wenn es sonst
+  außer Sicht wäre.
+* Lange Wörter brechen um (`theme.css`), die Seite scrollt nie seitlich.
+
+## Darkmode und Druck
+
+* Darkmode folgt der Systemeinstellung, **nur am Bildschirm** (`@custom-variant dark` in `theme.css`); Ausdrucke bleiben
+  hell. Zu jeder hellen Farbklasse gehört ihr `dark:`-Gegenstück nach festem Schema: `bg-white` → `dark:bg-gray-800`,
+  `bg-gray-50` → `dark:bg-gray-900`, `text-gray-900` → `dark:text-gray-100`, `text-gray-600` → `dark:text-gray-400`,
+  `border-gray-300` → `dark:border-gray-600`, helle Farbflächen `bg-X-50` → `dark:bg-X-950/50`, Farbtext `text-X-700` →
+  `dark:text-X-300`; kräftige Knopffarben bleiben. Ausnahmen (z. B. Anzeigetafeln, Raumpläne) begründet das Tool.
+* Kopfzeile, Reiter, Fußzeile und Knöpfe erscheinen nicht im Ausdruck (`print:hidden`); `Main` druckt randlos.
+
+## Sprache
+
+Deutsch, Anrede „du“, gendergerecht mit Sternchen (Teilnehmer\*innen). Begriffe wie im README von suite-kit
+(Verwaltungskonto, Teilnehmendenkonto, „Konto mit Admin-Rolle“). Knöpfe sagen, was passiert („Event löschen“,
+„Einstellungen speichern“), Hinweise sagen, was als Nächstes zu tun ist.
+
+## Ein neues Tool
+
+1. `suite-kit` als Git-Abhängigkeit (siehe README), dazu Tailwind 4, Next.js und React.
+2. `app/globals.css`:
+   ```css
+   @import "tailwindcss";
+   @import "suite-kit/theme.css";
+   ```
+   `theme.css` meldet Tailwind die Bausteine in `node_modules/suite-kit/dist/ui` an - ohne diese Zeile fehlen ihre Klassen.
+3. `app/ui/kit.tsx`: `export * from 'suite-kit/ui'` und ggf. eigene Bausteine.
+4. `app/layout.tsx`: Kopfzeile mit `AppHeader` (Inhalte des Tools), `AppFooter`, `PwaRegister`; `<body className="antialiased min-h-screen flex flex-col">` (Hintergrund und Schrift kommen aus `theme.css`).
+5. `docs/KONZEPT-OBERFLAECHE.md` im Tool: welche Seiten es gibt und wie sie die Regeln hier umsetzen.
+
+## Änderungen an alle Tools verteilen
+
+1. Baustein oder Regel hier ändern (`ui/*.tsx`, `ui/theme.css`, dieses Dokument), `npm test`.
+2. Version erhöhen (`package.json`, Tag `vX.Y.Z`), pushen - Tools pinnen eine Version, nichts ändert sich ungefragt.
+3. Alle Tools nachziehen: `node scripts/update-apps.mjs vX.Y.Z` (installiert die Version in jedem Tool neben diesem
+   Repository, baut, prüft Typen und Lint). Danach je Tool die Tests laufen lassen, committen und ausrollen.
+
+Ein Tool kann so lange auf einer älteren Version bleiben; zusammen passen die Tools aber erst wieder, wenn alle
+nachgezogen haben.

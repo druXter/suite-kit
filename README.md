@@ -4,7 +4,9 @@ Mehrere kleine, **eigenständige** Web-Tools, die sich **optional** miteinander 
 allein - mit eigener Datenbank, eigenen Konten, eigenem Deployment. Sind mehrere Tools eingerichtet, greifen sie
 ineinander: gemeinsame Anmeldung, verlinkte Inhalte, Rückmeldungen zwischen den Tools.
 
-Dieses Repository (`suite-kit`) ist die gemeinsame Bibliothek dahinter und zugleich die Übersicht über die Suite.
+Dieses Repository (`suite-kit`) ist die gemeinsame Bibliothek dahinter und zugleich die Übersicht über die Suite:
+Konto-Föderation (`suite-kit`) und gemeinsame Oberfläche (`suite-kit/ui`, `suite-kit/theme.css`, Regeln in
+[docs/DESIGN.md](docs/DESIGN.md)).
 
 ## Die Tools
 
@@ -15,7 +17,7 @@ Dieses Repository (`suite-kit`) ist die gemeinsame Bibliothek dahinter und zugle
 | **seating** | Raumpläne, Tischbuchung, Platzwahl, Sitzordnung; an rsvp-app anbindbar | [druXter/seating](https://github.com/druXter/seating) |
 | **zeitplan** | Ablauf großer Events mit Live-Prognose: Gästeansicht, Anzeigetafel, Live-Steuerung fürs Handy; an rsvp-app anbindbar | [druXter/zeitplan](https://github.com/druXter/zeitplan) |
 | **schichten** | Dienste und Schichten für Helfer\*innen: Eintragen ohne Konto, Tauschbörse, Erinnerungen, Abhaken vor Ort; an rsvp-app (Helfer-Zusagen) und Zeitplan (Schicht folgt Programmpunkt) anbindbar | [druXter/schichten](https://github.com/druXter/schichten) (privat) |
-| **suite-kit** | Gemeinsame Konto-Föderation (dieses Repo) | [druXter/suite-kit](https://github.com/druXter/suite-kit) |
+| **suite-kit** | Gemeinsame Konto-Föderation und Oberfläche (dieses Repo) | [druXter/suite-kit](https://github.com/druXter/suite-kit) |
 
 Jedes Tool hat sein eigenes README mit Funktionen, Einrichtung und Betrieb. Hier steht, was für **alle** gilt.
 
@@ -223,6 +225,21 @@ beide Testläufe gleichzeitig laufen können).
 
 **Schichten** ebenso (Test-Doppel auf den Ports 2630/2631, dazu Doppel von rsvp-app und Zeitplan auf 2632/2633).
 
+## Gemeinsame Oberfläche
+
+Alle Tools sehen gleich aus: gleiche Kopfzeile, gleiche Bausteine, gleicher Aufbau „Übersicht → Seite mit Reitern →
+Einstellungen in Abschnitten“, fürs Handy gebaut. Die Regeln stehen in [docs/DESIGN.md](docs/DESIGN.md), der Code in
+`ui/`:
+
+* `suite-kit/ui` - React-Bausteine (Card, Badge, Knöpfe, Eingabefelder, Hinweise, Seitenkopf, Reiter, einklappbare
+  Abschnitte, Kopf- und Fußzeile, Konto-Menü …). Jedes Tool re-exportiert sie in `app/ui/kit.tsx` und ergänzt dort
+  eigene.
+* `suite-kit/theme.css` - nach Tailwind in `app/globals.css` importiert: Darkmode nur am Bildschirm, Ränder,
+  Hintergrund, Umbruch langer Wörter und die Anmeldung der Bausteine bei Tailwind.
+
+Gestaltung ändert man hier und verteilt sie mit `node scripts/update-apps.mjs vX.Y.Z` an alle Tools (siehe
+DESIGN.md). React und Next.js sind Peer-Abhängigkeiten - nur nötig, wer `suite-kit/ui` nutzt.
+
 ## Entwicklung des Pakets
 
 ```bash
@@ -230,5 +247,7 @@ npm install
 npm test        # baut mit tsc und führt die Tests aus (node:test, keine Zusatz-Abhängigkeiten)
 ```
 
-Ohne Laufzeit-Abhängigkeiten, nur `node:crypto`. `dist/` wird nicht eingecheckt. Änderungen am Protokoll oder am Token-Format
-erhöhen die Version (Tag `vX.Y.Z`); die Tools pinnen ihre Version bewusst und aktualisieren sie einzeln.
+Die Föderation (`suite-kit`) hat keine Laufzeit-Abhängigkeiten, nur `node:crypto`; die Oberfläche (`suite-kit/ui`)
+braucht React und Next.js aus dem Tool. `dist/` wird nicht eingecheckt. Änderungen am Protokoll, am Token-Format oder an
+der Gestaltung erhöhen die Version (Tag `vX.Y.Z`); die Tools pinnen ihre Version bewusst und ziehen sie mit
+`scripts/update-apps.mjs` nach.

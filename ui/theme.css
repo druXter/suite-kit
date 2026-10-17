@@ -1,0 +1,44 @@
+/* suite-kit/theme.css - gemeinsame Grundlage aller Tools der Suite (docs/DESIGN.md).
+
+   Einbinden in app/globals.css direkt nach Tailwind:
+     @import "tailwindcss";
+     @import "suite-kit/theme.css";
+   Danach nur noch, was das Tool selbst braucht (Einbettung, Anzeigetafel …). */
+
+/* Die Bausteine aus suite-kit/ui liegen in node_modules - Tailwind sucht dort nicht von selbst nach Klassen. */
+@source "../dist/ui";
+
+/* Darkmode nach der Systemeinstellung - aber nur am Bildschirm: Beim Drucken (Listen, Karten) bleibt es hell, sonst
+   käme helle Schrift auf weißes Papier. */
+@custom-variant dark (@media screen and (prefers-color-scheme: dark));
+
+@media screen {
+  :root {
+    color-scheme: light dark;
+  }
+}
+
+@layer base {
+  /* Seitenhintergrund und Schrift (Klassen am <body> der Tools gehen weiterhin vor). */
+  body {
+    background-color: var(--color-gray-50);
+    color: var(--color-gray-900);
+  }
+  @media screen and (prefers-color-scheme: dark) {
+    body {
+      background-color: var(--color-gray-900);
+      color: var(--color-gray-100);
+    }
+    /* Ränder ohne eigene Farbe übernehmen in Tailwind 4 die Textfarbe - dunkel wären sie grellweiß. Klassen mit
+       eigener Randfarbe gehen weiterhin vor (Utilities > Base). */
+    *, ::before, ::after, ::backdrop, ::file-selector-button {
+      border-color: var(--color-gray-700);
+    }
+  }
+}
+
+/* Lange Wörter ohne Leerzeichen (z. B. ein Link in einer Beschreibung) umbrechen, statt die Seite auf dem Handy
+   seitlich scrollbar zu machen. break-word greift nur, wenn ein Wort sonst herausragen würde. */
+body {
+  overflow-wrap: break-word;
+}
