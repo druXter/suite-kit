@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -314,6 +314,22 @@ schaltbar, kein Gesamtpaket. Umgesetzt:
   einem eigenen Häkchen frei. rsvp-app holt die Beschlüsse beim Abstimmungstool ab. Der Zeitplan lädt die Namen nur zum
   Anzeigen und speichert sie nicht (neue Einstellung `RSVP_APP_BASE_URL`). Die Termin-id aus rsvp-app lässt sich im
   Zeitplan jetzt auch ohne den Zugang „nur mit Zusage“ eintragen.
+
+**Nachgezogen nach einer Probesitzung (2026-10-17)**, Konzept `abstimmungstool/docs/KONZEPT-SITZUNG.md` Abschnitte 6–8:
+
+- **Muss – andere ein- und auschecken ohne Scan:** Die Sitzungsleitung im Abstimmungstool zeigt alle Zusagen mit
+  Namen, Suche und Filter und je einem Knopf (neue Nachrichten `assembly-attendance` und `assembly-presence` an
+  rsvp-app, wirken wie der Knopf in der Gästeliste samt „Kommen und Gehen“). Protokoll und Beisitz bekommen die Sitzung
+  über „Gemeinsam leiten“.
+- **Muss – Ergebnisse auf Tafel/Gästemonitor:** Tafel `/sitzung/<id>/tafel?k=…` ohne Anmeldung: Tagesordnung aus dem
+  Zeitplan, Beschlussfähigkeit, laufende Abstimmung (nur Zahl der Stimmen), Ergebnis mit Balken und bei namentlichen
+  Abstimmungen mit Namen, frühere Ergebnisse, Rednerliste. Taugt auch als Ansicht für Gäste ohne Stimmrecht.
+- **Muss – selbst ein- und auschecken:** Schalter pro Sitzung, Knopf in der Mitgliederansicht neben Abstimmungen und
+  Rednerliste. Die Mitgliederansicht zeigt außerdem die Tagesordnung mit dem laufenden Punkt.
+- **Soll – ein Tab für Leitung, Protokoll, Beisitz:** Die Verwaltung der Sitzung ist jetzt eine Arbeitsfläche:
+  Tagesordnung mit der eingebetteten Live-Steuerung des Zeitplans (neue Einstellung `LIVE_EMBED_ORIGINS` im Zeitplan,
+  `ZEITPLAN_BASE_URL` im Abstimmungstool), Anwesenheit, Abstimmungen, Rednerliste, Ergebnisse; die Einrichtung
+  eingeklappt darunter. Bewusst keine eigene Steuer-Schnittstelle zum Zeitplan (zweites Secret, zweite Rechteprüfung).
 
 **Neu bewertet (2026-10-13): angenommen.** Mit den Zeitplan-Ideen L15–L25 auf die Liste; Reihenfolge offen.
 
