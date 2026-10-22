@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -24,7 +24,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L3](#l3-angaben-pro-person-und-menüwahl) | Essen/Allergien pro Person, Menüwahl pro Gang | rsvp-app | M | umgesetzt |
 | [L4](#l4-ticketkategorien-und-kontingente) | Ticketkategorien und Kontingente | rsvp-app | M | umgesetzt |
 | [L5](#l5-mitbringliste-mit-slots) | Mitbringliste mit Slots zum Beanspruchen | rsvp-app | S–M | umgesetzt |
-| [L6](#l6-session-anmeldung-mit-kapazität) | Session-Anmeldung mit Kapazität pro Programmpunkt | zeitplan (+ rsvp-app) | M–L | angenommen |
+| [L6](#l6-session-anmeldung-mit-kapazität) | Session-Anmeldung mit Kapazität pro Programmpunkt | zeitplan (+ rsvp-app) | M–L | zurückgestellt |
 | [L7](#l7-sitzungsmodus-für-versammlungen) | Sitzungsmodus für Versammlungen | abstimmungstool, rsvp-app, zeitplan | L | umgesetzt |
 | [L8](#l8-fragebogen--feedback-nach-dem-event) | Fragebogen / Feedback nach dem Event | abstimmungstool (+ rsvp-app) | M | umgesetzt |
 | [L9](#l9-teams-bei-der-anmeldung) | Teams bei der Anmeldung (Teamname, Teamgröße) | rsvp-app / seating | S–M | zurückgestellt |
@@ -41,9 +41,9 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L20](#l20-block-verschieben) | Block verschieben (Punkt und alle folgenden) | zeitplan | S | umgesetzt |
 | [L21](#l21-regieplan-und-programmheft-zum-drucken) | Regieplan und Programmheft zum Drucken | zeitplan | S | umgesetzt |
 | [L22](#l22-orte-mit-adresse-und-kartenlink) | Orte mit Adresse und Kartenlink | zeitplan | S | umgesetzt |
-| [L23](#l23-weitere-vorlagen-im-zeitplan) | Weitere Vorlagen im Zeitplan (Winterball, Pubquiz, Versammlung) | zeitplan | S je Vorlage | angenommen |
+| [L23](#l23-weitere-vorlagen-im-zeitplan) | Weitere Vorlagen im Zeitplan (Winterball, Pubquiz, Versammlung) | zeitplan | S je Vorlage | zurückgestellt |
 | [L24](#l24-rückblick-plan-gegen-ist) | Rückblick: Plan gegen Ist, auch als Sitzungsdokumentation | zeitplan | S–M | umgesetzt |
-| [L25](#l25-kalender-export-ics) | Kalender-Export (ICS) | zeitplan | S | angenommen |
+| [L25](#l25-kalender-export-ics) | Kalender-Export (ICS) | zeitplan | S | verworfen |
 | [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu (schichten) | L | umgesetzt |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
@@ -282,6 +282,8 @@ sie und lassen sich danach einzeln ändern. Auf Wunsch übernehmen auch kommende
 beim Zusagen oder später über ihren persönlichen Link. Optional als Vorlage für Reihen (Freundesrunde).
 
 ### L6: Session-Anmeldung mit Kapazität
+
+**Neu bewertet (2026-10-22): zurückgestellt**, bis es einen konkreten Anlass gibt. Vergleich mit einer Reihe in rsvp-app (ein Termin pro Session): Kapazität, Warteliste und einmalige Abfrage der Kontaktdaten kann die Reihe schon. Es fehlen nur der Schutz vor Überschneidungen paralleler Sessions, ein gemeinsamer Plan mit dem Zeitplan (Zeiten nicht doppelt pflegen, Verspätungen und Erinnerungen) und spontane Sessions beim Barcamp. Bei einer Neubewertung zuerst prüfen, ob eine Reihe reicht; kleinster Schritt wären Zeitfenster in Reihen (höchstens eine Zusage pro Fenster) in rsvp-app.
 
 **Neu bewertet (2026-10-13): angenommen.** Mit den Zeitplan-Ideen L15–L25 auf die Liste; Reihenfolge offen.
 
@@ -545,6 +547,8 @@ Events an mehreren Orten (Kirche → Location).
 
 ### L23: Weitere Vorlagen im Zeitplan
 
+**Neu bewertet (2026-10-22): zurückgestellt**, bis es einen konkreten Anlass gibt (dann die Vorlage für genau diesen Anlass).
+
 **Bewertung (2026-10-13): angenommen.** Vorstufe zu Q4.
 
 **Idee:** Neben „Hochzeit“ Vorlagen für „Winterball“ (passend zur Anbindung an Schichten), „Pubquiz“ und
@@ -562,6 +566,8 @@ Einschübe, mit CSV-Export. Hilft beim nächsten Event der Reihe und beim Einsch
 behandelt wurde – zusammen mit einer Protokollnotiz pro Punkt ein erster Baustein für L7.
 
 ### L25: Kalender-Export (ICS)
+
+**Neu bewertet (2026-10-22): verworfen.**
 
 **Bewertung (2026-10-13): angenommen.**
 
