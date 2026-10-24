@@ -30,3 +30,15 @@ ist umgesetzt.
   Reminders“, „Schichten Backups“ und „Zeitplan Alerts“ (Tokens in `~/scripts/kuma-push.env`). Alle melden „up“.
 - [x] **Gemeinsamer Mail-Baustein** (`renderMail` in suite-kit v0.6): alle Mails aller Tools aus einer Vorlage,
   Gestaltung in docs/DESIGN.md („Mails“).
+
+## Eigene Durchsicht je Tool
+
+Die Prüfung vom 24.10. ging von rsvp-app aus; die anderen Tools wurden dabei nur verglichen. Jedes Tool bekommt eine
+eigene Durchsicht (Rechte in jeder Server Action und Route, Zugänge ohne Konto, Anbindungen, Push, Löschfristen,
+Datenschutzerklärung, Laufzeiten, Oberfläche), Befunde in docs/KONVENTIONEN.md.
+
+- [x] rsvp-app (24.10.2026)
+- [x] Zeitplan (24.10.2026) - Befunde in KONVENTIONEN.md, „Durchsicht Zeitplan“
+- [ ] Schichten - Zugang ohne Konto über persönliche Links, Tauschbörse
+- [ ] Seating - öffentliche Buchung, Uploads, Rundmails
+- [ ] Abstimmungstool - Stimmabgabe ohne Konto, Live-Runden, Fragebögen, Sitzungen
