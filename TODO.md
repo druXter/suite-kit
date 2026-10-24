@@ -40,5 +40,5 @@ Datenschutzerklärung, Laufzeiten, Oberfläche), Befunde in docs/KONVENTIONEN.md
 - [x] rsvp-app (24.10.2026)
 - [x] Zeitplan (24.10.2026) - Befunde in KONVENTIONEN.md, „Durchsicht Zeitplan“
 - [x] Schichten (24.10.2026) - Befunde in KONVENTIONEN.md, „Durchsicht Schichten“
-- [ ] Seating - öffentliche Buchung, Uploads, Rundmails
+- [x] Seating (24.10.2026) - ohne eigenen Befund, siehe KONVENTIONEN.md, „Durchsicht Seating“
 - [ ] Abstimmungstool - Stimmabgabe ohne Konto, Live-Runden, Fragebögen, Sitzungen

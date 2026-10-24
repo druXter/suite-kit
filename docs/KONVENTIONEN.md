@@ -323,3 +323,20 @@ Abstimmungstool mit `redirect: 'error'`. Jetzt in allen 15 Server-zu-Server-Abru
 **Beobachten:** Eintragen ohne Konto reserviert Plätze 60 Minuten bis zur Bestätigung. Wer viele erfundene Adressen
 einträgt (gedrosselt: 30 Eintragungen pro IP und Stunde), kann knappe Schichten eine Stunde lang blockieren. Bei
 Missbrauch: Reservierungen je IP begrenzen oder die Frist verkürzen.
+
+## Durchsicht Seating (2026-10-24)
+
+Vollständig durchgesehen: Rechte für Raumpläne (bearbeiten/ansehen) und Events (Besitzer*in, Freigabe) in allen Server
+Actions und Routen, öffentliche Buchung mit Bestätigungscode, Warteliste, Verwaltungslink, Platzwahl aus rsvp-app,
+Uploads, Rundmails, CSV-Export und -Import, Löschfristen, Datenschutzerklärung, Laufzeiten, Oberfläche.
+
+**Ohne Befund:** Jede Aktion prüft Konto und Zugriff (`loadEventForUser`, `loadPlan`), Freigaben dürfen alles außer
+Weitergeben und Löschen (wie im Konzept), Buchungen und Pläne aus Formularen gelten nur im eigenen Event bzw. mit
+Zugriff. Uploads: Typ an den ersten Bytes (kein SVG), Dateinamen nur vom Server, außerhalb von `public/`, ausgeliefert
+mit Rechteprüfung und `sandbox`-CSP. Bestätigungscode: sechs Ziffern, Fehlversuche je Buchung atomar gezählt, dazu
+Drosselung. Verwaltungslink mit Vergleich in konstanter Laufzeit in jeder Aktion; die Platzwahl aus rsvp-app prüft
+den signierten Link in der Aktion strenger als auf der Seite. Die öffentliche Seite zeigt nur frei/belegt, keine Namen.
+Cron `cleanup` 36 ms, Rundmails gedrosselt aus einer Warteschlange.
+
+Behoben wurde bei Seating nur, was alle Tools betraf (Cloudflare in der Datenschutzerklärung, Kit statt kopierter
+Klassen, Weiterleitungen bei Abrufen, gemeinsame Mail-Vorlage).
