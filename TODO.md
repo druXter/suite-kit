@@ -41,4 +41,4 @@ Datenschutzerklärung, Laufzeiten, Oberfläche), Befunde in docs/KONVENTIONEN.md
 - [x] Zeitplan (24.10.2026) - Befunde in KONVENTIONEN.md, „Durchsicht Zeitplan“
 - [x] Schichten (24.10.2026) - Befunde in KONVENTIONEN.md, „Durchsicht Schichten“
 - [x] Seating (24.10.2026) - ohne eigenen Befund, siehe KONVENTIONEN.md, „Durchsicht Seating“
-- [ ] Abstimmungstool - Stimmabgabe ohne Konto, Live-Runden, Fragebögen, Sitzungen
+- [x] Abstimmungstool (24.10.2026) - ein Befund (Zugangscode-Cookie berechenbar), behoben; KONVENTIONEN.md, „Durchsicht Abstimmungstool“

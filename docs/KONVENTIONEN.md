@@ -340,3 +340,23 @@ Cron `cleanup` 36 ms, Rundmails gedrosselt aus einer Warteschlange.
 
 Behoben wurde bei Seating nur, was alle Tools betraf (Cloudflare in der Datenschutzerklärung, Kit statt kopierter
 Klassen, Weiterleitungen bei Abrufen, gemeinsame Mail-Vorlage).
+
+## Durchsicht Abstimmungstool (2026-10-24)
+
+Vollständig durchgesehen: Rechte für Abstimmungen (inkl. Alt-Abstimmungen mit `creatorToken`), Sitzungen, Live-Runden
+und Fragebögen in allen 70 Server Actions und den Routen, Stimmabgabe in allen Identitätsmodi, Stimmlinks und geheime
+Wahl, Zugangscode, Rednerliste und Anwesenheit, Live-PIN und Long-Polling, Bilder, Fragebogen-Abgaben, Exporte,
+Löschfristen, Datenschutzerklärung, Laufzeiten.
+
+**Ohne Befund:** Verwaltende Aktionen gehen über `loadManageablePoll`/`manageable*` mit der nötigen Stufe; IDs aus
+Formularen (Optionen, Vorschläge, Redner*innen, Freigaben) gelten nur im eigenen Objekt. Geheime Stimmen tragen
+keinen Namen, auch nicht im Export. Mitglieder, Live-Teilnehmende und E-Mail-Abstimmende werden über eigene Cookies
+mit gehashtem Token erkannt und ändern nur Eigenes. Bilder nur für Verwaltung und Beigetretene (Aufdeck-Bilder erst
+nach der Auflösung), mit `sandbox`-CSP. Fragebögen: Einmal-Token mit Mindest-Ausfüllzeit plus Drosselung je IP bzw.
+/64. Cron 7 ms bzw. 32 ms.
+
+**Behoben:** Das Cookie nach richtigem Zugangscode war ein ungesalzener SHA-256 aus Abstimmungs-ID und Code. Die ID
+steht in der Adresse - für jeden geratenen Code ließ sich das Cookie selbst berechnen und die Drosselung der
+Code-Eingabe umgehen (frei gewählte Codes wie „sommerfest“ per Wörterbuch). Jetzt HMAC mit einem zufälligen Schlüssel
+je Abstimmung (`Poll.accessCookieKey`); E2E-Test mit dem früheren, berechneten Cookie. Wer schon freigeschaltet war,
+gibt den Code einmal neu ein.
