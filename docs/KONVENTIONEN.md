@@ -19,32 +19,43 @@ man hier und zieht dann alle Tools nach, nicht umgekehrt.
   Funktion.
 * **Oberfläche nur aus `app/ui/kit`** (re-exportiert `suite-kit/ui`), siehe DESIGN.md. Eingabefelder immer mit
   `inputClass`, sonst fehlen die 16 px unter `sm` und iOS zoomt ins Formular.
-* **Hilfsfunktionen, die jedes Tool braucht,** haben überall dasselbe Verhalten und denselben Namen:
-  `app/lib/csv.ts` (siehe [Ausgaben](#ausgaben)), `esc`/`escapeHtml` für Mails, `readLimitedText` für Bodies,
-  `safeEqual` für Geheimnisse. Kandidaten für `suite-kit`, sobald ein Tool sie ohnehin anfasst.
+* **Hilfsfunktionen, die jedes Tool braucht, kommen aus suite-kit**, nie als eigene Kopie (seit v0.5.1, README
+  „Gemeinsame Helfer“): aus `suite-kit/web` `escapeHtml` (Mails), `csvCell`/`toCsv`/`csvResponse` (Exporte),
+  `readLimitedText` (Bodies) und die Header-Bausteine; aus `suite-kit` `safeEqual` (Geheimnisse) und
+  `signLinkMessage`/`verifyLinkMessage` (Anbindungen). Eine Verbesserung daran kommt so mit dem nächsten
+  suite-kit-Update in alle Tools. Was ein drittes Tool ebenfalls braucht, wandert nach suite-kit.
 
 ## Betrieb
 
-* **Docker-Image** wie Seating, Zeitplan und Schichten: `node:<aktuelle LTS>-alpine`, `apk add git` (für
+* **Docker-Image** wie in allen Tools: `node:22-alpine` (aktuelle LTS, alle Tools auf derselben), `apk add git` (für
   `suite-kit`), **`USER node`** (nie root), `npm ci`, `npx prisma generate` und `npm run build` im Image, beim
   Start `npx prisma db push --skip-generate && npm start`. Im Container lauscht Next auf 3000.
 * **Ports auf dem Server:** 3005 rsvp-app, 3006 Abstimmungstool, 3007 Seating, 3008 Zeitplan, 3009 Schichten.
-  Das nächste Tool bekommt 3010. **Nur an `127.0.0.1` binden** (`"127.0.0.1:3006:3000"` wie das Abstimmungstool):
-  Von außen kommt alles über den Cloudflare-Tunnel (`cloudflared` auf dem Host, verbindet zu `localhost`). Ein Port
-  auf allen Schnittstellen ist über die öffentliche IPv6 des Servers womöglich direkt erreichbar - am Tunnel vorbei,
-  mit selbst gesetztem `X-Forwarded-For`, also auch an der IP-Drosselung vorbei. Monitore deshalb über die
-  öffentliche Adresse, nicht über `192.168.178.126:<port>`.
+  Das nächste Tool bekommt 3010. **Nur an `127.0.0.1` binden** (`"127.0.0.1:<port>:3000"`): Von außen kommt alles über
+  den Cloudflare-Tunnel (`cloudflared` auf dem Host, Ziel `http://127.0.0.1:<port>`). Ein Port auf allen Schnittstellen
+  wäre über die öffentliche IPv6 des Servers direkt erreichbar - am Tunnel vorbei, mit selbst gesetztem
+  `X-Forwarded-For`, also auch an der IP-Drosselung vorbei.
+* **Interne Überwachung:** Jeder Tool-Container hängt zusätzlich im externen Docker-Netz `proxy_net` (neben `default`),
+  in dem auch Uptime Kuma läuft. Der Erreichbarkeits-Monitor prüft deshalb `http://<container_name>:3000/`, nicht die
+  LAN-Adresse des Servers (die ist für die Tools zu). Cron-Monitore rufen wie bisher die öffentliche Adresse auf.
 * **Daten** in `./data` (Volume `/app/data`, `DATABASE_URL=file:/app/data/prod.db`, `TZ=Europe/Berlin`), das
   Verzeichnis gehört UID 1000.
 * **Schemaänderungen** über `prisma db push`, keine Migrationsdateien. Einmalige Datenmigrationen als
   `migrate-*.js`, je durch `PRAGMA user_version` geschützt (läuft nie doppelt), im `CMD` vor `npm start`.
 * **Vor jedem Deploy** die Datenbank sichern: `sqlite3 -readonly data/prod.db ".backup ~/<tool>-backups/prod.db.backup-<JJJJMMTT-HHMMSS>-pre-<thema>"`,
   dann `docker compose up -d --build` im Tool-Verzeichnis, danach Startlog (`db push`, `Ready`) und eine Seite prüfen.
-* **Cron** über Uptime Kuma: `GET /api/cron/<name>?secret=<CRON_SECRET>`. Jedes Tool mit Löschfristen hat
-  `/api/cron/cleanup` (täglich). **Jede Cron-Route eines Tools hat einen Monitor**, dazu je Tool ein Monitor für die
-  Erreichbarkeit und einer für das Backup - eine Route ohne Monitor läuft nie, eine Löschfrist ohne Lauf ist ein
-  Datenschutzverstoß. Neue Cron-Route = neuer Monitor im selben Arbeitsgang (Intervalle: `cleanup` 24 h,
-  Erinnerungen 1 h, Warnungen 15 min).
+* **Cron:** `GET /api/cron/<name>?secret=<CRON_SECRET>`. Jedes Tool mit Löschfristen hat `/api/cron/cleanup`
+  (täglich). Zwei Wege, beide überwacht:
+  * Uptime Kuma ruft die Route selbst auf (HTTP-Monitor mit Intervall: rsvp-app, Abstimmungstool, Seating, Zeitplan
+    `cleanup`) - der Monitor ist zugleich Scheduler und Überwachung.
+  * Die crontab des Hosts ruft ein Skript in `~/scripts` auf (Secret aus der `.env`, nie in der crontab; Schichten
+    `cleanup` und `reminders`, Zeitplan `alerts` minütlich). Das Skript meldet jeden erfolgreichen Lauf mit
+    `~/scripts/kuma-push.sh <name>` an einen **Push-Monitor**; die Tokens stehen in `~/scripts/kuma-push.env`.
+
+  **Jede Cron-Route eines Tools hat einen Monitor**, dazu je Tool einer für die Erreichbarkeit und einer für das
+  nächtliche Backup (Push aus der crontab) - ohne Monitor fällt ein ausbleibender Lauf niemandem auf, und eine
+  Löschfrist ohne Lauf ist ein Datenschutzverstoß. Neue Cron-Route = neuer Monitor im selben Arbeitsgang
+  (Intervalle: `cleanup` 24 h, Erinnerungen 1 h, Warnungen 15 min bzw. bei Push etwas mehr als der Takt).
 * **Abhängigkeiten:** vor jedem Deploy `npm audit --omit=dev` - keine `high`/`critical`. Danach `npm install`
   laufen lassen: `npm audit fix --omit=dev` entfernt die Entwicklungsabhängigkeiten aus `node_modules`.
 
@@ -107,13 +118,14 @@ Jede dieser Regeln steht in mindestens einem Tool schon im Code samt Test; Begr�
 
 ### Sicherheits-Header (`next.config.ts`)
 
-Dieselben Bausteine in jedem Tool:
+Dieselben Bausteine in jedem Tool, importiert aus `suite-kit/web` (das Tool schreibt nur noch seine Pfade):
 
 ```ts
-const NO_FRAMING = [{ key: 'X-Frame-Options', value: 'DENY' }, { key: 'Content-Security-Policy', value: "frame-ancestors 'none'" }]
-const NOT_STORED = [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }, { key: 'Cache-Control', value: 'no-store' }]
-const PRIVATE_PAGE = [...NO_FRAMING, ...NOT_STORED]
-const EMBEDDABLE = [{ key: 'Content-Security-Policy', value: 'frame-ancestors *' }]
+import { BASE_RULE, EMBEDDABLE, NO_FRAMING, NO_REFERRER, NOT_STORED, PRIVATE_PAGE, SECRET_URL_PAGE, SUITE_RULES } from 'suite-kit/web'
+// NO_FRAMING = X-Frame-Options DENY + frame-ancestors 'none'     NOT_STORED = noindex + no-store
+// PRIVATE_PAGE = NO_FRAMING + NOT_STORED                         SECRET_URL_PAGE = PRIVATE_PAGE + no-referrer
+// EMBEDDABLE = frame-ancestors *                                 BASE_RULE = Punkt 1 unten für '/:path*'
+// SUITE_RULES = /sw.js (SERVICE_WORKER) und /api/suite/* (NO_REFERRER), als letzte Regeln
 ```
 
 1. Auf alle Pfade: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`,
@@ -129,12 +141,15 @@ const EMBEDDABLE = [{ key: 'Content-Security-Policy', value: 'frame-ancestors *'
 
 ### Anbindungen zwischen Tools
 
-Neben der Konten-Föderation (Ed25519, [PROTOCOL.md](PROTOCOL.md)) tauschen Tools fachliche Nachrichten aus. Für neue
-Anbindungen gilt das Format aus `app/lib/linked-tools.ts` (rsvp-app):
+Neben der Konten-Föderation (Ed25519, [PROTOCOL.md](PROTOCOL.md)) tauschen Tools fachliche Nachrichten aus. Format:
+`signLinkMessage`/`verifyLinkMessage` aus `suite-kit` (die Kopplung rsvp-app ↔ Abstimmungstool nutzt sie direkt; die
+Anbindungen von Seating, Zeitplan und Schichten haben dasselbe Format in eigenem Code, `app/lib/linked-tools.ts` in
+rsvp-app):
 
 * `base64url(JSON).base64url(HMAC-SHA256)`, Nutzlast `{ typ, aud, ...felder, iat, exp }`. **`typ` Pflicht** und
   vom Empfänger geprüft (eine Nachricht einer Art gilt nie als andere), `aud` = Origin des Empfängers,
-  Lebensdauer höchstens eine Stunde (Standard 10 Minuten). Signatur mit `timingSafeEqual` vergleichen.
+  Lebensdauer höchstens eine Stunde (Standard 10 Minuten). Länger nur begründet und auf beiden Seiten ausdrücklich
+  (`maxTtlSeconds`, z.B. der Fragebogen-Nachweis mit 12 Stunden). Signatur mit `timingSafeEqual` vergleichen.
 * Body **begrenzt einlesen** (`readLimitedText(request, MAX_BODY)`) - `(await request.text()).slice(...)` begrenzt
   nichts, der Body ist dann schon im Speicher.
 * Antworten: `401` ungültige Nachricht, `404` nicht konfiguriert bzw. nicht verknüpft, `409` Zustand passt nicht,
@@ -144,12 +159,12 @@ Anbindungen gilt das Format aus `app/lib/linked-tools.ts` (rsvp-app):
 
 ### Ausgaben
 
-* **HTML-Mails:** Alles, was nicht wörtlich im Code steht, geht durch `esc`/`escapeHtml` - Namen und Angaben von
+* **HTML-Mails:** Alles, was nicht wörtlich im Code steht, geht durch `escapeHtml` (`suite-kit/web`) - Namen und Angaben von
   Gästen genauso wie Titel, Ort und Texte der Verwaltung. Gäste können sich mit fremder Adresse anmelden, ohne
   Escaping käme fremdes HTML über unseren (DKIM-signierten) Absender. Betreff und Textteil nicht escapen.
-* **CSV:** `app/lib/csv.ts` - Semikolon, jede Zelle in Anführungszeichen, BOM für Excel, Zellen mit `= + - @`,
-  Tab oder Zeilenumbruch am Anfang mit vorangestelltem Hochkomma (CSV-Injection). Zahlen dürfen ausgenommen sein.
-  Export-Routen prüfen Anmeldung und Zugriff wie jede Seite, Antwort mit `Cache-Control: no-store`.
+* **CSV:** `csvResponse`/`toCsv` aus `suite-kit/web` - Semikolon, CRLF, BOM für Excel, Anführungszeichen nur wo
+  nötig, Textzellen mit `= + - @`, Tab oder Zeilenumbruch am Anfang mit vorangestelltem Hochkomma (CSV-Injection);
+  Zahlen bleiben Zahlen. Export-Routen prüfen Anmeldung und Zugriff wie jede Seite, Antwort mit `Cache-Control: no-store`.
 * Kein `dangerouslySetInnerHTML`, kein `$queryRawUnsafe`.
 * Öffentliche Gästelisten: Abfrage mit ausdrücklicher Feldliste (`select`), nie E-Mail, Telefon oder Allergien.
 
@@ -190,7 +205,9 @@ grep -rn "new PrismaClient" app | grep -v app/lib/prisma.ts   # leer
 grep -rn "request.text()\|request.json()" app/api             # nur über readLimitedText
 grep -rn "dangerouslySetInnerHTML\|queryRawUnsafe" app        # leer
 grep -rn 'border border-gray-300 p-2' app --include=*.tsx     # leer (inputClass)
-grep -n "^USER\|npm ci" Dockerfile                            # USER node, npm ci
+grep -n "^USER\|npm ci\|FROM" Dockerfile                     # node:22-alpine, USER node, npm ci
+grep -n '127.0.0.1:\|proxy_net' docker-compose.yml            # Port nur lokal, Netz für Uptime Kuma
+grep -rln "function \(esc\|escapeHtml\|safeEqual\|csvCell\|toCsv\|readLimitedText\)\b" app   # leer (aus suite-kit)
 ```
 
 ## Prüfung vom 2026-10-24
@@ -204,7 +221,7 @@ Discovery ohne Weiterleitungen und mit Größenlimit.
 
 * Next.js 16.3.8 mit kritischer Lücke (RCE über die Bild-Optimierung, DoS über Server Actions), dazu nodemailer,
   sharp und source-map-js mit bekannten Lücken → Next 16.4.3, `npm audit --omit=dev` ohne Befund.
-* Gästeliste-CSV ohne Formel-Schutz (Küche und Anwesenheit hatten ihn) → gemeinsames `app/lib/csv.ts`.
+* Gästeliste-CSV ohne Formel-Schutz (Küche und Anwesenheit hatten ihn) → ein gemeinsamer Export (heute aus suite-kit).
 * 14 HTML-Mails setzten Gast-Namen, Titel und Ort ungeschützt ein → überall `escapeHtml`, eine gemeinsame Funktion.
 * Header nach altem Muster (Einbetten erlaubt außer Verwaltung): `/verify` mit dem Bestätigungsknopf und die
   Reihenseiten waren einbettbar, Verwaltung und Konto ohne `noindex`/`no-store`, keine `no-referrer` auf Token-Seiten,
@@ -215,22 +232,36 @@ Discovery ohne Weiterleitungen und mit Größenlimit.
 * 27 Eingabefelder ohne `inputClass` (iOS-Zoom auf den Gästeformularen), Emojis an acht Knöpfen → Bausteine.
 * Fünf ungenutzte SVGs aus der Next-Vorlage in `public/`.
 
+**Übrige Tools - behoben am selben Tag** (jeweils mit allen Unit- und E2E-Tests, Datenbank-Sicherung vor dem Deploy):
+
+* Abstimmungstool, Seating, Zeitplan, Schichten: Next.js 16.4.3, nodemailer 10.2.1, sharp 0.35.5, zod 4.6.7,
+  source-map-js 1.2.2 - `npm audit --omit=dev` überall ohne Befund. Der Unit-Test zur Konfiguration in Seating und
+  Schichten war seit suite-kit v0.3.0 (Feld `participants`) rot und ist angepasst.
+* Abstimmungstool: Container als `node` mit `npm ci` und `--skip-generate`, `data/` an UID 1000 übergeben. Login,
+  Konto, Kontenliste, Anlegen, Verwaltung und Bearbeiten bekamen `noindex`/`no-store` (fehlte bisher), Reset und
+  Stimm-Bestätigung `no-referrer`; neuer `headers.spec.ts`. Erstmals Unit-Tests (Vitest).
+* Bodies: Abstimmungstool (`rsvp-assembly`, `assembly/decisions`, `rsvp-webhook`), Seating und Zeitplan
+  (`rsvp-webhook`), Zeitplan (`schichten/forecast`) lesen über `readLimitedText`.
+* Kopplung rsvp-app ↔ Abstimmungstool: alle Nachrichten über `signLinkMessage`/`verifyLinkMessage` - Klick-Token,
+  Zu-/Absage und Ergebnis haben jetzt ein `typ` (`poll-access`, `poll-attendance`, `poll-result`), alle ein `aud` und
+  eine vom Empfänger begrenzte Gültigkeit; feste Prüfnachrichten auf beiden Seiten. Live geprüft.
+* Gemeinsame Helfer (`escapeHtml`, CSV, `readLimitedText`, `safeEqual`, Header-Bausteine) in allen fünf Tools aus
+  suite-kit v0.5.1 statt eigener Kopien. Die CSV-Exporte haben dadurch überall dasselbe Format (rsvp-app und
+  Abstimmungstool setzten vorher jede Zelle in Anführungszeichen).
+* Alle Tools auf `node:22-alpine`.
+* Ports von rsvp-app, Seating, Zeitplan und Schichten nur noch an `127.0.0.1` (der Tunnel nutzt `127.0.0.1:<port>`),
+  alle fünf zusätzlich im Netz `proxy_net`, damit Uptime Kuma intern prüfen kann.
+* rsvp-app versioniert seine `CLAUDE.md` (und `AGENTS.md`).
+* Uptime Kuma: Korrektur des ursprünglichen Befunds („für Schichten laufen `cleanup`, `reminders` und das Backup nie“) - Schichten `cleanup`/`reminders` und Zeitplan `alerts` liefen die ganze Zeit
+  über die crontab des Hosts (`~/scripts/*-cron.sh`), ebenso das Schichten-Backup. Es fehlte nur die Überwachung: Die
+  Skripte und das Backup melden sich jetzt per `kuma-push.sh`; die Monitore selbst werden in Uptime Kuma angelegt
+  (TODO.md).
+
 **Offen** (in [TODO.md](../TODO.md)):
 
-* Abstimmungstool, Seating, Zeitplan, Schichten: Next.js mit derselben kritischen Lücke, nodemailer mit hoher
-  (Seating, Zeitplan, Schichten), sharp und zod. Seating, Zeitplan und Schichten pinnen Next exakt auf 16.3.5.
-* Abstimmungstool läuft noch als root mit `npm install`.
-* Unbegrenzt gelesene Bodies: Abstimmungstool (`rsvp-assembly`, `assembly/decisions`, `rsvp-webhook`), Seating und
-  Zeitplan (`rsvp-webhook` mit `.slice()` nach dem Lesen), Zeitplan (`schichten/forecast`).
-* Kopplung rsvp-app ↔ Abstimmungstool (älteste Anbindung): Ergebnis-Meldung ohne `typ` und ohne Obergrenze für
-  `exp`, kein `aud`. Beim nächsten Umbau der Kopplung auf das Format oben bringen (beide Seiten gleichzeitig).
-* Alle Tools auf `node:20-alpine` (End-of-Life), siehe TODO.md.
-* rsvp-app versioniert als einziges Tool seine `CLAUDE.md` nicht.
-* **Uptime Kuma:** Für Schichten gibt es keinen einzigen Monitor - `cleanup` (Löschfristen!), `reminders` und das
-  Backup laufen nie. Für Zeitplan fehlt `alerts` (Vorwarnung fürs Team), für Schichten und Zeitplan ein
-  Erreichbarkeits-Monitor.
-* rsvp-app, Seating, Zeitplan und Schichten binden ihren Port an alle Schnittstellen (`0.0.0.0` und `[::]`), nur das
-  Abstimmungstool an `127.0.0.1`. Umstellen, sobald geklärt ist, dass der Tunnel `localhost` nutzt; der Monitor
-  „RSVP“ (`http://192.168.178.126:3005`) muss dann auf die öffentliche Adresse.
+* Monitore in Uptime Kuma anlegen bzw. umstellen (TODO.md).
+* rsvp-app baut seine HTML-Mails noch einzeln von Hand (mit `escapeHtml` an jeder Stelle); die anderen Tools nutzen je
+  eine kleine `layout()`-Funktion, die alles escapet. Ein gemeinsamer Mail-Baustein in suite-kit (Bausteine wie in
+  Seatings `mail-blocks.ts`) würde beides vereinheitlichen.
 * Datenbankabfragen in Schleifen (rsvp-app: Einladungsversand, Erinnerungen, Schichten-Abgleich) - bei der heutigen
   Datenmenge unkritisch, meist bewusst als atomare Einzel-Updates.

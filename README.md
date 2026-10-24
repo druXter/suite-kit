@@ -141,11 +141,14 @@ zwischen Tools kopiert.
   Real-IP-Erkennung) war die echte IP der *letzte* `X-Forwarded-For`-Eintrag, also `1`. Prüfen: einen Fehlversuch beim Login
   machen und in der Tabelle `LoginThrottle` schauen, ob der Schlüssel `SHA-256("login:ip" + 0x00 + <eigene IP>)` existiert.
 * **Cron-Endpunkte** (Uptime Kuma o. Ä.): Jedes Tool mit automatischer Löschung stellt `/api/cron/cleanup?secret=…` bereit
-  (täglich). Ein leeres oder fehlendes `CRON_SECRET` lässt niemanden durch.
+  (täglich). Ein leeres oder fehlendes `CRON_SECRET` lässt niemanden durch. Jeder Lauf ist überwacht, ebenso Erreichbarkeit
+  und Backup jedes Tools (Monitore und Ablauf in [docs/KONVENTIONEN.md](docs/KONVENTIONEN.md#betrieb)).
+* **Ports nur an `127.0.0.1`**, von außen nur über den Cloudflare-Tunnel; für die interne Überwachung hängt jedes Tool
+  zusätzlich im Docker-Netz `proxy_net` (Details in KONVENTIONEN.md, „Betrieb“).
 * **Datenbank sichern** vor jedem Update (SQLite-Datei kopieren, Container dafür kurz stoppen oder sichern, wenn wenig los ist).
 * **Löschfristen** sind suite-weit gleich: Inhalte 18 Monate nach Ende, Konten nach 2 Jahren ohne Anmeldung (Konten mit
   Admin-Rolle ausgenommen, in rsvp-app alle Verwaltungskonten).
-* Wird `suite-kit` als Git-Abhängigkeit eingebunden (`"suite-kit": "github:druXter/suite-kit#v0.2.0"`, ältere Tools dürfen auf `v0.1.0` bleiben - sie fragen nie nach Teilnehmenden), braucht der
+* Wird `suite-kit` als Git-Abhängigkeit eingebunden (`"suite-kit": "github:druXter/suite-kit#v0.5.1"`, heute in allen Tools), braucht der
   Docker-Build `git` im Image (`apk add --no-cache git`); `dist/` wird beim Installieren per `prepare`-Skript gebaut.
 
 ## Ein weiteres Tool anbinden

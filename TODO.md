@@ -6,50 +6,35 @@ Jeder Punkt mit Begründung, warum er noch offen ist.
 
 ## Wartung
 
-- [ ] **Alle Tools von `node:20-alpine` auf `node:22-alpine` umstellen.**
-  Node 20 ist seit April 2026 End-of-Life und bekommt keine Security-Updates mehr. Node 22 wird bis April 2027
-  unterstützt (Node 24 ginge bis April 2028). Aufgefallen am 21.10.2026 bei der Prüfung auf die PHP2Shell-Lücken
-  (Suite nicht betroffen, kein PHP im Einsatz).
-  Betroffen (jeweils `Dockerfile`):
-  - [ ] rsvp-app
-  - [ ] abstimmungstool
-  - [ ] seating
-  - [ ] zeitplan
-  - [ ] schichten
-  - [ ] suite-kit selbst: `engines.node` in `package.json` von `>=20` auf `>=22` anheben
-
-  Pro Tool testen: Image baut, `prisma generate` und Migrationen laufen (Prisma-Engine für musl/OpenSSL im
-  Alpine-Image), Unit-Tests grün, Login über die Konto-Föderation und die signierten Anbindungen zwischen den Tools
-  funktionieren. In der rsvp-app zusätzlich Web-Push (`web-push`) prüfen. Vor jedem Deploy wie üblich ein
-  Datenbank-Snapshot.
-  Offen, weil jedes Tool neu gebaut und getestet werden muss. Nicht direkt vor einem anstehenden Event umstellen,
-  das das Tool nutzt.
+- [x] **Alle Tools von `node:20-alpine` auf `node:22-alpine` umgestellt** (24.10.2026), suite-kit `engines.node` auf
+  `>=22`. Node 20 ist seit April 2026 End-of-Life. Je Tool Image gebaut, Prisma-Client und `db push` im Container,
+  Unit- und E2E-Tests, Föderation und Anbindungen geprüft. Node 22 wird bis April 2027 unterstützt - dann auf Node 24.
 
   Die Campus-App gehört nicht zur Suite. Ihr Backend läuft noch auf `node:18`, der Punkt steht in deren `TODO.md`.
 
 ## Sicherheit und Konsistenz (Prüfung vom 24.10.2026)
 
-Befunde und Begründungen in [docs/KONVENTIONEN.md](docs/KONVENTIONEN.md#prüfung-vom-2026-10-24). rsvp-app ist
-erledigt, die übrigen Tools ziehen nach.
+Befunde und Begründungen in [docs/KONVENTIONEN.md](docs/KONVENTIONEN.md#prüfung-vom-2026-10-24). Alles aus der Prüfung
+ist umgesetzt und ausgerollt bis auf die Monitore in Uptime Kuma (Oberfläche) und den gemeinsamen Mail-Baustein.
 
-- [ ] **Next.js auf 16.4.3 (oder neuer) in allen Tools** - kritische Lücke (RCE über die Bild-Optimierung bzw.
-  `next/og`, DoS über Server Actions) in allen Versionen bis 16.4.0. Dazu `nodemailer` ≥ 10.2.1, `sharp` ≥ 0.35.5,
-  `zod` ≥ 4.6.6. Ziel: `npm audit --omit=dev` ohne Befund.
-  - [x] rsvp-app
-  - [ ] abstimmungstool
-  - [ ] seating (pinnt `next` exakt auf 16.3.5)
-  - [ ] zeitplan (pinnt `next` exakt auf 16.3.5)
-  - [ ] schichten (pinnt `next` exakt auf 16.3.5)
-  Offen, weil jedes Tool einzeln gebaut, getestet und ausgerollt werden muss. Hohe Priorität.
-- [ ] **Uptime Kuma ergänzen:** Schichten `cleanup` (24 h), `reminders` (1 h), Backup und Erreichbarkeit; Zeitplan
-  `alerts` (15 min) und Erreichbarkeit. Offen, weil die Monitore in der Oberfläche von Uptime Kuma angelegt werden.
-- [ ] **Ports nur an `127.0.0.1` binden** (rsvp-app, seating, zeitplan, schichten). Vorher in Cloudflare prüfen, dass
-  der Tunnel `localhost:<port>` nutzt, und den Monitor „RSVP“ auf `https://rsvp.ramonroeser.de` umstellen.
-- [ ] **Abstimmungstool im Container als `node`** statt root, `npm ci`, `--skip-generate` (Muster in
-  KONVENTIONEN.md, „Betrieb“); dabei `data/` an UID 1000 übergeben.
-- [ ] **Bodies begrenzt einlesen** (`readLimitedText`): Abstimmungstool (`rsvp-assembly`, `assembly/decisions`,
-  `rsvp-webhook`), Seating und Zeitplan (`rsvp-webhook`), Zeitplan (`schichten/forecast`).
-- [ ] **Kopplung rsvp-app ↔ Abstimmungstool** auf das Nachrichtenformat mit `typ`, `aud` und begrenztem `exp` bringen
-  (beide Seiten in einem Zug, feste Prüfnachrichten in beiden Unit-Tests).
-- [ ] **Gemeinsame Helfer nach suite-kit** (`csv`, `escapeHtml`, `readLimitedText`, `safeEqual`, Header-Bausteine
-  für `next.config.ts`) - heute in jedem Tool eine eigene, fast gleiche Kopie. Mit der nächsten suite-kit-Version.
+- [x] Next.js 16.4.3, nodemailer, sharp, zod, source-map-js in allen Tools - `npm audit --omit=dev` ohne Befund.
+- [x] Abstimmungstool im Container als `node` mit `npm ci` und `--skip-generate`, `data/` an UID 1000.
+- [x] Bodies überall über `readLimitedText`.
+- [x] Kopplung rsvp-app ↔ Abstimmungstool im Format mit `typ`, `aud` und begrenztem `exp`, feste Prüfnachrichten.
+- [x] Gemeinsame Helfer (`escapeHtml`, CSV, `readLimitedText`, `safeEqual`, Header-Bausteine, Nachrichtenformat) in
+  suite-kit v0.5.1, alle Tools nutzen sie.
+- [x] Ports nur an `127.0.0.1`, alle Tools zusätzlich im Netz `proxy_net` (Uptime Kuma prüft intern).
+- [x] rsvp-app versioniert `CLAUDE.md`.
+- [ ] **Uptime Kuma: Monitore anlegen bzw. umstellen** (in der Oberfläche, `http://192.168.178.126:3001`):
+  - [ ] „RSVP“ von `http://192.168.178.126:3005` auf `http://rsvp-app:3000/` umstellen - die LAN-Adresse ist seit
+    dem 24.10. für die Tools zu, der Monitor meldet bis dahin „down“.
+  - [ ] Erreichbarkeit (HTTP, 60 s): `http://abstimmungstool:3000/`, `http://seating:3000/`,
+    `http://zeitplan:3000/`, `http://schichten:3000/`.
+  - [ ] Push-Monitore für die crontab des Hosts; den Token (letzter Teil der Push-URL) jeweils in
+    `~/scripts/kuma-push.env` eintragen, ab dem nächsten Lauf kommen die Meldungen:
+    `schichten-cleanup` (Heartbeat 90000 s), `schichten-reminders` (4500 s), `schichten-backup` (90000 s),
+    `zeitplan-alerts` (300 s).
+- [ ] **Gemeinsamer Mail-Baustein in suite-kit:** rsvp-app baut seine 14+ HTML-Mails einzeln (mit `escapeHtml` an jeder
+  Stelle), die anderen Tools haben je eine fast gleiche `layout()`-Funktion, Seating zusätzlich Bausteine
+  (`mail-blocks.ts`). Ein Baustein in `suite-kit/web` (Überschrift, Absätze, Tabelle, Knopf, Hinweis; escapet selbst)
+  würde Aussehen und Schutz vereinheitlichen. Offen, weil sich dabei das Aussehen der Gäste-Mails von rsvp-app ändert.
