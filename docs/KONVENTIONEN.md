@@ -18,7 +18,9 @@ man hier und zieht dann alle Tools nach, nicht umgekehrt.
   Server Actions sind dünne Adapter. Eine Regel, die an zwei Stellen gilt (z.B. Kapazität, Rechte), hat genau eine
   Funktion.
 * **Oberfläche nur aus `app/ui/kit`** (re-exportiert `suite-kit/ui`), siehe DESIGN.md. Eingabefelder immer mit
-  `inputClass`, sonst fehlen die 16 px unter `sm` und iOS zoomt ins Formular.
+  `inputClass` bzw. `fieldClass` (eigene Breite), Beschriftung mit `labelClass`, Knöpfe mit `buttonClass` - nie die
+  Klassen kopieren (sonst fehlen z.B. die 16 px unter `sm` und iOS zoomt ins Formular). Bewusste Ausnahmen mit Kommentar
+  (Live-Steuerung in Zeitplan: größere Knöpfe für die Bedienung mit einer Hand).
 * **Hilfsfunktionen, die jedes Tool braucht, kommen aus suite-kit**, nie als eigene Kopie (seit v0.5.1, README
   „Gemeinsame Helfer“): aus `suite-kit/web` `escapeHtml` (Mails), `csvCell`/`toCsv`/`csvResponse` (Exporte),
   `readLimitedText` (Bodies) und die Header-Bausteine; aus `suite-kit` `safeEqual` (Geheimnisse) und
@@ -100,8 +102,9 @@ Jede dieser Regeln steht in mindestens einem Tool schon im Code samt Test; Begr�
   (Session-Fixation), Abmelden löscht sie auch in der Datenbank.
 * Einmal-Links (Passwort-Reset, E-Mail-Änderung, Konto-Bestätigung) nur als Hash gespeichert, 1 Stunde gültig, nach
   Gebrauch verbraucht. **Mail-Links lösen beim Aufruf nichts aus**, erst ein Knopf auf der Seite (Link-Scanner).
-* Passwort: mindestens 10 Zeichen, höchstens 72 Byte, nicht naheliegend, serverseitig geprüft
-  (`MIN_PASSWORD_LENGTH`); bcrypt mit Kosten 12, ältere Hashes beim Login erneuert.
+* Passwort: mindestens 10 Zeichen, nicht naheliegend, serverseitig geprüft (`MIN_PASSWORD_LENGTH`). Hash mit scrypt
+  aus `node:crypto` (N=2^15, r=8, p=3, Parameter im Hash; Abstimmungstool, Seating, Zeitplan, Schichten) bzw. bcrypt mit
+  Kosten 12 und höchstens 72 Byte (rsvp-app); veraltete Parameter werden beim nächsten Login neu gehasht.
 * Drosselung: Versuch **vor** der Prüfung atomar reservieren; Login 10 pro E-Mail und 20 pro IP in 15 Minuten,
   Reset-Mails 3 pro E-Mail und Stunde. Keine dauerhafte Sperre. Unbekannte Adresse: gleiche Meldung, gleiche
   Rechenzeit (Prüfung gegen einen Wegwerf-Hash).
@@ -157,6 +160,14 @@ rsvp-app):
 * Übertragen wird nur, was der Partner braucht (Kennungen statt Namen, wo es geht).
 * Beide Seiten haben feste Prüfnachrichten in ihren Unit-Tests, damit das Format nicht auseinanderläuft.
 
+### Push-Mitteilungen
+
+* Ein Push-Abo aus dem Browser wird nur über `validPushSubscription` (`suite-kit/web`) gespeichert: Endpoint bei einem
+  Push-Dienst der Browser-Hersteller, Schlüssel im Browser-Format. Der Server schickt später Anfragen an den Endpoint
+  - ohne Prüfung könnte jede*r, die ein Abo anlegen darf (auch Gäste mit persönlichem Link), Anfragen an beliebige
+  Adressen auslösen, etwa ins interne Netz (SSRF).
+* Abos hängen an einer Sitzung, einem Konto oder einem Zugang und verschwinden mit ihm; Inhalt Ende-zu-Ende verschlüsselt.
+
 ### Ausgaben
 
 * **HTML-Mails** nur über `renderMail` aus `suite-kit/web` (Bausteine, nie eigenes HTML; Gestaltung in DESIGN.md,
@@ -170,6 +181,10 @@ rsvp-app):
 * Öffentliche Gästelisten: Abfrage mit ausdrücklicher Feldliste (`select`), nie E-Mail, Telefon oder Allergien.
 
 ## Datenschutz
+
+* **Cloudflare** steht in jeder Datenschutzerklärung als Empfänger (Abschnitt „Hosting“): Alle Aufrufe laufen über
+  Cloudflare (Tunnel, Schutz), Cloudflare sieht also alles, was übertragen wird. Auftragsverarbeiter nach Art. 28 DSGVO,
+  Data Privacy Framework. „Keine Weitergabe an einen externen Anbieter“ wäre falsch.
 
 * `/impressum` und `/datenschutz` in jedem Tool, `force-dynamic`, Angaben aus `IMPRESSUM_*`; Link in der
   Fußzeile jeder Seite. Ein neuer Datenfluss (Anbindung, Push, API) kommt im selben Commit in die Datenschutzerklärung,
@@ -206,7 +221,7 @@ grep -rn "new PrismaClient" app | grep -v app/lib/prisma.ts   # leer
 grep -rn "request.text()\|request.json()" app/api             # nur über readLimitedText
 grep -rn "dangerouslySetInnerHTML\|queryRawUnsafe" app        # leer
 grep -rln '<div style=\|<p style=' app/lib --include=*.ts      # leer (Mails nur über renderMail)
-grep -rn 'border border-gray-300 p-2' app --include=*.tsx     # leer (inputClass)
+grep -rn 'rounded-lg border border-gray-300 bg-white p-2' app --include=*.tsx | grep -v app/ui/kit   # leer (Kit statt Kopie)
 grep -n "^USER\|npm ci\|FROM" Dockerfile                     # node:22-alpine, USER node, npm ci
 grep -n '127.0.0.1:\|proxy_net' docker-compose.yml            # Port nur lokal, Netz für Uptime Kuma
 grep -rln "function \(esc\|escapeHtml\|safeEqual\|csvCell\|toCsv\|readLimitedText\)\b" app   # leer (aus suite-kit)
@@ -266,3 +281,25 @@ Discovery ohne Weiterleitungen und mit Größenlimit.
 
 * Datenbankabfragen in Schleifen (rsvp-app: Einladungsversand, Erinnerungen, Schichten-Abgleich) - bei der heutigen
   Datenmenge unkritisch, meist bewusst als atomare Einzel-Updates.
+
+## Durchsicht Zeitplan (2026-10-24)
+
+Vollständig durchgesehen: Rechte in allen Server Actions und Routen, Gast-Zugänge (Zugangscode, Gast-Sitzungen,
+Tafel- und Team-Schlüssel, Einstieg aus rsvp-app), Live-Steuerung, Push, Löschfristen, Datenschutzerklärung,
+Laufzeiten, Oberfläche.
+
+**Ohne Befund:** Jede Server Action prüft Konto, Zugriff (`loadEventForUser`), Recht und bei geheimen Punkten die
+Sichtbarkeit; IDs aus Formularen (Spuren, Reihen, Punkte, Rückgängig) gelten nur innerhalb des Events. Zugangscodes als
+HMAC mit Drosselung vor dem Vergleich, abgeleitete Tafel-/Team-Schlüssel mit getrennten Nachrichten und
+Schlüsselwechsel, Gast-Cookies je Event mit `__Host-`, Einstieg aus rsvp-app mit `typ`, `aud`, Ablauf und beidseitiger
+Verknüpfung. Cron `alerts` 8 ms, Polling mit ETag.
+
+**Behoben:**
+
+* rsvp-app speicherte Push-Abos ohne Prüfung des Endpoints (Gäste mit persönlichem Link und Verwaltungskonten) - der
+  Server hätte später Anfragen an beliebige Adressen geschickt (SSRF). Zeitplan und Abstimmungstool prüften mit einer
+  eigenen Kopie. Jetzt `validPushSubscription` aus suite-kit in allen drei Tools; die gespeicherten Abos waren alle echt.
+* Alle Datenschutzerklärungen sagten, es gebe keinen externen Anbieter - Cloudflare fehlte. Ergänzt.
+* Zeitplan, Seating, Schichten, Abstimmungstool: von Hand kopierte Klassen für Felder, Beschriftungen und Knöpfe
+  durch die Bausteine ersetzt (neu `fieldClass` für Felder mit eigener Breite).
+* KONVENTIONEN.md nannte bcrypt als Regel - vier Tools nutzen scrypt; korrigiert.
