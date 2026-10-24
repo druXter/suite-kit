@@ -54,7 +54,7 @@ Karte mit `buttonClass('danger')`.
 | `Card`, `EmptyState` | Fläche für einen Inhaltsblock, leere Liste. |
 | `Badge` (`Tone`) | Status und Merkmale; Töne gray, green, orange, red, blue, indigo, pink, amber, purple, lime, teal. |
 | `buttonClass(variant, size)`, `ButtonLink`, `SubmitButton`, `PrintButton` | Knöpfe: `primary` (eine Hauptaktion pro Bereich), `secondary`, `ghost`, `danger`; `sm` nur für Nebenaktionen in Listen. `SubmitButton` ist volle Breite (Formulare), `inline` daneben. |
-| `inputClass`, `labelClass`, `hintClass` | Eingabefelder (16 px auf dem Handy, sonst zoomt iOS hinein), Beschriftung, Hinweis darunter. |
+| `inputClass`, `fieldClass`, `labelClass`, `hintClass` | Eingabefelder (16 px auf dem Handy, sonst zoomt iOS hinein) in voller Breite bzw. ohne Breite für Felder mit eigener (`${fieldClass} w-24`), Beschriftung, Hinweis darunter. Nie die Klassen von Hand kopieren. |
 | `Notice` | Rückmeldung: info, success, warning, error (`role="alert"`). |
 | `Stat`, `ProgressBar` | Kennzahl mit Beschriftung, optional Balken (voll = orange). |
 | `PageHeader`, `Main`, `Tabs`, `Segmented`, `sectionTitleClass` | Seitenaufbau; `Segmented` schaltet Ansichten einer Seite um (Spuren, Druckart, Filter). |

@@ -51,7 +51,10 @@ export function ButtonLink({ href, children, variant = 'secondary', size = 'md',
     : <Link href={href} className={buttonClass(variant, size)}>{children}</Link>
 }
 
-export const inputClass = 'w-full rounded-lg border border-gray-300 bg-white p-2 text-base sm:text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 dark:focus:ring-blue-900'
+/** Eingabefeld ohne Breite - für Felder mit eigener Breite (`${fieldClass} w-24`). 16 px unter `sm`, sonst zoomt iOS. */
+export const fieldClass = 'rounded-lg border border-gray-300 bg-white p-2 text-base sm:text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 dark:focus:ring-blue-900'
+/** Eingabefeld in voller Breite - der Normalfall. */
+export const inputClass = `w-full ${fieldClass}`
 export const labelClass = 'block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1'
 export const hintClass = 'text-xs text-gray-500 dark:text-gray-400 mt-1'
 
