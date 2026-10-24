@@ -254,12 +254,11 @@ Discovery ohne Weiterleitungen und mit Größenlimit.
 * rsvp-app versioniert seine `CLAUDE.md` (und `AGENTS.md`).
 * Uptime Kuma: Korrektur des ursprünglichen Befunds („für Schichten laufen `cleanup`, `reminders` und das Backup nie“) - Schichten `cleanup`/`reminders` und Zeitplan `alerts` liefen die ganze Zeit
   über die crontab des Hosts (`~/scripts/*-cron.sh`), ebenso das Schichten-Backup. Es fehlte nur die Überwachung: Die
-  Skripte und das Backup melden sich jetzt per `kuma-push.sh`; die Monitore selbst werden in Uptime Kuma angelegt
-  (TODO.md).
+  Skripte und das Backup melden sich jetzt per `kuma-push.sh` bei Push-Monitoren; dazu je Tool ein interner
+  Erreichbarkeits-Monitor.
 
 **Offen** (in [TODO.md](../TODO.md)):
 
-* Monitore in Uptime Kuma anlegen bzw. umstellen (TODO.md).
 * rsvp-app baut seine HTML-Mails noch einzeln von Hand (mit `escapeHtml` an jeder Stelle); die anderen Tools nutzen je
   eine kleine `layout()`-Funktion, die alles escapet. Ein gemeinsamer Mail-Baustein in suite-kit (Bausteine wie in
   Seatings `mail-blocks.ts`) würde beides vereinheitlichen.

@@ -15,7 +15,7 @@ Jeder Punkt mit Begründung, warum er noch offen ist.
 ## Sicherheit und Konsistenz (Prüfung vom 24.10.2026)
 
 Befunde und Begründungen in [docs/KONVENTIONEN.md](docs/KONVENTIONEN.md#prüfung-vom-2026-10-24). Alles aus der Prüfung
-ist umgesetzt und ausgerollt bis auf die Monitore in Uptime Kuma (Oberfläche) und den gemeinsamen Mail-Baustein.
+ist umgesetzt und ausgerollt bis auf den gemeinsamen Mail-Baustein.
 
 - [x] Next.js 16.4.3, nodemailer, sharp, zod, source-map-js in allen Tools - `npm audit --omit=dev` ohne Befund.
 - [x] Abstimmungstool im Container als `node` mit `npm ci` und `--skip-generate`, `data/` an UID 1000.
@@ -25,15 +25,9 @@ ist umgesetzt und ausgerollt bis auf die Monitore in Uptime Kuma (Oberfläche) u
   suite-kit v0.5.1, alle Tools nutzen sie.
 - [x] Ports nur an `127.0.0.1`, alle Tools zusätzlich im Netz `proxy_net` (Uptime Kuma prüft intern).
 - [x] rsvp-app versioniert `CLAUDE.md`.
-- [ ] **Uptime Kuma: Monitore anlegen bzw. umstellen** (in der Oberfläche, `http://192.168.178.126:3001`):
-  - [ ] „RSVP“ von `http://192.168.178.126:3005` auf `http://rsvp-app:3000/` umstellen - die LAN-Adresse ist seit
-    dem 24.10. für die Tools zu, der Monitor meldet bis dahin „down“.
-  - [ ] Erreichbarkeit (HTTP, 60 s): `http://abstimmungstool:3000/`, `http://seating:3000/`,
-    `http://zeitplan:3000/`, `http://schichten:3000/`.
-  - [ ] Push-Monitore für die crontab des Hosts; den Token (letzter Teil der Push-URL) jeweils in
-    `~/scripts/kuma-push.env` eintragen, ab dem nächsten Lauf kommen die Meldungen:
-    `schichten-cleanup` (Heartbeat 90000 s), `schichten-reminders` (4500 s), `schichten-backup` (90000 s),
-    `zeitplan-alerts` (300 s).
+- [x] **Uptime Kuma** (24.10.2026): „RSVP“ prüft `http://rsvp-app:3000`, neu die Erreichbarkeit von Abstimmungstool,
+  Seating, Zeitplan und Schichten (intern über `proxy_net`) und die Push-Monitore „Schichten Cleanup“, „Schichten
+  Reminders“, „Schichten Backups“ und „Zeitplan Alerts“ (Tokens in `~/scripts/kuma-push.env`). Alle melden „up“.
 - [ ] **Gemeinsamer Mail-Baustein in suite-kit:** rsvp-app baut seine 14+ HTML-Mails einzeln (mit `escapeHtml` an jeder
   Stelle), die anderen Tools haben je eine fast gleiche `layout()`-Funktion, Seating zusätzlich Bausteine
   (`mail-blocks.ts`). Ein Baustein in `suite-kit/web` (Überschrift, Absätze, Tabelle, Knopf, Hinweis; escapet selbst)
