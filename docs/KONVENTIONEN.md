@@ -303,3 +303,23 @@ Verknüpfung. Cron `alerts` 8 ms, Polling mit ETag.
 * Zeitplan, Seating, Schichten, Abstimmungstool: von Hand kopierte Klassen für Felder, Beschriftungen und Knöpfe
   durch die Bausteine ersetzt (neu `fieldClass` für Felder mit eigener Breite).
 * KONVENTIONEN.md nannte bcrypt als Regel - vier Tools nutzen scrypt; korrigiert.
+
+## Durchsicht Schichten (2026-10-24)
+
+Vollständig durchgesehen: Rechte (Besitzer*in, Mitverwaltung, Schichtleitung) in allen Server Actions, Eintragen
+ohne Konto, Bestätigung, persönlicher Link, Tauschbörse, Bildschirm vor Ort, Kalenderdatei, Anbindungen an rsvp-app
+und Zeitplan, Löschfristen, Datenschutzerklärung, Laufzeiten, Oberfläche.
+
+**Ohne Befund:** Jede Server Action prüft Konto, Zugriff und Stufe; IDs aus Formularen (Bereiche, Schichten,
+Helfer*innen, Einträge, Leitungen, Freigaben) gelten nur im Event, eine Mitverwaltung kann keine weitere Mitverwaltung
+vergeben. Helfer*innen ändern nur eigene Einträge; Plätze werden in einer SQL-Anweisung vergeben (nie überbucht),
+die Übernahme aus der Tauschbörse ist ein bedingtes Update. Persönliche Links abgeleitet (HMAC über eine Nonce, nur der
+Hash gespeichert), Bestätigung nur per Knopf, Token verschwindet nach dem Öffnen aus der Adresszeile. Namen für andere
+nur nach Einstellung, gekürzt und ausblendbar. Cron `reminders` 0,1 s.
+
+**Behoben (alle Tools):** Abrufe beim Partner folgten Weiterleitungen - entgegen der Regel oben nur im
+Abstimmungstool mit `redirect: 'error'`. Jetzt in allen 15 Server-zu-Server-Abrufen.
+
+**Beobachten:** Eintragen ohne Konto reserviert Plätze 60 Minuten bis zur Bestätigung. Wer viele erfundene Adressen
+einträgt (gedrosselt: 30 Eintragungen pro IP und Stunde), kann knappe Schichten eine Stunde lang blockieren. Bei
+Missbrauch: Reservierungen je IP begrenzen oder die Frist verkürzen.
