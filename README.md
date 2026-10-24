@@ -255,7 +255,10 @@ Was jedes Tool braucht und überall gleich funktionieren muss, kommt aus suite-k
   * `readLimitedText(request, max)` - Body begrenzt einlesen, `null` heißt 413.
   * Header-Bausteine für `next.config.ts`: `BASE_RULE`, `NO_FRAMING`, `NOT_STORED`, `PRIVATE_PAGE`, `EMBEDDABLE`,
     `NO_REFERRER`, `SECRET_URL_PAGE`, `SUITE_RULES` (Service Worker, Föderations-Endpunkte).
-* `suite-kit`: `safeEqual` - Konstantzeitvergleich für Geheimnisse.
+* `suite-kit` (Node):
+  * `safeEqual` - Konstantzeitvergleich für Geheimnisse.
+  * `signLinkMessage`, `verifyLinkMessage` - fachliche Nachrichten zwischen zwei Tools mit gemeinsamem Secret
+    (`{ typ, aud, ...felder, iat, exp }`, HMAC-SHA256, höchstens eine Stunde gültig; Regeln in KONVENTIONEN.md).
 
 ## Entwicklung des Pakets
 
