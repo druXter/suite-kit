@@ -3,7 +3,9 @@
 // Format: `base64url(JSON).base64url(HMAC-SHA256(payloadPart, secret))`, Nutzlast `{ typ, aud, ...felder, iat, exp }`.
 // `typ` hält die Nachrichtenarten einer Anbindung auseinander (eine Nachricht einer Art gilt nie als andere), `aud`
 // ist der Origin des Empfängers (eine Nachricht an Tool A gilt nie bei Tool B, auch bei versehentlich gleichem
-// Secret). Höchstens eine Stunde gültig, Standard zehn Minuten - gemessen vom Empfänger, nicht vom Absender.
+// Secret). Höchstens eine Stunde gültig, Standard zehn Minuten - gemessen vom Empfänger, nicht vom Absender. Länger
+// nur mit Begründung und auf beiden Seiten ausdrücklich (`maxTtlSeconds`), z.B. ein Nachweis, der das Ausfüllen eines
+// Fragebogens überdauern muss.
 import { createHmac } from 'node:crypto'
 import { b64uDecode, b64uEncode } from './base64url.js'
 import { safeEqual } from './secrets.js'
@@ -26,12 +28,12 @@ export function signLinkMessage(
   aud: string,
   fields: Record<string, unknown>,
   secret: string,
-  options: { now?: Date; ttlSeconds?: number } = {}
+  options: { now?: Date; ttlSeconds?: number; maxTtlSeconds?: number } = {}
 ): string {
   if (!secret) throw new Error('signLinkMessage: Secret fehlt')
   for (const key of RESERVED) if (key in fields) throw new Error(`signLinkMessage: Feld ${key} ist reserviert`)
   const iat = Math.floor((options.now ?? new Date()).getTime() / 1000)
-  const ttl = Math.min(options.ttlSeconds ?? LINK_MESSAGE_DEFAULT_TTL_SECONDS, LINK_MESSAGE_MAX_TTL_SECONDS)
+  const ttl = Math.min(options.ttlSeconds ?? LINK_MESSAGE_DEFAULT_TTL_SECONDS, options.maxTtlSeconds ?? LINK_MESSAGE_MAX_TTL_SECONDS)
   const payloadPart = b64uEncode(JSON.stringify({ typ, aud, ...fields, iat, exp: iat + ttl }))
   return `${payloadPart}.${mac(payloadPart, secret)}`
 }
@@ -42,6 +44,8 @@ export type LinkMessageExpectation = {
   audience: string
   /** Aktuelles Secret, beim Wechsel zusätzlich das vorige. Leere Einträge zählen nicht. */
   secret: string | readonly (string | null | undefined)[]
+  /** Höchste Restlaufzeit, Standard eine Stunde. Kürzer für Nachrichten, die sofort verarbeitet werden. */
+  maxTtlSeconds?: number
   now?: Date
 }
 
@@ -73,7 +77,7 @@ export function verifyLinkMessage(token: unknown, expect: LinkMessageExpectation
   const now = Math.floor((expect.now ?? new Date()).getTime() / 1000)
   const issued = iat as number
   const expires = exp as number
-  if (expires <= now || expires - now > LINK_MESSAGE_MAX_TTL_SECONDS) return null
+  if (expires <= now || expires - now > (expect.maxTtlSeconds ?? LINK_MESSAGE_MAX_TTL_SECONDS)) return null
   if (issued > now + CLOCK_SKEW_SECONDS || issued > expires) return null
   return record
 }

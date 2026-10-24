@@ -54,6 +54,17 @@ test('Gültigkeit: abgelaufen, mehr als eine Stunde, aus der Zukunft', () => {
   assert.equal(verifyLinkMessage(capped, { ...expect, now: at(3600) }), null)
 })
 
+test('maxTtlSeconds: kürzer oder ausdrücklich länger, auf beiden Seiten', () => {
+  const iat = Math.floor(NOW.getTime() / 1000)
+  const expect = { typ: 't', audience: AUD, secret: SECRET, now: NOW }
+  const fiveMinutes = signLinkMessage('t', AUD, {}, SECRET, { now: NOW, ttlSeconds: 300 })
+  assert.ok(verifyLinkMessage(fiveMinutes, { ...expect, maxTtlSeconds: 300 }))
+  assert.equal(verifyLinkMessage(signLinkMessage('t', AUD, {}, SECRET, { now: NOW }), { ...expect, maxTtlSeconds: 300 }), null)
+  const twelveHours = signLinkMessage('t', AUD, {}, SECRET, { now: NOW, ttlSeconds: 12 * 3600, maxTtlSeconds: 24 * 3600 })
+  assert.equal(verifyLinkMessage(twelveHours, { ...expect, maxTtlSeconds: 24 * 3600 })!.exp, iat + 12 * 3600)
+  assert.equal(verifyLinkMessage(twelveHours, expect), null)
+})
+
 test('reservierte Felder und fehlendes Secret werfen beim Signieren', () => {
   assert.throws(() => signLinkMessage('t', AUD, { exp: 1 }, SECRET))
   assert.throws(() => signLinkMessage('t', AUD, { typ: 'x' }, SECRET))
