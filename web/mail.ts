@@ -134,7 +134,11 @@ function blockHtml(block: MailBlock): string {
 function blockText(block: MailBlock): string {
   switch (block.kind) {
     case 'p': case 'small': return inlineText(block.text)
-    case 'rows': return block.rows.map(r => { const { label, value } = row(r); return `${label}: ${value}` }).join('\n')
+    case 'rows': return block.rows.map(r => {
+      const { label, value } = row(r)
+      // Mehrzeilige Werte (z.B. mehrere Namen) eingerückt unter der Bezeichnung.
+      return value.includes('\n') ? `${label}:\n${value.split(/\r?\n/).map(line => `  ${line}`).join('\n')}` : `${label}: ${value}`
+    }).join('\n')
     case 'list': return block.items.map(item => `- ${inlineText(item)}`).join('\n')
     case 'button': return isSafeMailHref(block.href) ? `${block.label}:\n${block.href.trim()}` : block.label
     case 'box': return [block.title, ...block.blocks.map(blockText)].filter(Boolean).join('\n\n')

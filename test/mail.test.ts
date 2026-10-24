@@ -59,6 +59,7 @@ test('Klartext aus denselben Bausteinen', () => {
   assert.ok(text.startsWith(`Hallo ${evil},\nzweite Zeile`), 'unescapet im Klartext')
   assert.ok(text.includes('Wann: Sa, 1.11.\nVerwendungszweck: E2E-123'))
   assert.ok(text.includes('- Anna\n- Ben X1'))
+  assert.ok(mailText(sample({ blocks: [{ kind: 'rows', rows: [['Gäste', 'Anna\nBen']] }] })).startsWith('Gäste:\n  Anna\n  Ben'))
   assert.ok(text.includes('Antwort bearbeiten:\nhttps://rsvp.example.de/x?token=a&b=1'))
   assert.ok(text.includes('Bitte überweisen\n\nBetrag 25 €'))
   assert.ok(text.includes('Am Einlass zeigen'))
