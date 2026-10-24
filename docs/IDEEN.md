@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -54,7 +54,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [Q3](#q3-fotos-der-gäste-über-immich) | Fotos der Gäste über Immich statt eigener App | rsvp-app / zeitplan | S | umgesetzt |
 | [Q4](#q4-vorlagen-pro-event-typ-über-alle-tools) | Vorlagen pro Event-Typ über alle Tools | alle Tools | M–L | zurückgestellt |
 | [Q5](#q5-direkt-weiter-zum-einzigen-anbieter) | Login: direkt weiter zum einzigen Anbieter | suite-kit, alle Tools | S | umgesetzt |
-| [Q6](#q6-bot-schutz-für-öffentliche-formulare) | Bot-Schutz für öffentliche Formulare (Turnstile o. Ä.) | seating, ggf. alle Tools | S je Tool | zurückgestellt |
+| [Q6](#q6-bot-schutz-für-öffentliche-formulare) | Bot-Schutz für öffentliche Formulare (eigener Proof-of-Work) | rsvp-app, seating, schichten, abstimmungstool | S je Tool | umgesetzt |
 | [Q7](#q7-verwaltungs--und-teilnehmendenkonto-verknüpfen) | Verwaltungs- und Teilnehmendenkonto verknüpfen statt zusammenlegen | rsvp-app | S | umgesetzt |
 
 ### Wo die Ideen ansetzen
@@ -707,6 +707,13 @@ Identitätsanbieter, nur weniger Klicks.
 ### Q6: Bot-Schutz für öffentliche Formulare
 
 **Bewertung (2026-10-07): zurückgestellt.** Drosselung pro IP und E-Mail reicht bisher; erst bei beobachtetem Missbrauch (Drittanbieter, Datenschutz).
+
+**Umgesetzt (2026-10-24)** - ohne Drittanbieter: statt Turnstile ein eigener Proof-of-Work in suite-kit v0.8.0
+(`ProofOfWork`, `powError`, `/api/suite/pow`; Entscheidung des Nutzers, damit kein Dienst Dritter in die
+Datenschutzerklärung muss). Keine Variable, keine Cookies. Geschützt: rsvp-app neue Antworten ohne Konto und
+Registrierung, Seating Reservieren und Warteliste, Schichten Eintragen und Link anfordern, Abstimmungstool
+Bestätigungslink. Abstimmen selbst bleibt bewusst ohne JavaScript und damit ohne Bot-Schutz. Regeln in
+[KONVENTIONEN.md](KONVENTIONEN.md#öffentliche-formulare-bot-schutz).
 
 *Aus dem README von Seating übernommen (2026-10-07): „Später evtl.: `TURNSTILE_*`“.*
 

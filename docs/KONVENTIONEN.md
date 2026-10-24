@@ -142,6 +142,29 @@ import { BASE_RULE, EMBEDDABLE, NO_FRAMING, NO_REFERRER, NOT_STORED, PRIVATE_PAG
 5. Bei mehreren passenden Regeln gewinnt die spätere. Ein E2E-Test (`tests/e2e/headers.spec.ts`) prüft die
    Pfadgruppen; eine neue einteilige Route wird dort und in der Ausnahmeliste ergänzt.
 
+### Öffentliche Formulare (Bot-Schutz)
+
+Ein Formular ohne Konto, das **Mails an eine eingegebene Adresse auslöst oder Plätze belegt**, bekommt zusätzlich zur
+Drosselung den Bot-Schutz aus suite-kit (seit v0.8.0, Idee Q6):
+
+* Im `<form>` die Komponente `ProofOfWork` (`suite-kit/ui`, über `app/ui/kit`). Sie holt eine Aufgabe von
+  `/api/suite/pow` (`app/api/suite/pow/route.ts` mit `powChallengeResponse()`), rechnet im Hintergrund und legt die
+  Lösung ins Feld `pow`. Wird früher abgeschickt, hält sie das Absenden an und schickt danach selbst ab.
+* Die Server Action prüft mit `powError(formData)` (`suite-kit`) **nach** der Eingabeprüfung und **vor** der
+  Drosselung, also bevor etwas gezählt, gespeichert oder verschickt wird. Die Meldung ist in allen Tools gleich
+  (`POW_MESSAGE`); bei Weiterleitungen als eigener Fehlercode (`error=pow`, Hinweis `mail-pruefung`).
+* Eine Lösung gilt einmal und höchstens 10 Minuten. Schlüssel und verbrauchte Lösungen liegen nur im Speicher des
+  Prozesses: keine Variable, kein Drittanbieter, keine Cookies. Die Datenschutzerklärung nennt die Rechenaufgabe im
+  Abschnitt zur Drosselung.
+* Das Formular braucht damit JavaScript. Formulare, die bewusst ohne auskommen (Abstimmen im Abstimmungstool), bleiben
+  ohne Bot-Schutz und sind nur gedrosselt.
+* E2E-Tests, die eine Server Action nachspielen, holen je Aufruf eine frische Lösung (`powSolution` in den
+  Test-Helfern); jeder Tool-Test prüft fehlende, falsche und verbrauchte Lösungen mit Positivkontrolle.
+
+Geschützt (Stand 2026-10-24): rsvp-app neue Antworten ohne Konto und Registrierung; Seating Reservieren und
+Warteliste; Schichten Eintragen ohne Konto und Link anfordern; Abstimmungstool Bestätigungslink im Modus `EMAIL`.
+Zeitplan hat kein solches Formular.
+
 ### Anbindungen zwischen Tools
 
 Neben der Konten-Föderation (Ed25519, [PROTOCOL.md](PROTOCOL.md)) tauschen Tools fachliche Nachrichten aus. Format:

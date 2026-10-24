@@ -262,10 +262,23 @@ Was jedes Tool braucht und überall gleich funktionieren muss, kommt aus suite-k
     Browser-Hersteller, sonst SSRF).
   * Header-Bausteine für `next.config.ts`: `BASE_RULE`, `NO_FRAMING`, `NOT_STORED`, `PRIVATE_PAGE`, `EMBEDDABLE`,
     `NO_REFERRER`, `SECRET_URL_PAGE`, `SUITE_RULES` (Service Worker, Föderations-Endpunkte).
+  * `solvePowChallenge`, `POW_FIELD`, `POW_MESSAGE`, `POW_ENDPOINT` - Bot-Schutz (Proof-of-Work), Teil für den Browser.
 * `suite-kit` (Node):
   * `safeEqual` - Konstantzeitvergleich für Geheimnisse.
   * `signLinkMessage`, `verifyLinkMessage` - fachliche Nachrichten zwischen zwei Tools mit gemeinsamem Secret
     (`{ typ, aud, ...felder, iat, exp }`, HMAC-SHA256, höchstens eine Stunde gültig; Regeln in KONVENTIONEN.md).
+  * `powChallengeResponse`, `powError`, `createPowChallenge`, `verifyPowSolution` - Bot-Schutz für öffentliche
+    Formulare, Teil für den Server.
+* `suite-kit/ui`: `ProofOfWork` - ins Formular setzen, rechnet die Aufgabe im Hintergrund.
+
+**Bot-Schutz (Proof-of-Work):** Nach dem Muster von ALTCHA, ohne Drittanbieter. Der Server wählt eine Zufallszahl bis
+50 000 und gibt nur `SHA-256(salt + zahl)` mit HMAC und Ablaufzeit heraus; der Browser probiert die Zahlen per
+WebCrypto durch (im Schnitt 25 000 Hashes, je nach Gerät etwa 0,1-1 s, meist erledigt, bevor das Formular ausgefüllt
+ist). Eine Lösung gilt einmal und höchstens 10 Minuten. Schlüssel und verbrauchte Lösungen liegen nur im Speicher
+(auf `globalThis`, weil Next.js Route Handler und Server Actions getrennt laden kann): keine Variable, keine Cookies,
+nach einem Neustart holt sich das Formular einfach eine neue Aufgabe. Das hält Bots ohne JavaScript und Massen-Spam ab;
+wer die Aufgabe nachbaut, zahlt nur Rechenzeit - deshalb bleibt die Drosselung. Regeln für den Einsatz in
+[docs/KONVENTIONEN.md](docs/KONVENTIONEN.md#öffentliche-formulare-bot-schutz).
 
 ## Entwicklung des Pakets
 
