@@ -5,8 +5,8 @@ allein - mit eigener Datenbank, eigenen Konten, eigenem Deployment. Sind mehrere
 ineinander: gemeinsame Anmeldung, verlinkte Inhalte, Rückmeldungen zwischen den Tools.
 
 Dieses Repository (`suite-kit`) ist die gemeinsame Bibliothek dahinter und zugleich die Übersicht über die Suite:
-Konto-Föderation (`suite-kit`) und gemeinsame Oberfläche (`suite-kit/ui`, `suite-kit/theme.css`, Regeln in
-[docs/DESIGN.md](docs/DESIGN.md)). Was darüber hinaus in allen Tools gleich sein soll (Betrieb, Sicherheit,
+Konto-Föderation (`suite-kit`), gemeinsame Oberfläche (`suite-kit/ui`, `suite-kit/theme.css`, Regeln in
+[docs/DESIGN.md](docs/DESIGN.md)) und gemeinsame Helfer für Routen, Exporte und Mails (`suite-kit/web`). Was darüber hinaus in allen Tools gleich sein soll (Betrieb, Sicherheit,
 Datenschutz, Tests, Doku), steht in [docs/KONVENTIONEN.md](docs/KONVENTIONEN.md).
 
 ## Die Tools
@@ -244,6 +244,19 @@ Einstellungen in Abschnitten“, fürs Handy gebaut. Die Regeln stehen in [docs/
 Gestaltung ändert man hier und verteilt sie mit `node scripts/update-apps.mjs vX.Y.Z` an alle Tools (siehe
 DESIGN.md). React und Next.js sind Peer-Abhängigkeiten - nur nötig, wer `suite-kit/ui` nutzt.
 
+## Gemeinsame Helfer
+
+Was jedes Tool braucht und überall gleich funktionieren muss, kommt aus suite-kit statt aus einer Kopie je Tool
+(Regeln dazu in [docs/KONVENTIONEN.md](docs/KONVENTIONEN.md)):
+
+* `suite-kit/web` (ohne Node-Abhängigkeiten, auch im Browser nutzbar):
+  * `escapeHtml` - für alles in HTML-Mails, was nicht wörtlich im Code steht.
+  * `csvCell`, `toCsv`, `csvResponse` - CSV-Exporte mit Semikolon, CRLF, BOM und Formel-Schutz.
+  * `readLimitedText(request, max)` - Body begrenzt einlesen, `null` heißt 413.
+  * Header-Bausteine für `next.config.ts`: `BASE_RULE`, `NO_FRAMING`, `NOT_STORED`, `PRIVATE_PAGE`, `EMBEDDABLE`,
+    `NO_REFERRER`, `SECRET_URL_PAGE`, `SUITE_RULES` (Service Worker, Föderations-Endpunkte).
+* `suite-kit`: `safeEqual` - Konstantzeitvergleich für Geheimnisse.
+
 ## Entwicklung des Pakets
 
 ```bash
@@ -251,7 +264,7 @@ npm install
 npm test        # baut mit tsc und führt die Tests aus (node:test, keine Zusatz-Abhängigkeiten)
 ```
 
-Die Föderation (`suite-kit`) hat keine Laufzeit-Abhängigkeiten, nur `node:crypto`; die Oberfläche (`suite-kit/ui`)
-braucht React und Next.js aus dem Tool. `dist/` wird nicht eingecheckt. Änderungen am Protokoll, am Token-Format oder an
+Die Föderation (`suite-kit`) hat keine Laufzeit-Abhängigkeiten, nur `node:crypto`; `suite-kit/web` nicht einmal
+das; die Oberfläche (`suite-kit/ui`) braucht React und Next.js aus dem Tool. `dist/` wird nicht eingecheckt. Änderungen am Protokoll, am Token-Format oder an
 der Gestaltung erhöhen die Version (Tag `vX.Y.Z`); die Tools pinnen ihre Version bewusst und ziehen sie mit
 `scripts/update-apps.mjs` nach.

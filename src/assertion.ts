@@ -1,5 +1,6 @@
 // src/assertion.ts
-import { sign, timingSafeEqual, verify } from 'node:crypto'
+import { sign, verify } from 'node:crypto'
+import { safeEqual } from './secrets.js'
 import { b64uDecode, b64uEncode } from './base64url.js'
 import { importPublicKey, type Signer } from './keys.js'
 
@@ -102,12 +103,6 @@ function parseJsonObject(bytes: Buffer | null): Record<string, unknown> | null {
   } catch {
     return null
   }
-}
-
-function safeEqual(a: string, b: string): boolean {
-  const ab = Buffer.from(a)
-  const bb = Buffer.from(b)
-  return ab.length === bb.length && timingSafeEqual(ab, bb)
 }
 
 /** Ergebnis der gemeinsamen Prüfung: die Payload, Kopf/Signatur/iss/aud/nonce/Zeiten schon geprüft. */
