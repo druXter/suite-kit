@@ -159,9 +159,10 @@ rsvp-app):
 
 ### Ausgaben
 
-* **HTML-Mails:** Alles, was nicht wörtlich im Code steht, geht durch `escapeHtml` (`suite-kit/web`) - Namen und Angaben von
-  Gästen genauso wie Titel, Ort und Texte der Verwaltung. Gäste können sich mit fremder Adresse anmelden, ohne
-  Escaping käme fremdes HTML über unseren (DKIM-signierten) Absender. Betreff und Textteil nicht escapen.
+* **HTML-Mails** nur über `renderMail` aus `suite-kit/web` (Bausteine, nie eigenes HTML; Gestaltung in DESIGN.md,
+  „Mails“). Die Vorlage escapet jeden Text - Namen und Angaben von Gästen genauso wie Titel, Ort und Texte der
+  Verwaltung - und lässt nur sichere Links zu. Gäste können sich mit fremder Adresse anmelden, ohne Escaping käme
+  fremdes HTML über unseren (DKIM-signierten) Absender. Der Betreff wird nicht escapet.
 * **CSV:** `csvResponse`/`toCsv` aus `suite-kit/web` - Semikolon, CRLF, BOM für Excel, Anführungszeichen nur wo
   nötig, Textzellen mit `= + - @`, Tab oder Zeilenumbruch am Anfang mit vorangestelltem Hochkomma (CSV-Injection);
   Zahlen bleiben Zahlen. Export-Routen prüfen Anmeldung und Zugriff wie jede Seite, Antwort mit `Cache-Control: no-store`.
@@ -204,6 +205,7 @@ npm audit --omit=dev                                          # keine high/criti
 grep -rn "new PrismaClient" app | grep -v app/lib/prisma.ts   # leer
 grep -rn "request.text()\|request.json()" app/api             # nur über readLimitedText
 grep -rn "dangerouslySetInnerHTML\|queryRawUnsafe" app        # leer
+grep -rln '<div style=\|<p style=' app/lib --include=*.ts      # leer (Mails nur über renderMail)
 grep -rn 'border border-gray-300 p-2' app --include=*.tsx     # leer (inputClass)
 grep -n "^USER\|npm ci\|FROM" Dockerfile                     # node:22-alpine, USER node, npm ci
 grep -n '127.0.0.1:\|proxy_net' docker-compose.yml            # Port nur lokal, Netz für Uptime Kuma
@@ -249,6 +251,9 @@ Discovery ohne Weiterleitungen und mit Größenlimit.
   suite-kit v0.5.1 statt eigener Kopien. Die CSV-Exporte haben dadurch überall dasselbe Format (rsvp-app und
   Abstimmungstool setzten vorher jede Zelle in Anführungszeichen).
 * Alle Tools auf `node:22-alpine`.
+* Ein gemeinsamer Mail-Baustein (`renderMail`, suite-kit v0.6): rsvp-app baute seine 15 Mails einzeln von Hand, die
+  anderen Tools hatten je eine eigene, fast gleiche `layout()`-Funktion. Jetzt sehen alle Mails gleich aus und keine
+  App schreibt mehr Mail-HTML selbst.
 * Ports von rsvp-app, Seating, Zeitplan und Schichten nur noch an `127.0.0.1` (der Tunnel nutzt `127.0.0.1:<port>`),
   alle fünf zusätzlich im Netz `proxy_net`, damit Uptime Kuma intern prüfen kann.
 * rsvp-app versioniert seine `CLAUDE.md` (und `AGENTS.md`).
@@ -259,8 +264,5 @@ Discovery ohne Weiterleitungen und mit Größenlimit.
 
 **Offen** (in [TODO.md](../TODO.md)):
 
-* rsvp-app baut seine HTML-Mails noch einzeln von Hand (mit `escapeHtml` an jeder Stelle); die anderen Tools nutzen je
-  eine kleine `layout()`-Funktion, die alles escapet. Ein gemeinsamer Mail-Baustein in suite-kit (Bausteine wie in
-  Seatings `mail-blocks.ts`) würde beides vereinheitlichen.
 * Datenbankabfragen in Schleifen (rsvp-app: Einladungsversand, Erinnerungen, Schichten-Abgleich) - bei der heutigen
   Datenmenge unkritisch, meist bewusst als atomare Einzel-Updates.

@@ -93,6 +93,29 @@ Besonders oft übersehen (Prüfung vom 2026-10-24):
   `dark:text-X-300`; kräftige Knopffarben bleiben. Ausnahmen (z. B. Anzeigetafeln, Raumpläne) begründet das Tool.
 * Kopfzeile, Reiter, Fußzeile und Knöpfe erscheinen nicht im Ausdruck (`print:hidden`); `Main` druckt randlos.
 
+## Mails
+
+Alle Mails aller Tools kommen aus einer Vorlage: `renderMail` aus `suite-kit/web` (Code: `web/mail.ts`). Ein Tool
+beschreibt nur den Inhalt als Bausteine, nie eigenes HTML - so sehen die Mails überall gleich aus, und jeder Text ist
+escapet (Namen, Titel und Angaben können kein HTML einschleusen). HTML- und Klartext-Teil entstehen aus demselben
+Inhalt.
+
+* **Aufbau:** Marke wie in der Kopfzeile (Buchstabe im blauen Quadrat und Name) über einer weißen Karte auf hellgrauem
+  Grund; in der Karte die Überschrift, dann die Bausteine; darunter klein, warum man die Mail bekommt (`footer`).
+  Immer hell, höchstens 600 px breit, auf dem Handy volle Breite.
+* **Bausteine:** `p` (Absatz, mit `{ strong }`, `{ mono }` für Codes/IBAN und `{ link, href }`), `small` (Hinweis),
+  `rows` (Tabelle Bezeichnung → Wert, z.B. Wann/Wo), `list`, `button`, `box` (Kasten in einer Bedeutungsfarbe mit
+  eigenen Bausteinen), `image` (Bild aus dem Anhang per `cid:`, z.B. QR-Code).
+* **Knöpfe:** genau eine Hauptaktion (blau), darunter automatisch der Link zum Kopieren; weitere Wege als
+  `secondary` (weiß mit Rand). Beschriftung ohne Emoji, wie in der Oberfläche.
+* **Farben** nur mit Bedeutung (Kästen): `pink` Zahlung/rsvp-app, `amber` Änderung/Achtung, `blue` Nachricht der
+  Veranstaltung, `gray` neutral (z.B. Menü).
+* **Text:** Anrede „Hallo <Name>,“ als erster Absatz, Gruß als letzter. Überschrift ohne Emoji. Termine immer als
+  `rows` mit „Wann“ und „Wo“.
+* **Links** nur mit `https:`/`http:`, `mailto:`, `tel:` und `cid:` - alles andere wird als Text ausgegeben.
+* Jedes Tool hat eine Vorschau mit Beispieldaten (rsvp-app: `npx tsx scripts/mail-preview.ts`, schreibt alle Mails
+  als HTML nach `.e2e/mail-preview/`).
+
 ## Sprache
 
 Deutsch, Anrede „du“, gendergerecht mit Sternchen (Teilnehmer\*innen). Begriffe wie im README von suite-kit

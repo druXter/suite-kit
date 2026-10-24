@@ -15,7 +15,7 @@ Jeder Punkt mit Begründung, warum er noch offen ist.
 ## Sicherheit und Konsistenz (Prüfung vom 24.10.2026)
 
 Befunde und Begründungen in [docs/KONVENTIONEN.md](docs/KONVENTIONEN.md#prüfung-vom-2026-10-24). Alles aus der Prüfung
-ist umgesetzt und ausgerollt bis auf den gemeinsamen Mail-Baustein.
+ist umgesetzt.
 
 - [x] Next.js 16.4.3, nodemailer, sharp, zod, source-map-js in allen Tools - `npm audit --omit=dev` ohne Befund.
 - [x] Abstimmungstool im Container als `node` mit `npm ci` und `--skip-generate`, `data/` an UID 1000.
@@ -28,7 +28,5 @@ ist umgesetzt und ausgerollt bis auf den gemeinsamen Mail-Baustein.
 - [x] **Uptime Kuma** (24.10.2026): „RSVP“ prüft `http://rsvp-app:3000`, neu die Erreichbarkeit von Abstimmungstool,
   Seating, Zeitplan und Schichten (intern über `proxy_net`) und die Push-Monitore „Schichten Cleanup“, „Schichten
   Reminders“, „Schichten Backups“ und „Zeitplan Alerts“ (Tokens in `~/scripts/kuma-push.env`). Alle melden „up“.
-- [ ] **Gemeinsamer Mail-Baustein in suite-kit:** rsvp-app baut seine 14+ HTML-Mails einzeln (mit `escapeHtml` an jeder
-  Stelle), die anderen Tools haben je eine fast gleiche `layout()`-Funktion, Seating zusätzlich Bausteine
-  (`mail-blocks.ts`). Ein Baustein in `suite-kit/web` (Überschrift, Absätze, Tabelle, Knopf, Hinweis; escapet selbst)
-  würde Aussehen und Schutz vereinheitlichen. Offen, weil sich dabei das Aussehen der Gäste-Mails von rsvp-app ändert.
+- [x] **Gemeinsamer Mail-Baustein** (`renderMail` in suite-kit v0.6): alle Mails aller Tools aus einer Vorlage,
+  Gestaltung in docs/DESIGN.md („Mails“).

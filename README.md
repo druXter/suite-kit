@@ -253,7 +253,9 @@ Was jedes Tool braucht und überall gleich funktionieren muss, kommt aus suite-k
 (Regeln dazu in [docs/KONVENTIONEN.md](docs/KONVENTIONEN.md)):
 
 * `suite-kit/web` (ohne Node-Abhängigkeiten, auch im Browser nutzbar):
-  * `escapeHtml` - für alles in HTML-Mails, was nicht wörtlich im Code steht.
+  * `renderMail` (`mailHtml`, `mailText`) - die Mail-Vorlage aller Tools aus Bausteinen, HTML und Klartext,
+    escapet selbst (Regeln in [docs/DESIGN.md](docs/DESIGN.md#mails)).
+  * `escapeHtml` - für alles in HTML, was nicht wörtlich im Code steht (Mails bauen mit `renderMail`).
   * `csvCell`, `toCsv`, `csvResponse` - CSV-Exporte mit Semikolon, CRLF, BOM und Formel-Schutz.
   * `readLimitedText(request, max)` - Body begrenzt einlesen, `null` heißt 413.
   * Header-Bausteine für `next.config.ts`: `BASE_RULE`, `NO_FRAMING`, `NOT_STORED`, `PRIVATE_PAGE`, `EMBEDDABLE`,
