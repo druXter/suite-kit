@@ -320,9 +320,9 @@ nur nach Einstellung, gekürzt und ausblendbar. Cron `reminders` 0,1 s.
 **Behoben (alle Tools):** Abrufe beim Partner folgten Weiterleitungen - entgegen der Regel oben nur im
 Abstimmungstool mit `redirect: 'error'`. Jetzt in allen 15 Server-zu-Server-Abrufen.
 
-**Beobachten:** Eintragen ohne Konto reserviert Plätze 60 Minuten bis zur Bestätigung. Wer viele erfundene Adressen
-einträgt (gedrosselt: 30 Eintragungen pro IP und Stunde), kann knappe Schichten eine Stunde lang blockieren. Bei
-Missbrauch: Reservierungen je IP begrenzen oder die Frist verkürzen.
+**Verkürzt (24.10.2026):** Eintragen ohne Konto reserviert Plätze bis zur Bestätigung - jetzt 15 statt 60 Minuten
+(`PENDING_MINUTES`), damit erfundene Adressen (gedrosselt: 30 Eintragungen pro IP und Stunde) knappe Schichten nur
+kurz blockieren. Bei weiterem Missbrauch: Reservierungen je IP begrenzen.
 
 ## Durchsicht Seating (2026-10-24)
 
