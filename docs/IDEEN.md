@@ -55,6 +55,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [Q4](#q4-vorlagen-pro-event-typ-über-alle-tools) | Vorlagen pro Event-Typ über alle Tools | alle Tools | M–L | zurückgestellt |
 | [Q5](#q5-direkt-weiter-zum-einzigen-anbieter) | Login: direkt weiter zum einzigen Anbieter | suite-kit, alle Tools | S | umgesetzt |
 | [Q6](#q6-bot-schutz-für-öffentliche-formulare) | Bot-Schutz für öffentliche Formulare (Turnstile o. Ä.) | seating, ggf. alle Tools | S je Tool | zurückgestellt |
+| [Q7](#q7-verwaltungs--und-teilnehmendenkonto-verknüpfen) | Verwaltungs- und Teilnehmendenkonto verknüpfen statt zusammenlegen | rsvp-app | S | umgesetzt |
 
 ### Wo die Ideen ansetzen
 
@@ -714,3 +715,18 @@ Abstimmungstool) sind heute nur gedrosselt (pro IP und pro E-Mail). Gegen vertei
 
 **Idee:** Optionales Cloudflare Turnstile (oder ein anderer datensparsamer Dienst), nur aktiv, wenn `TURNSTILE_*` gesetzt
 ist. Einmal als Muster festlegen und in allen Tools gleich umsetzen. Datenschutzerklärung ergänzen (Drittanbieter).
+
+### Q7: Verwaltungs- und Teilnehmendenkonto verknüpfen
+
+**Bewertung (2026-10-24): angenommen, als Verknüpfung statt Zusammenlegung.** Am Code geprüft: Ein gemeinsames Konto
+(ein Modell mit optionaler Rolle) hätte jede Rechteprüfung in rsvp-app berührt und Regeln aufgeweicht, die heute
+schon durch die Trennung gelten: öffentliche Registrierung nur für Teilnehmende, kein Passwort-Reset per Mail für Konten
+mit Admin-Rolle, unterschiedliche Löschfristen, getrennte Bestätigungen im Konten-Verbund. Betroffen waren zwei Personen.
+
+**Umgesetzt (2026-10-24) in rsvp-app:** `User.linkedGuestUserId`. Verknüpft wird unter „Konto-Einstellungen“ der
+Verwaltung mit E-Mail und Passwort des Teilnehmendenkontos. Danach öffnet jeder Verwaltungs-Login (auch über den
+Verbund) zusätzlich „Mein Konto“, Abmelden beendet beide Sitzungen. **Nur in diese Richtung:** Ein Gast-Login öffnet nie
+die Verwaltung, weil sich das Passwort eines Teilnehmendenkontos per Mail zurücksetzen lässt. Lösen geht auf beiden
+Seiten. Die anderen Tools haben keine Teilnehmendenkonten und sind nicht betroffen.
+
+**Problem:** Wer verwaltet und selbst teilnimmt, musste sich zweimal anmelden.

@@ -50,7 +50,9 @@ Gleich in allen Tools, READMEs und Datenschutzerklärungen (Code-Bezeichner und 
   rsvp-app (`GuestUser`, unter „Mein Konto“; früher „Nutzer-Konto“).
 * **Admin** ist nur der Name einer Rolle, nie eine Kontoart: „Konto mit Admin-Rolle“, nicht „Admin-Konto“.
 
-Dieselbe Person kann ein Verwaltungs- und ein Teilnehmendenkonto haben; die beiden bleiben bewusst getrennt.
+Dieselbe Person kann ein Verwaltungs- und ein Teilnehmendenkonto haben; die beiden bleiben bewusst getrennt. In
+rsvp-app lassen sie sich **verknüpfen**: Der Verwaltungs-Login meldet dann auch unter „Mein Konto“ an, nie umgekehrt
+(Begründung im README von rsvp-app, Abschnitt „Konto-Sicherheit“; Bewertung in [docs/IDEEN.md](docs/IDEEN.md#q7-verwaltungs--und-teilnehmendenkonto-verknüpfen)).
 
 ## Konten-Verbund im Überblick
 
