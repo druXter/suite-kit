@@ -5,6 +5,9 @@ zurecht. Dieses Dokument hält die Regeln fest; der Code dazu liegt in `suite-ki
 `suite-kit/theme.css` (Grundregeln). **Gestaltung ändert man hier, nicht in den Tools** - siehe
 [Änderungen an alle Tools verteilen](#änderungen-an-alle-tools-verteilen).
 
+Regeln jenseits des Aussehens (Betrieb, Sicherheit, Datenschutz, Tests, Doku) stehen in
+[KONVENTIONEN.md](KONVENTIONEN.md).
+
 Entstanden aus den Neugestaltungen im Oktober 2026 (rsvp-app, Abstimmungstool, Schichten, Zeitplan, Seating; deren
 `docs/KONZEPT-OBERFLAECHE.md` beschreiben, wie das jeweilige Tool die Regeln umsetzt).
 
@@ -63,6 +66,14 @@ Karte mit `buttonClass('danger')`.
 Eigene Bausteine eines Tools (z. B. `formatShortDate`, `SlotsBadge`) liegen in dessen `app/ui/kit.tsx`, das die
 gemeinsamen re-exportiert. Seiten importieren nur aus `app/ui/kit` - nie Farben oder Knopf-Klassen von Hand
 zusammenbauen, wenn es dafür einen Baustein gibt. Was in zwei Tools gebraucht wird, gehört hierher.
+
+Besonders oft übersehen (Prüfung vom 2026-10-24):
+
+* **Eingabefelder, Auswahllisten und Textfelder immer mit `inputClass`**, auch in Gästeformularen und in
+  Unterkomponenten (Begleitungen, Menüwahl). Eigene Klassen ohne `text-base` unter `sm` lassen iOS beim Antippen
+  hineinzoomen.
+* **Knopfbeschriftungen ohne Emoji**, auch bei Nebenaktionen („Erneut senden“, nicht „✉️ erneut senden“). In
+  Überschriften, Hinweisen und Mails sind Emojis erlaubt, sparsam.
 
 ## Handy
 

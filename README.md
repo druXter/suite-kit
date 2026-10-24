@@ -6,7 +6,8 @@ ineinander: gemeinsame Anmeldung, verlinkte Inhalte, Rückmeldungen zwischen den
 
 Dieses Repository (`suite-kit`) ist die gemeinsame Bibliothek dahinter und zugleich die Übersicht über die Suite:
 Konto-Föderation (`suite-kit`) und gemeinsame Oberfläche (`suite-kit/ui`, `suite-kit/theme.css`, Regeln in
-[docs/DESIGN.md](docs/DESIGN.md)).
+[docs/DESIGN.md](docs/DESIGN.md)). Was darüber hinaus in allen Tools gleich sein soll (Betrieb, Sicherheit,
+Datenschutz, Tests, Doku), steht in [docs/KONVENTIONEN.md](docs/KONVENTIONEN.md).
 
 ## Die Tools
 
