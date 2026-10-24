@@ -269,6 +269,8 @@ Was jedes Tool braucht und überall gleich funktionieren muss, kommt aus suite-k
     (`{ typ, aud, ...felder, iat, exp }`, HMAC-SHA256, höchstens eine Stunde gültig; Regeln in KONVENTIONEN.md).
   * `powChallengeResponse`, `powError`, `createPowChallenge`, `verifyPowSolution` - Bot-Schutz für öffentliche
     Formulare, Teil für den Server.
+  * `signLinkedCreate`, `verifyLinkedCreate`, `readLinkedCreateResult`, `linkedCreateSlug` - rsvp-app lässt ein Tool
+    ein verknüpftes Event anlegen (Idee Q1, `POST <Tool>/api/rsvp-create`, Regeln in KONVENTIONEN.md).
 * `suite-kit/ui`: `ProofOfWork` - ins Formular setzen, rechnet die Aufgabe im Hintergrund.
 
 **Bot-Schutz (Proof-of-Work):** Nach dem Muster von ALTCHA, ohne Drittanbieter. Der Server wählt eine Zufallszahl bis

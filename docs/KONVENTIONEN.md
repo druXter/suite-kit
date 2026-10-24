@@ -182,6 +182,14 @@ rsvp-app):
   immer `Cache-Control: no-store`. Abrufe beim Partner ohne Weiterleitungen (`redirect: 'error'`) und mit Timeout.
 * Übertragen wird nur, was der Partner braucht (Kennungen statt Namen, wo es geht).
 * Beide Seiten haben feste Prüfnachrichten in ihren Unit-Tests, damit das Format nicht auseinanderläuft.
+* **Verknüpftes Event anlegen** (seit suite-kit v0.9.0, Idee Q1): Der Vertrag steht einmal in suite-kit
+  (`src/linked-create.ts`, mit fester Prüfnachricht), rsvp-app signiert, das Tool prüft mit `verifyLinkedCreate`
+  (eine Minute gültig, Secret der Anbindung). Das Event gehört nur dem Konto, das über den Konten-Verbund verknüpft
+  ist (`ExternalIdentity` mit rsvp-app als Anbieter oder die mitgeschickte Konto-ID beim Tool), nie über die E-Mail,
+  nie Moderator\*innen. Ohne Verknüpfung entsteht nichts (`no-account` mit Anmelde-Link). Neue Events sind Entwurf.
+  Wiederholungen liefern das schon verknüpfte Event (`linked`). rsvp-app übernimmt Links aus der Antwort nur mit dem
+  Origin des Tools (`readLinkedCreateResult`). Eingerichtet für Zeitplan und Schichten; Seating folgt, wenn Raumplan,
+  Modus und Ende geklärt sind.
 
 ### Push-Mitteilungen
 
