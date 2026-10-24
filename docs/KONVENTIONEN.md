@@ -300,10 +300,11 @@ Discovery ohne Weiterleitungen und mit Größenlimit.
   Skripte und das Backup melden sich jetzt per `kuma-push.sh` bei Push-Monitoren; dazu je Tool ein interner
   Erreichbarkeits-Monitor.
 
-**Offen** (in [TODO.md](../TODO.md)):
+**Bewusst so gelassen** (entschieden 2026-10-24, kein offener Punkt):
 
 * Datenbankabfragen in Schleifen (rsvp-app: Einladungsversand, Erinnerungen, Schichten-Abgleich) - bei der heutigen
-  Datenmenge unkritisch, meist bewusst als atomare Einzel-Updates.
+  Datenmenge unkritisch, meist bewusst als atomare Einzel-Updates. Neu ansehen, wenn ein Versand oder Abgleich
+  spürbar langsam wird.
 
 ## Durchsicht Zeitplan (2026-10-24)
 
