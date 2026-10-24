@@ -258,6 +258,8 @@ Was jedes Tool braucht und überall gleich funktionieren muss, kommt aus suite-k
   * `escapeHtml` - für alles in HTML, was nicht wörtlich im Code steht (Mails bauen mit `renderMail`).
   * `csvCell`, `toCsv`, `csvResponse` - CSV-Exporte mit Semikolon, CRLF, BOM und Formel-Schutz.
   * `readLimitedText(request, max)` - Body begrenzt einlesen, `null` heißt 413.
+  * `validPushSubscription` - Push-Abo aus dem Browser prüfen, bevor es gespeichert wird (nur Push-Dienste der
+    Browser-Hersteller, sonst SSRF).
   * Header-Bausteine für `next.config.ts`: `BASE_RULE`, `NO_FRAMING`, `NOT_STORED`, `PRIVATE_PAGE`, `EMBEDDABLE`,
     `NO_REFERRER`, `SECRET_URL_PAGE`, `SUITE_RULES` (Service Worker, Föderations-Endpunkte).
 * `suite-kit` (Node):
