@@ -44,7 +44,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L23](#l23-weitere-vorlagen-im-zeitplan) | Weitere Vorlagen im Zeitplan (Winterball, Pubquiz, Versammlung) | zeitplan | S je Vorlage | zurückgestellt |
 | [L24](#l24-rückblick-plan-gegen-ist) | Rückblick: Plan gegen Ist, auch als Sitzungsdokumentation | zeitplan | S–M | umgesetzt |
 | [L25](#l25-kalender-export-ics) | Kalender-Export (ICS) | zeitplan | S | verworfen |
-| [L26](#l26-antwort-vielleicht) | Antwort „Vielleicht“ mit Erinnerung und automatischer Absage | rsvp-app | M | angenommen |
+| [L26](#l26-antwort-vielleicht) | Antwort „Vielleicht“ mit Erinnerung und automatischer Absage | rsvp-app | M | umgesetzt |
 | [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu (schichten) | L | umgesetzt |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
@@ -580,6 +580,11 @@ sich nicht live, also eher zur Vorbereitung, z. B. bei mehrtägigen Reihen.
 ### L26: Antwort „Vielleicht“
 
 **Bewertung (2026-10-25): angenommen** auf Wunsch des Nutzers, Konzept in `rsvp-app/docs/KONZEPT-VIELLEICHT.md`.
+
+**Stand (2026-10-25): umgesetzt** in rsvp-app: Schalter pro Einzel-Event bzw. Reihe (braucht die E-Mail-Abfrage),
+„vielleicht“ als Absage gespeichert (`isMaybe`, im Einladungsmodus pro Person), Double-Opt-In außer für Konten,
+Erinnerung per Mail und Push, automatische Absage am Stichtag (Cron), Anpassung beim Vorverlegen, Absage aller beim
+Abschalten. Die anderen Tools brauchten keine Änderung.
 
 **Problem:** Gäste, die sich noch nicht festlegen können, sagen ab oder gar nicht, und die Verwaltung erfährt nicht,
 wer noch überlegt.
