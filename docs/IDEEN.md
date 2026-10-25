@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Am 2026-10-25 umgesetzt: N6 (Wichteln) als neues Tool. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -49,6 +49,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
 | [N4](#n4-wunschliste--geschenke) | Wunschliste/Geschenke (als Teil von rsvp-app) | rsvp-app | M | umgesetzt |
 | [N5](#n5-mitfahrgelegenheiten) | Mitfahrgelegenheiten (eigenes Tool oder Teil von rsvp-app) | neu / rsvp-app | M | zurückgestellt |
+| [N6](#n6-wichteln) | Neues Tool: Wichteln (Secret Santa) | neu (wichteln) | L | umgesetzt |
 | [Q1](#q1-einmal-anlegen-überall-verknüpfen) | Einmal anlegen, überall verknüpfen | rsvp-app, zeitplan, schichten (seating später) | M je Paar | umgesetzt (ohne Seating) |
 | [Q2](#q2-mehrsprachigkeit) | Mehrsprachigkeit (mindestens Deutsch/Englisch) | alle Tools | L | zurückgestellt |
 | [Q3](#q3-fotos-der-gäste-über-immich) | Fotos der Gäste über Immich statt eigener App | rsvp-app / zeitplan | S | umgesetzt |
@@ -646,6 +647,15 @@ Beschenkten sehen, wer was nimmt. Zugang über rsvp-app-Zusage oder Link mit Cod
 
 **Idee:** Angebote („3 Plätze ab Leipzig, Rückfahrt 2 Uhr“) und Gesuche, Kontakt erst nach Zustimmung beider Seiten.
 Klein genug, um als Teil von rsvp-app zu beginnen.
+
+### N6: Wichteln
+
+**Stand (2026-10-25): umgesetzt** auf Wunsch des Nutzers als eigenes Tool „Wichteln“ (`wichteln.ramonroeser.de`, Port
+3010, Repo `wichteln`), Konzept in `wichteln/docs/KONZEPT.md`. Teilnehmende ohne Konto (Beitreten über den Link mit
+Bestätigung oder per Einladung), optional Wunschzettel und Adresse (die nur der eigene Wichtel sieht), Auslosen im Kreis,
+in gegenseitigen Paaren oder frei zufällig mit Ausschlüssen, Zuordnung von Hand, Veröffentlichen mit Mails,
+Benachrichtigung der Verwaltung bei Beitritten per Mail und Push. Anbindung an rsvp-app: Alle Zusagen eines Termins
+werden eingeladen (Gästeliste auf Abruf, `rsvp-change` als Anstoß), Anlegen aus rsvp-app über Q1.
 
 ---
 

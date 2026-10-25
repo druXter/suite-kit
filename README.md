@@ -18,6 +18,7 @@ Datenschutz, Tests, Doku), steht in [docs/KONVENTIONEN.md](docs/KONVENTIONEN.md)
 | **seating** | Raumpläne, Tischbuchung, Platzwahl, Sitzordnung; an rsvp-app anbindbar | [druXter/seating](https://github.com/druXter/seating) |
 | **zeitplan** | Ablauf großer Events mit Live-Prognose: Gästeansicht, Anzeigetafel, Live-Steuerung fürs Handy; an rsvp-app anbindbar | [druXter/zeitplan](https://github.com/druXter/zeitplan) |
 | **schichten** | Dienste und Schichten für Helfer\*innen: Eintragen ohne Konto, Tauschbörse, Erinnerungen, Abhaken vor Ort; an rsvp-app (Helfer-Zusagen) und Zeitplan (Schicht folgt Programmpunkt) anbindbar | [druXter/schichten](https://github.com/druXter/schichten) (privat) |
+| **wichteln** | Wichteln (Secret Santa): Beitreten ohne Konto, Wunschzettel, Adresse nur für den eigenen Wichtel, Auslosen (Kreis, Paare, frei, Ausschlüsse) oder von Hand; an rsvp-app anbindbar (Zusagen werden eingeladen) | [druXter/wichteln](https://github.com/druXter/wichteln) (privat) |
 | **suite-kit** | Gemeinsame Konto-Föderation und Oberfläche (dieses Repo) | [druXter/suite-kit](https://github.com/druXter/suite-kit) |
 
 Jedes Tool hat sein eigenes README mit Funktionen, Einrichtung und Betrieb. Hier steht, was für **alle** gilt.
@@ -109,6 +110,12 @@ bestätigten Helfer\*innen (`shift-helpers`: Name, E-Mail, Zahl der Schichten; S
 ab (`forecast-request`/`timeline-forecast`, ohne geheime Punkte und ohne Personen; Schichten `TIMELINE_SHIFTS_SECRET` =
 Zeitplan `SHIFTS_SECRET`). Feste Prüfnachrichten in den Unit-Tests beider Seiten halten die Formate gleich. Details:
 README von Schichten, Abschnitte „Anbindung an rsvp-app“ und „Anbindung an Zeitplan“.
+
+**Wichteln und rsvp-app:** Wichteln holt die Gästeliste eines verknüpften Termins (`wichtel-guests-request` →
+`wichtel-guests`: Name und E-Mail der Zusagen, die zählen) und lädt sie ein; rsvp-app schickt bei jeder Änderung einer
+Zusage nur einen Anstoß ohne Inhalt (`rsvp-change`). Wichteln `RSVP_WICHTELN_SECRET` = rsvp-app `WICHTELN_SECRET`.
+Format `signLinkMessage`, feste Prüfnachrichten auf beiden Seiten. Details: README von Wichteln, Abschnitt „Anbindung an
+rsvp-app“.
 
 ## Konfiguration (Env)
 
@@ -231,6 +238,8 @@ dieselben Schlüssel kennen, ohne sie auszutauschen. Das ist die empfohlene Vorl
 beide Testläufe gleichzeitig laufen können).
 
 **Schichten** ebenso (Test-Doppel auf den Ports 2630/2631, dazu Doppel von rsvp-app und Zeitplan auf 2632/2633).
+
+**Wichteln** ebenso (Test-Doppel auf den Ports 2730/2731, dazu ein Doppel von rsvp-app auf 2732).
 
 ## Gemeinsame Oberfläche
 

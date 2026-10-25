@@ -32,8 +32,8 @@ man hier und zieht dann alle Tools nach, nicht umgekehrt.
 * **Docker-Image** wie in allen Tools: `node:22-alpine` (aktuelle LTS, alle Tools auf derselben), `apk add git` (für
   `suite-kit`), **`USER node`** (nie root), `npm ci`, `npx prisma generate` und `npm run build` im Image, beim
   Start `npx prisma db push --skip-generate && npm start`. Im Container lauscht Next auf 3000.
-* **Ports auf dem Server:** 3005 rsvp-app, 3006 Abstimmungstool, 3007 Seating, 3008 Zeitplan, 3009 Schichten.
-  Das nächste Tool bekommt 3010. **Nur an `127.0.0.1` binden** (`"127.0.0.1:<port>:3000"`): Von außen kommt alles über
+* **Ports auf dem Server:** 3005 rsvp-app, 3006 Abstimmungstool, 3007 Seating, 3008 Zeitplan, 3009 Schichten,
+  3010 Wichteln. Das nächste Tool bekommt 3011. **Nur an `127.0.0.1` binden** (`"127.0.0.1:<port>:3000"`): Von außen kommt alles über
   den Cloudflare-Tunnel (`cloudflared` auf dem Host, Ziel `http://127.0.0.1:<port>`). Ein Port auf allen Schnittstellen
   wäre über die öffentliche IPv6 des Servers direkt erreichbar - am Tunnel vorbei, mit selbst gesetztem
   `X-Forwarded-For`, also auch an der IP-Drosselung vorbei.
@@ -83,11 +83,12 @@ gälte eine Nachricht der einen Anbindung auch in der anderen). Das später ange
 | rsvp-app ↔ Seating | `SEATING_SECRET` | `RSVP_SEATING_SECRET` |
 | rsvp-app ↔ Zeitplan | `TIMELINE_SECRET` | `RSVP_TIMELINE_SECRET` |
 | rsvp-app ↔ Schichten | `SHIFTS_SECRET` | `RSVP_SHIFTS_SECRET` |
+| rsvp-app ↔ Wichteln | `WICHTELN_SECRET` | `RSVP_WICHTELN_SECRET` |
 | Zeitplan ↔ Schichten | `SHIFTS_SECRET` | `TIMELINE_SHIFTS_SECRET` |
 | rsvp-app ↔ Abstimmungstool | `POLL_VERIFICATION_SECRET` | `RSVP_VERIFICATION_SECRET` (ältere Benennung, bleibt) |
 
 Partner-Adressen heißen nach dem Partner: `RSVP_APP_BASE_URL`, `SEATING_BASE_URL`, `TIMELINE_BASE_URL`,
-`SHIFTS_BASE_URL`, `ABSTIMMUNGSTOOL_BASE_URL`. Ausnahme: Das Abstimmungstool nennt Zeitplan `ZEITPLAN_BASE_URL`
+`SHIFTS_BASE_URL`, `WICHTELN_BASE_URL`, `ABSTIMMUNGSTOOL_BASE_URL`. Ausnahme: Das Abstimmungstool nennt Zeitplan `ZEITPLAN_BASE_URL`
 (bleibt, Umbenennen bräche bestehende Installationen).
 
 ## Sicherheit
@@ -162,7 +163,8 @@ Drosselung den Bot-Schutz aus suite-kit (seit v0.8.0, Idee Q6):
   Test-Helfern); jeder Tool-Test prüft fehlende, falsche und verbrauchte Lösungen mit Positivkontrolle.
 
 Geschützt (Stand 2026-10-24): rsvp-app neue Antworten ohne Konto und Registrierung; Seating Reservieren und
-Warteliste; Schichten Eintragen ohne Konto und Link anfordern; Abstimmungstool Bestätigungslink im Modus `EMAIL`.
+Warteliste; Schichten Eintragen ohne Konto und Link anfordern; Wichteln (seit 2026-10-25) Beitreten über den Link und
+Link anfordern; Abstimmungstool Bestätigungslink im Modus `EMAIL`.
 Zeitplan hat kein solches Formular.
 
 ### Anbindungen zwischen Tools
@@ -188,7 +190,7 @@ rsvp-app):
   ist (`ExternalIdentity` mit rsvp-app als Anbieter oder die mitgeschickte Konto-ID beim Tool), nie über die E-Mail,
   nie Moderator\*innen. Ohne Verknüpfung entsteht nichts (`no-account` mit Anmelde-Link). Neue Events sind Entwurf.
   Wiederholungen liefern das schon verknüpfte Event (`linked`). rsvp-app übernimmt Links aus der Antwort nur mit dem
-  Origin des Tools (`readLinkedCreateResult`). Eingerichtet für Zeitplan und Schichten; Seating folgt, wenn Raumplan,
+  Origin des Tools (`readLinkedCreateResult`). Eingerichtet für Zeitplan, Schichten und Wichteln; Seating folgt, wenn Raumplan,
   Modus und Ende geklärt sind.
 
 ### Push-Mitteilungen
