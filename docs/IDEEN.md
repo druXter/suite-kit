@@ -44,6 +44,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L23](#l23-weitere-vorlagen-im-zeitplan) | Weitere Vorlagen im Zeitplan (Winterball, Pubquiz, Versammlung) | zeitplan | S je Vorlage | zurückgestellt |
 | [L24](#l24-rückblick-plan-gegen-ist) | Rückblick: Plan gegen Ist, auch als Sitzungsdokumentation | zeitplan | S–M | umgesetzt |
 | [L25](#l25-kalender-export-ics) | Kalender-Export (ICS) | zeitplan | S | verworfen |
+| [L26](#l26-antwort-vielleicht) | Antwort „Vielleicht“ mit Erinnerung und automatischer Absage | rsvp-app | M | angenommen |
 | [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu (schichten) | L | umgesetzt |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
@@ -575,6 +576,18 @@ behandelt wurde – zusammen mit einer Protokollnotiz pro Punkt ein erster Baust
 
 **Idee:** Ablauf als ICS zu Planzeiten, für Gäste nur öffentliche Punkte, fürs Team alle (ohne geheime). Aktualisiert
 sich nicht live, also eher zur Vorbereitung, z. B. bei mehrtägigen Reihen.
+
+### L26: Antwort „Vielleicht“
+
+**Bewertung (2026-10-25): angenommen** auf Wunsch des Nutzers, Konzept in `rsvp-app/docs/KONZEPT-VIELLEICHT.md`.
+
+**Problem:** Gäste, die sich noch nicht festlegen können, sagen ab oder gar nicht, und die Verwaltung erfährt nicht,
+wer noch überlegt.
+
+**Idee:** Pro Termin bzw. Reihe zuschaltbar „Vielleicht“ mit bestätigter Adresse und selbst gewähltem
+Erinnerungszeitpunkt (spätestens 24 h vor dem Stichtag: Antwortfrist bzw. Beginn − 12 h). Am Stichtag wird ein
+verbliebenes „Vielleicht“ zur Absage. Für alle verknüpften Tools zählt „Vielleicht“ wie eine Absage, nur die
+Gästelisten zeigen es.
 
 ---
 
