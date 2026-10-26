@@ -51,6 +51,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [N4](#n4-wunschliste--geschenke) | Wunschliste/Geschenke (als Teil von rsvp-app) | rsvp-app | M | umgesetzt |
 | [N5](#n5-mitfahrgelegenheiten) | Mitfahrgelegenheiten (eigenes Tool oder Teil von rsvp-app) | neu / rsvp-app | M | zurückgestellt |
 | [N6](#n6-wichteln) | Neues Tool: Wichteln (Secret Santa) | neu (wichteln) | L | umgesetzt |
+| [N7](#n7-termine) | Neues Tool: Termine (Terminbuchung mit Nextcloud-Kalender und Talk) | neu (termine) | L | angenommen |
 | [Q1](#q1-einmal-anlegen-überall-verknüpfen) | Einmal anlegen, überall verknüpfen | rsvp-app, zeitplan, schichten (seating später) | M je Paar | umgesetzt (ohne Seating) |
 | [Q2](#q2-mehrsprachigkeit) | Mehrsprachigkeit (mindestens Deutsch/Englisch) | alle Tools | L | zurückgestellt |
 | [Q3](#q3-fotos-der-gäste-über-immich) | Fotos der Gäste über Immich statt eigener App | rsvp-app / zeitplan | S | umgesetzt |
@@ -674,6 +675,15 @@ Bestätigung oder per Einladung), optional Wunschzettel und Adresse (die nur der
 in gegenseitigen Paaren oder frei zufällig mit Ausschlüssen, Zuordnung von Hand, Veröffentlichen mit Mails,
 Benachrichtigung der Verwaltung bei Beitritten per Mail und Push. Anbindung an rsvp-app: Alle Zusagen eines Termins
 werden eingeladen (Gästeliste auf Abruf, `rsvp-change` als Anstoß), Anlegen aus rsvp-app über Q1.
+
+### N7: Termine
+
+**Stand (2026-10-26): angenommen** auf Wunsch des Nutzers als eigenes Tool „Termine“ (`termine.ramonroeser.de`, Port
+3011, Repo `termine`), Konzept in `termine/docs/KONZEPT.md`. Ersatz für die Nextcloud-App „Appointments“ (Fehler, die
+der Entwickler nicht behebt): Buchungsseiten mit wöchentlicher Vorlage, Konfliktprüfung und Termine im
+Nextcloud-Kalender per CalDAV, Mail-Bestätigung mit automatischer Absage, Erinnerungen, Absagen und Verschieben über
+den persönlichen Link, Talk-Räume für Online-Termine. Geprüfte fertige Lösungen (Cal.diy, Easy!Appointments, calrs)
+deckten Bestätigung, Erinnerungen und Talk nicht zusammen ab. Keine Anbindung an rsvp-app geplant.
 
 ---
 
