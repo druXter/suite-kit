@@ -44,6 +44,11 @@ man hier und zieht dann alle Tools nach, nicht umgekehrt.
   Verzeichnis gehört UID 1000.
 * **Schemaänderungen** über `prisma db push`, keine Migrationsdateien. Einmalige Datenmigrationen als
   `migrate-*.js`, je durch `PRAGMA user_version` geschützt (läuft nie doppelt), im `CMD` vor `npm start`.
+  **Achtung bei neuen `Json`-Spalten mit `@default("[]")`:** `db push` baut die Tabelle unter SQLite neu und schreibt
+  den Default als `DEFAULT []` – bestehende Zeilen bekommen dabei `''` statt `[]`, und jedes Lesen der Zeile scheitert
+  (`P2023 Conversion failed`). Neue Zeilen sind nicht betroffen (der Client setzt den Default selbst). Nach dem Deploy
+  daher prüfen (`select count(*) from <Tabelle> where <spalte> = ''`) und mit `update … set <spalte> = '[]' where
+  <spalte> = ''` nachziehen – oder vorab per `migrate-*.js`. (Termine, 2026-10-27: Buchungsseite eine Minute down.)
 * **Vor jedem Deploy** die Datenbank sichern: `sqlite3 -readonly data/prod.db ".backup ~/<tool>-backups/prod.db.backup-<JJJJMMTT-HHMMSS>-pre-<thema>"`,
   dann `docker compose up -d --build` im Tool-Verzeichnis, danach Startlog (`db push`, `Ready`) und eine Seite prüfen.
 * **Cron:** `GET /api/cron/<name>?secret=<CRON_SECRET>`. Jedes Tool mit Löschfristen hat `/api/cron/cleanup`
