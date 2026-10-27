@@ -52,7 +52,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [N5](#n5-mitfahrgelegenheiten) | Mitfahrgelegenheiten (eigenes Tool oder Teil von rsvp-app) | neu / rsvp-app | M | zurückgestellt |
 | [N6](#n6-wichteln) | Neues Tool: Wichteln (Secret Santa) | neu (wichteln) | L | umgesetzt |
 | [N7](#n7-termine) | Neues Tool: Termine (Terminbuchung mit Nextcloud-Kalender und Talk) | neu (termine) | L | angenommen |
-| [N8](#n8-startseite) | Neues Tool: Startseite (eigene Seiten aus Blöcken unter ramonroeser.de) | neu (startseite) | M | umgesetzt |
+| [N8](#n8-startseite) | Neues Tool: Startseite (eigene Seiten aus Blöcken, startseite.ramonroeser.de) | neu (startseite) | M | umgesetzt |
 | [Q1](#q1-einmal-anlegen-überall-verknüpfen) | Einmal anlegen, überall verknüpfen | rsvp-app, zeitplan, schichten (seating später) | M je Paar | umgesetzt (ohne Seating) |
 | [Q2](#q2-mehrsprachigkeit) | Mehrsprachigkeit (mindestens Deutsch/Englisch) | alle Tools | L | zurückgestellt |
 | [Q3](#q3-fotos-der-gäste-über-immich) | Fotos der Gäste über Immich statt eigener App | rsvp-app / zeitplan | S | umgesetzt |
@@ -688,10 +688,11 @@ deckten Bestätigung, Erinnerungen und Talk nicht zusammen ab. Keine Anbindung a
 
 ### N8: Startseite
 
-**Stand (2026-10-27): umgesetzt** auf Wunsch des Nutzers als eigenes Tool „Startseite“ (`ramonroeser.de`, Port 3012,
-Repo `startseite`), Konzept in `startseite/docs/KONZEPT.md`. Seiten aus Blöcken wie bei LinkTree (Link-Knöpfe,
-Überschriften, Markdown-Text, Bilder ohne Metadaten, Trennlinien, Einbettungen), Spalte oder Raster und Hintergrund pro
-Seite, die markierte Seite liegt unter `/`. Erste Nutzung: Startseite mit Link auf die Buchungsseite in Termine;
+**Stand (2026-10-27): umgesetzt** auf Wunsch des Nutzers als eigenes Tool „Startseite“ (`startseite.ramonroeser.de`,
+Port 3012, Repo `startseite`), Konzept in `startseite/docs/KONZEPT.md`. Seiten aus Blöcken wie bei LinkTree
+(Link-Knöpfe, Überschriften, Markdown-Text, Bilder ohne Metadaten, Trennlinien, Einbettungen), Spalte oder Raster und
+Hintergrund pro Seite, jede Seite öffentlich unter `/<adresse>` wie die Event-Seiten in rsvp-app; `ramonroeser.de`
+leitet in Cloudflare auf eine davon weiter. Erste Nutzung: persönliche Startseite mit Link auf die Buchungsseite in Termine;
 geplant eine Hochzeitsseite mit eingebetteter Anmeldung (rsvp-app), OpenStreetMap-Karte und Programm (Zeitplan).
 Technisch Teil der Suite, fachlich ohne Anbindung: Suite-Apps nur über ihre öffentlichen, einbettbaren Seiten, die
 direkt laden; fremde Einbettungen erst nach Klick. Später denkbar: nicht-öffentliche Seiten, weitere Blöcke (Suchfeld,
