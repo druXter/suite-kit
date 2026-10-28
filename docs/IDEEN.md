@@ -45,6 +45,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L24](#l24-rückblick-plan-gegen-ist) | Rückblick: Plan gegen Ist, auch als Sitzungsdokumentation | zeitplan | S–M | umgesetzt |
 | [L25](#l25-kalender-export-ics) | Kalender-Export (ICS) | zeitplan | S | verworfen |
 | [L26](#l26-antwort-vielleicht) | Antwort „Vielleicht“ mit Erinnerung und automatischer Absage | rsvp-app | M | umgesetzt |
+| [L27](#l27-gäste-von-hand-eintragen) | Gäste von Hand eintragen (Zusage, Vielleicht, Absage, Adresse) | rsvp-app | S | umgesetzt |
 | [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu (schichten) | L | umgesetzt |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
@@ -595,6 +596,21 @@ wer noch überlegt.
 Erinnerungszeitpunkt (spätestens 24 h vor dem Stichtag: Antwortfrist bzw. Beginn − 12 h). Am Stichtag wird ein
 verbliebenes „Vielleicht“ zur Absage. Für alle verknüpften Tools zählt „Vielleicht“ wie eine Absage, nur die
 Gästelisten zeigen es.
+
+### L27: Gäste von Hand eintragen
+
+**Bewertung (2026-10-28): angenommen** auf Wunsch des Nutzers.
+
+**Stand (2026-10-28): umgesetzt** in rsvp-app: „+ Gast eintragen“ im Reiter „Gäste“ (auch für Moderator\*innen, nicht
+im Einladungsmodus) mit Name, Zusage/Vielleicht/Absage, optional Adresse und Ticketkategorie. Die Adresse gilt nur mit
+Haken als bestätigt, es geht keine Mail raus; eine Zusage ist ein fester Platz wie „Zulassen“, Vielleicht nur, wenn der
+Termin es erlaubt. Die anderen Tools brauchten keine Änderung (Zusagen gehen wie sonst an verknüpfte Tools).
+
+**Problem:** Antworten, die persönlich oder am Telefon kommen, ließen sich nicht eintragen - nur Gäste selbst konnten
+antworten.
+
+**Idee:** Die Verwaltung trägt die Antwort selbst ein. Eine Adresse, die sie nicht selbst geprüft hat, bleibt
+unbestätigt wie bei einem Gast, der den Link noch nicht geklickt hat.
 
 ---
 
