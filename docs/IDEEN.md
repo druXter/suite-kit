@@ -603,8 +603,9 @@ Gästelisten zeigen es.
 
 **Stand (2026-10-28): umgesetzt** in rsvp-app: „+ Gast eintragen“ im Reiter „Gäste“ (auch für Moderator\*innen, nicht
 im Einladungsmodus) mit Name, Zusage/Vielleicht/Absage, optional Adresse und Ticketkategorie. Die Adresse gilt nur mit
-Haken als bestätigt, es geht keine Mail raus; eine Zusage ist ein fester Platz wie „Zulassen“, Vielleicht nur, wenn der
-Termin es erlaubt. Die anderen Tools brauchten keine Änderung (Zusagen gehen wie sonst an verknüpfte Tools).
+Haken als bestätigt, eine Mail (Bestätigung mit Kalenderdatei und QR-Code bzw. Bitte um Bestätigung) nur mit Haken;
+eine Zusage ist ein fester Platz wie „Zulassen“, Vielleicht nur, wenn der Termin es erlaubt. Beim Bearbeiten ist eine
+geänderte Adresse unbestätigt, außer mit Haken. Die anderen Tools brauchten keine Änderung (Zusagen gehen wie sonst an verknüpfte Tools).
 
 **Problem:** Antworten, die persönlich oder am Telefon kommen, ließen sich nicht eintragen - nur Gäste selbst konnten
 antworten.
