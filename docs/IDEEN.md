@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Am 2026-10-25 umgesetzt: N6 (Wichteln) als neues Tool. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Am 2026-10-25 umgesetzt: N6 (Wichteln) als neues Tool. Am 2026-10-29 umgesetzt: N9 (Inventur) als neues Tool, dazu L28 als offene Idee. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -46,6 +46,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L25](#l25-kalender-export-ics) | Kalender-Export (ICS) | zeitplan | S | verworfen |
 | [L26](#l26-antwort-vielleicht) | Antwort „Vielleicht“ mit Erinnerung und automatischer Absage | rsvp-app | M | umgesetzt |
 | [L27](#l27-gäste-von-hand-eintragen) | Gäste von Hand eintragen (Zusage, Vielleicht, Absage, Adresse) | rsvp-app | S | umgesetzt |
+| [L28](#l28-mitbringliste-und-inventur-verknüpfen) | Mitbringliste (rsvp-app) mit einer Inventurliste verknüpfen | rsvp-app, inventur | M | offen |
 | [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu (schichten) | L | umgesetzt |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
@@ -54,6 +55,7 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [N6](#n6-wichteln) | Neues Tool: Wichteln (Secret Santa) | neu (wichteln) | L | umgesetzt |
 | [N7](#n7-termine) | Neues Tool: Termine (Terminbuchung mit Nextcloud-Kalender und Talk) | neu (termine) | L | angenommen |
 | [N8](#n8-startseite) | Neues Tool: Startseite (eigene Seiten aus Blöcken, startseite.ramonroeser.de) | neu (startseite) | M | umgesetzt |
+| [N9](#n9-inventur) | Neues Tool: Inventur (Bestände in Listen, QR-Codes, offline, inventur.ramonroeser.de) | neu (inventur) | L | umgesetzt |
 | [Q1](#q1-einmal-anlegen-überall-verknüpfen) | Einmal anlegen, überall verknüpfen | rsvp-app, zeitplan, schichten (seating später) | M je Paar | umgesetzt (ohne Seating) |
 | [Q2](#q2-mehrsprachigkeit) | Mehrsprachigkeit (mindestens Deutsch/Englisch) | alle Tools | L | zurückgestellt |
 | [Q3](#q3-fotos-der-gäste-über-immich) | Fotos der Gäste über Immich statt eigener App | rsvp-app / zeitplan | S | umgesetzt |
@@ -614,6 +616,15 @@ antworten.
 **Idee:** Die Verwaltung trägt die Antwort selbst ein. Eine Adresse, die sie nicht selbst geprüft hat, bleibt
 unbestätigt wie bei einem Gast, der den Link noch nicht geklickt hat.
 
+### L28: Mitbringliste und Inventur verknüpfen
+
+**Stand (2026-10-29): offen.** Beim Bau der Inventur (N9) vom Nutzer ausdrücklich zurückgestellt („erstmal nicht“).
+
+**Idee:** Für die Hochzeit: Beanspruchte Slots der Mitbringliste (L5) erscheinen in der verknüpften Inventurliste als
+Bestand bei der Person („bringt mit“), umgekehrt sieht die Mitbringliste, was schon am Zielort angekommen ist.
+Vertrag über `signLinkMessage` wie die anderen Anbindungen, Verknüpfung über Q1. Heute ersetzt durch Orte der Art
+„Person“ und das Feld „Zuständig“ in der Inventur.
+
 ---
 
 ## Mögliche neue Tools
@@ -715,6 +726,18 @@ geplant eine Hochzeitsseite mit eingebetteter Anmeldung (rsvp-app), OpenStreetMa
 Technisch Teil der Suite, fachlich ohne Anbindung: Suite-Apps nur über ihre öffentlichen, einbettbaren Seiten, die
 direkt laden; fremde Einbettungen erst nach Klick. Später denkbar: nicht-öffentliche Seiten, weitere Blöcke (Suchfeld,
 Uhr, Wetter, Uptime-Kuma-Status), automatische Höhe eingebetteter Suite-Seiten per `postMessage`.
+
+### N9: Inventur
+
+**Stand (2026-10-29): umgesetzt** auf Wunsch des Nutzers als eigenes Tool „Inventur“ (`inventur.ramonroeser.de`,
+Port 3013, Repo `inventur`), Konzept in `inventur/docs/KONZEPT.md`. Bestände in getrennten Listen (wie Events in
+rsvp-app): Orte verschachtelt (Ort, Behälter, Person), Artikel mit Fotos und Varianten (Farbe × Größe), Bestände je
+Ort in Tausendsteln (Gramm), Buchungen mit Verlauf und Rückgängig. Vorlagen statt fester Modi (Behälter mit
+QR-Codes, Lager, Planung, einfache Liste). QR-Etiketten, auch leer vorab, Scanner in der App. PWA, die ohne Netz
+weiterläuft (Stand im Browser, Warteschlange mit `opId`). Team mit Konto und Links ohne Konto (ansehen bzw. Mengen
+ändern). Export CSV/JSON/ZIP, CSV-Import mit Vorschau. Anlässe: Vorräte in Gläsern, AStA-Equipment, Uni-Merch,
+Hochzeit. Entscheidungen des Nutzers: offline lesen und später senden, Konten und Links, keine fachliche Anbindung
+(dafür L28). Später denkbar: Mindestbestand per Push, Ausleihe mit Rückgabedatum, Barcodes, eigene Felder je Liste.
 
 ---
 
