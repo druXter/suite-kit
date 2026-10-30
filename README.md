@@ -24,7 +24,7 @@ Datenschutz, Tests, Doku), steht in [docs/KONVENTIONEN.md](docs/KONVENTIONEN.md)
 Jedes Tool hat sein eigenes README mit Funktionen, Einrichtung und Betrieb. Hier steht, was für **alle** gilt.
 
 Ideen für Erweiterungen und neue Tools sammelt [docs/IDEEN.md](docs/IDEEN.md), mit Bewertung und Status pro Idee
-(zuletzt bewertet am 2026-10-07), darunter das Suite-Paket für ein gemeinsames Deployment. Offene Wartungs- und
+(zuletzt bewertet am 2026-10-07, zuletzt ergänzt am 2026-10-30), darunter das Suite-Paket für ein gemeinsames Deployment. Offene Wartungs- und
 Betriebsaufgaben, die mehrere Tools betreffen (z.B. Node-Updates), stehen in [TODO.md](TODO.md).
 
 ## Leitprinzipien

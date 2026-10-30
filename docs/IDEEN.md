@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Am 2026-10-25 umgesetzt: N6 (Wichteln) als neues Tool. Am 2026-10-29 umgesetzt: N9 (Inventur) als neues Tool, dazu L28 als offene Idee. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Am 2026-10-25 umgesetzt: N6 (Wichteln) als neues Tool. Am 2026-10-29 umgesetzt: N9 (Inventur) als neues Tool, dazu L28 als offene Idee. Am 2026-10-30 kamen L29–L38, N10–N13 und Q8–Q13 als neue, noch nicht bewertete Ideen dazu (Bestandsaufnahme aller neun Tools). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -47,6 +47,16 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L26](#l26-antwort-vielleicht) | Antwort „Vielleicht“ mit Erinnerung und automatischer Absage | rsvp-app | M | umgesetzt |
 | [L27](#l27-gäste-von-hand-eintragen) | Gäste von Hand eintragen (Zusage, Vielleicht, Absage, Adresse) | rsvp-app | S | umgesetzt |
 | [L28](#l28-mitbringliste-und-inventur-verknüpfen) | Mitbringliste (rsvp-app) mit einer Inventurliste verknüpfen | rsvp-app, inventur | M | offen |
+| [L29](#l29-nachricht-an-gäste) | Nachricht an Gäste (Mail und Push, gefiltert) | rsvp-app (+ schichten) | S–M | offen |
+| [L30](#l30-rückbestätigung-vor-dem-termin) | Rückbestätigung vor dem Termin („Kommst du noch?“) | rsvp-app | M | offen |
+| [L31](#l31-auswertung-für-reihen) | Auswertung für Reihen (Teilnahme, Nicht-Erschienene) | rsvp-app | S–M | offen |
+| [L32](#l32-sitzwünsche-und-vorschlag-für-die-sitzordnung) | Sitzwünsche der Gäste und Vorschlag für die Sitzordnung | rsvp-app, seating | M–L | offen |
+| [L33](#l33-mehrheiten-und-wahlgänge-in-sitzungen) | Mehrheiten, Personenwahl und Stichwahl in Sitzungen | abstimmungstool | M | offen |
+| [L34](#l34-schichtwünsche-mit-automatischer-verteilung) | Schichtwünsche mit automatischer Verteilung | schichten | M–L | offen |
+| [L35](#l35-ausleihe-und-mindestbestand-in-der-inventur) | Ausleihe mit Rückgabedatum und Mindestbestand | inventur | M | offen |
+| [L36](#l36-fundsachen) | Fundsachen als Vorlage mit öffentlicher Liste | inventur | S–M | offen |
+| [L37](#l37-anonyme-rückfrage-beim-wichteln) | Anonyme Rückfrage an die beschenkte Person | wichteln | S–M | offen |
+| [L38](#l38-seiten-nur-für-gäste) | Seiten nur für Gäste (Zugang über rsvp-app oder Code) | startseite (+ rsvp-app) | M | offen |
 | [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu (schichten) | L | umgesetzt |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
@@ -56,6 +66,10 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [N7](#n7-termine) | Neues Tool: Termine (Terminbuchung mit Nextcloud-Kalender und Talk) | neu (termine) | L | angenommen |
 | [N8](#n8-startseite) | Neues Tool: Startseite (eigene Seiten aus Blöcken, startseite.ramonroeser.de) | neu (startseite) | M | umgesetzt |
 | [N9](#n9-inventur) | Neues Tool: Inventur (Bestände in Listen, QR-Codes, offline, inventur.ramonroeser.de) | neu (inventur) | L | umgesetzt |
+| [N10](#n10-verleih) | Verleih: Gegenstände und Räume buchen lassen | inventur, termine oder neu | M–L | offen |
+| [N11](#n11-vorbereitung-mit-fristen) | Vorbereitung: Aufgaben mit Fristen relativ zum Termin | neu (oder Nextcloud Deck) | M–L | offen |
+| [N12](#n12-grußwand) | Grußwand / Gästebuch mit Tafel und Druck | neu oder zeitplan | M | offen |
+| [N13](#n13-rundbrief) | Rundbrief mit An- und Abmeldung (Fachschaft, Verein) | neu (oder listmonk) | M | offen |
 | [Q1](#q1-einmal-anlegen-überall-verknüpfen) | Einmal anlegen, überall verknüpfen | rsvp-app, zeitplan, schichten (seating später) | M je Paar | umgesetzt (ohne Seating) |
 | [Q2](#q2-mehrsprachigkeit) | Mehrsprachigkeit (mindestens Deutsch/Englisch) | alle Tools | L | zurückgestellt |
 | [Q3](#q3-fotos-der-gäste-über-immich) | Fotos der Gäste über Immich statt eigener App | rsvp-app / zeitplan | S | umgesetzt |
@@ -63,6 +77,12 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [Q5](#q5-direkt-weiter-zum-einzigen-anbieter) | Login: direkt weiter zum einzigen Anbieter | suite-kit, alle Tools | S | umgesetzt |
 | [Q6](#q6-bot-schutz-für-öffentliche-formulare) | Bot-Schutz für öffentliche Formulare (eigener Proof-of-Work) | rsvp-app, seating, schichten, abstimmungstool | S je Tool | umgesetzt |
 | [Q7](#q7-verwaltungs--und-teilnehmendenkonto-verknüpfen) | Verwaltungs- und Teilnehmendenkonto verknüpfen statt zusammenlegen | rsvp-app | S | umgesetzt |
+| [Q8](#q8-auskunft-und-löschung-über-alle-tools) | Auskunft und Löschung zu einer Adresse über alle Tools | alle Tools, scripts | S je Tool | offen |
+| [Q9](#q9-passkeys-für-verwaltungskonten) | Passkeys für Verwaltungskonten | suite-kit, alle Tools | M | offen |
+| [Q10](#q10-automatische-höhe-eingebetteter-seiten) | Automatische Höhe eingebetteter Suite-Seiten | suite-kit, einbettbare Seiten, startseite | S | offen |
+| [Q11](#q11-barrierefreiheit-in-den-tests) | Barrierefreiheit automatisch in den E2E-Tests prüfen | alle Tools | S je Tool | offen |
+| [Q12](#q12-chat-anbindung-für-reihen) | Chat-Anbindung für Reihen (Discord, Signal) | rsvp-app (+ mittwoch-bot) | M | offen |
+| [Q13](#q13-was-steht-an) | Übersicht „Was steht an?“ über alle Tools | startseite (+ alle Tools) | M–L | offen |
 
 ### Wo die Ideen ansetzen
 
@@ -71,15 +91,17 @@ Die Suite deckt den Kern **anmelden → entscheiden → platzieren → Ablauf st
 
 | Szenario | Wichtigste Ideen |
 | --- | --- |
-| Regelmäßige Freundesrunde | L5, N3 |
+| Regelmäßige Freundesrunde | L5, N3, L31, Q12 |
 | Pubquiz in der Studikneipe | L1 (Startgeld), L9, N2, N1 |
-| Winterball | L1, L3, L4, N1, L23 |
-| Hochzeit | L2, L3, N4, N5, Q3, L15, L16, L18, L22 |
+| Winterball | L1, L3, L4, N1, L23, L29, L30, L34, L36 |
+| Hochzeit | L2, L3, N4, N5, Q3, L15, L16, L18, L22, L32, L38, N11, N12 |
 | Workshops, Ersti-Woche, Barcamp, Tag der offenen Tür | L6 (+ abstimmungstool für Session-Vorschläge) |
-| Mitgliederversammlung, Fachschaft, StuPa | L7, L24 |
+| Mitgliederversammlung, Fachschaft, StuPa | L7, L24, L33 |
 | Freizeiten, Ersti-Fahrt, Vereinsausflug | N5, N3, Zimmerverteilung über seating `ASSIGNED` (schon möglich) |
 | Turniere, Spieleabend, Sportfest | N2 |
 | Internationales Publikum | Q2 |
+| Equipment und Räume (AStA, Fachschaft, Verein) | L35, N10 |
+| Alltag einer Fachschaft oder eines Vereins | L29, N13, Q12, Q13 |
 
 ---
 
@@ -625,6 +647,162 @@ Bestand bei der Person („bringt mit“), umgekehrt sieht die Mitbringliste, wa
 Vertrag über `signLinkMessage` wie die anderen Anbindungen, Verknüpfung über Q1. Heute ersetzt durch Orte der Art
 „Person“ und das Feld „Zuständig“ in der Inventur.
 
+### L29: Nachricht an Gäste
+
+*Aufgenommen 2026-10-30.* **Stand: offen.**
+
+**Problem:** rsvp-app schreibt Gäste nur automatisch an (Bestätigung, Erinnerung, Änderung von Zeit oder Ort über
+`notifyAttendeesOfChange`). Für freie Hinweise („Bitte Ausweis mitbringen“, „Parkplatz gesperrt, nehmt den
+Hintereingang“, „Dresscode“) bleibt nur der Umweg über das eigene Postfach, mit allen Adressen im Feld An oder BCC.
+Schichten führt die Rundmail ausdrücklich unter „Später“, Seating hat schon eine.
+
+**Idee:** „Nachricht an Gäste“ pro Termin bzw. Reihe: Betreff und Text (Markdown wie in der Startseite), Empfänger
+gefiltert nach Zusage, Warteliste, Vielleicht, Ticketkategorie, Bezahlstatus („noch offen“) oder eingecheckt. Versand
+per Mail (`renderMail`) und Push an Gäste mit Abo, Vorschau mit Zahl der Empfänger\*innen, Verlauf der gesendeten
+Nachrichten pro Termin, gedrosselt wie die anderen Massenmails. Moderator\*innen nur mit eigener Freigabe. Dasselbe
+Muster danach für die Rundmail in Schichten (Filter: Schicht, Ort, ohne Schicht).
+
+**Offene Fragen:** Nachricht auch auf der Seite des Gasts anzeigen (dann sieht sie auch, wer keine Mail liest)? Wie
+viele Mails verträgt das Strato-Konto pro Stunde?
+
+### L30: Rückbestätigung vor dem Termin
+
+*Aufgenommen 2026-10-30.* **Stand: offen.**
+
+**Problem:** Bei kostenlosen, vollen Terminen mit Warteliste (Ersti-Events, Kneipenabende, Workshops) erscheinen
+erfahrungsgemäß 10–30 % der Zusagen nicht. Die Plätze bleiben leer, obwohl die Warteliste lang ist.
+
+**Idee:** Schalter pro Termin: X Tage vorher fragt eine Mail (und Push) „Kommst du noch?“ mit zwei Knöpfen. Wer
+bestätigt, behält den Platz sicher; wer absagt, gibt ihn sofort an die Warteliste. Ohne Antwort bis zur Frist entweder
+nur markiert („unbestätigt“ in der Gästeliste) oder – zweite Stufe des Schalters – automatisch abgesagt mit Mail.
+Bestätigen nur per POST wie überall (Regel „Links lösen beim Aufruf nichts aus“). Bezahlte Zusagen (L1) und
+Einladungen (L2) nie automatisch absagen.
+
+**Abgrenzung zu L26:** „Vielleicht“ ist eine offene Antwort, die am Stichtag verfällt; hier geht es um feste Zusagen,
+die sich bestätigen sollen.
+
+### L31: Auswertung für Reihen
+
+*Aufgenommen 2026-10-30.* **Stand: offen.**
+
+**Problem:** Bei Reihen (Freundesrunde, Stammtisch, Fachschaftssitzung) sieht die Verwaltung jeden Termin einzeln,
+aber nicht, wie sich die Teilnahme entwickelt, wer regelmäßig kommt oder wer oft zusagt und dann fehlt.
+
+**Idee:** Reiter „Auswertung“ an der Reihe: Zusagen, Absagen und (mit QR-Einlass) Erschienene pro Termin als
+Verlauf, Quote „zugesagt und erschienen“, Stammgäste (z. B. bei mindestens der Hälfte der Termine), CSV. Personen nur
+für die Verwaltung, nur über Teilnehmendenkonten oder bestätigte Adressen zuordenbar, und nur so lange, wie die
+Löschfristen die Antworten ohnehin aufheben – kein eigenes Gedächtnis über die Fristen hinaus.
+
+**Offene Fragen:** Gäste ohne Konto über die Adresse zusammenführen (Hash) oder nur Konten zählen? Hinweis in der
+Datenschutzerklärung nötig (Auswertung pro Person)?
+
+### L32: Sitzwünsche und Vorschlag für die Sitzordnung
+
+*Aufgenommen 2026-10-30.* **Stand: offen.**
+
+**Problem:** Die Sitzordnung einer Hochzeit (Seating, Modus `ASSIGNED`) entsteht heute ganz von Hand. Wer neben wem
+sitzen möchte, erfährt das Paar per Zuruf; Gruppen lassen sich nur „zusammen setzen“.
+
+**Idee:** Zwei Bausteine, einzeln schaltbar:
+
+1. **Wünsche (rsvp-app):** Im Einladungsmodus optional „Mit wem möchtet ihr gern an einem Tisch sitzen?“ – Auswahl
+   aus den anderen Haushalten (nur Namen der Eingeladenen, nie Adressen) oder Freitext. Kommt in der Gästeliste an
+   Seating als Kennungen mit (Vertrag erweitern, feste Prüfnachrichten).
+2. **Vorschlag (Seating):** „Sitzordnung vorschlagen“ verteilt alle ohne Platz auf Tische: Haushalte zusammen,
+   Wünsche möglichst erfüllt, von der Verwaltung gesetzte „nicht an einen Tisch“-Paare und feste Plätze (Brauttisch)
+   eingehalten. Ergebnis nur als Vorschau mit „übernehmen“, danach wie gewohnt per Ziehen korrigieren. Als reine
+   Funktion mit Unit-Tests (Heuristik reicht, kein Optimierer nötig).
+
+**Offene Fragen:** Wünsche für Gäste sichtbar machen („Familie Müller wünscht sich euch“) oder nur für das Paar?
+
+### L33: Mehrheiten und Wahlgänge in Sitzungen
+
+*Aufgenommen 2026-10-30.* **Stand: offen.**
+
+**Problem:** Der Sitzungsmodus (L7) zählt Stimmen und hält die Beschlussfähigkeit fest, entscheidet aber nicht, ob
+ein Antrag angenommen ist. Satzungen verlangen unterschiedliche Mehrheiten (einfach, absolut, zwei Drittel der
+abgegebenen Stimmen oder der Mitglieder), und Personenwahlen laufen oft in Wahlgängen mit Stichwahl.
+
+**Idee (abstimmungstool):**
+
+* **Mehrheitsregel pro Abstimmung** (Vorgabe pro Sitzung): einfach, absolut, ⅔ – bezogen auf abgegebene Stimmen,
+  Anwesende oder Mitglieder; Enthaltungen zählen mit oder nicht. Ergebnis „angenommen/abgelehnt“ in Leitung, Tafel
+  und CSV der Beschlüsse.
+* **Personenwahl:** pro Kandidat\*in Ja/Nein/Enthaltung (auch bei nur einer Person) oder Wahl zwischen mehreren mit
+  „Stichwahl zwischen den beiden Ersten“ als Knopf, der die nächste Abstimmung mit den richtigen Optionen anlegt.
+* **Ergebnis bei Gleichstand** nach Regel (Los, Leitung entscheidet, abgelehnt) – im Protokoll festgehalten.
+
+**Abgrenzung:** keine Software-Satzungsprüfung; die Leitung wählt die Regel, das Tool rechnet nur.
+
+### L34: Schichtwünsche mit automatischer Verteilung
+
+*Aus dem Konzept von Schichten übernommen (2026-10-30), dort unter „Später“.* **Stand: offen.**
+
+**Problem:** Beim Eintragen gilt „wer zuerst kommt“. Beliebte Schichten sind sofort voll, unbeliebte (Abbau,
+Garderobe um 3 Uhr) bleiben leer, und die Verwaltung verteilt am Ende von Hand um.
+
+**Idee:** Pro Event wahlweise eine Wunschphase statt sofortiger Eintragung: Helfer\*innen geben Wünsche (gern / geht /
+lieber nicht) und eine Zahl gewünschter Schichten an. Zum Stichtag verteilt eine reine Funktion fair (Regeln pro
+Person wie heute, keine Überschneidungen, unbeliebte Schichten reihum), Vorschau für die Verwaltung, danach Mails
+mit dem Ergebnis; ab dann gelten Tauschbörse und normales Eintragen.
+
+### L35: Ausleihe und Mindestbestand in der Inventur
+
+*Aus dem Konzept von Inventur übernommen (2026-10-30), dort unter „Später denkbar“.* **Stand: offen.**
+
+**Problem:** AStA-Equipment (Beamer, Kabeltrommeln, Pavillons) wird verliehen. Heute ginge das nur als Buchung auf
+einen Ort der Art „Person“ – ohne Rückgabedatum, ohne Erinnerung, ohne Übersicht „was ist gerade draußen“.
+
+**Idee:**
+
+* **Ausleihe:** „Verleihen“ an eine Person (Konto, Ort „Person“ oder nur Name und Adresse) mit Rückgabedatum und
+  Notiz zum Zustand; Übersicht „verliehen / überfällig“, Erinnerung per Mail am Tag vor der Rückgabe und bei
+  Überfälligkeit (Cron mit Push an Kuma), „zurück“ per QR-Scan.
+* **Mindestbestand:** pro Artikel optional; fällt der Bestand darunter, Push an die Liste und eine Einkaufsliste zum
+  Abhaken (Vorräte in Gläsern, Getränke für die Fachschaft).
+
+Grundlage für N10.
+
+### L36: Fundsachen
+
+*Aufgenommen 2026-10-30.* **Stand: offen.**
+
+**Problem:** Nach Ball oder Party bleiben Jacken, Schlüssel und Handys liegen. Gesucht wird per Rundmail oder Story,
+die Sachen liegen in einer Kiste im AStA.
+
+**Idee:** Neue Vorlage „Fundsachen“ in der Inventur: Fundstück mit Foto, Fundort und Datum, Behälter mit QR-Code wie
+gewohnt. Dazu eine **öffentliche Liste** pro Inventurliste (Schalter, aus als Voreinstellung) mit grober Beschreibung
+und ohne Fotos von Merkmalen, an denen man das Eigentum erkennt („schwarzer Schlüsselbund“ – die Farbe des Anhängers
+fragt man bei der Abholung ab). „Abgeholt“ als Buchung; nach einer Frist zur Spende oder Entsorgung markiert und
+gelöscht. Optional verlinkt aus rsvp-app nach dem Termin (wie der Foto-Link aus Q3).
+
+### L37: Anonyme Rückfrage beim Wichteln
+
+*Aufgenommen 2026-10-30.* **Stand: offen.** Im README von Wichteln heute als bewusste Grenze geführt („keine anonymen
+Nachrichten“); hier zur Neubewertung.
+
+**Problem:** Der Wunschzettel lässt oft Fragen offen (Kleidergröße, „Buch – welches hast du schon?“). Fragen geht nur,
+indem man sich verrät oder über die Verwaltung, die dann die Zuordnung kennt.
+
+**Idee:** Nach dem Veröffentlichen kann der Wichtel über die eigene Seite eine kurze Frage an die beschenkte Person
+stellen, die Antwort erscheint nur dort. Die Mail an die beschenkte Person nennt keinen Namen; Verwaltung sieht nur,
+dass es Fragen gab. Grenzen: nur Text, kurze Länge, wenige Fragen pro Paar, Löschung mit der Auslosung.
+
+**Offene Fragen:** Rückweg auch umgekehrt („Danke!“ nach dem Auspacken)? Missbrauchsrisiko (anonyme Nachrichten) in
+kleinen, bekannten Gruppen gering, aber Meldeknopf an die Verwaltung?
+
+### L38: Seiten nur für Gäste
+
+*Aus N8 übernommen (2026-10-30), dort unter „Später denkbar“.* **Stand: offen.**
+
+**Problem:** Die geplante Hochzeitsseite in der Startseite soll Dinge zeigen, die nicht öffentlich gehören: Adresse
+der Location, Hotelkontingent, Dresscode, WLAN, Ansprechperson mit Handynummer.
+
+**Idee:** Sichtbarkeit pro Seite: öffentlich (heute), mit Code, oder **nur mit Zusage** über einen signierten Link aus
+rsvp-app (Muster `timeline-link` wie beim Zeitplan, eigenes Secret, Gast-Sitzung pro Seite, Absage beendet sie).
+Alternativ einzelne Blöcke statt der ganzen Seite schützen („öffentlich: Datum und Anmeldung, nur Gäste: Adresse“).
+In rsvp-app ein Feld „Infoseite“ pro Termin wie der Foto-Link.
+
 ---
 
 ## Mögliche neue Tools
@@ -738,6 +916,74 @@ weiterläuft (Stand im Browser, Warteschlange mit `opId`). Team mit Konto und Li
 ändern). Export CSV/JSON/ZIP, CSV-Import mit Vorschau. Anlässe: Vorräte in Gläsern, AStA-Equipment, Uni-Merch,
 Hochzeit. Entscheidungen des Nutzers: offline lesen und später senden, Konten und Links, keine fachliche Anbindung
 (dafür L28). Später denkbar: Mindestbestand per Push, Ausleihe mit Rückgabedatum, Barcodes, eigene Felder je Liste.
+Ausleihe und Mindestbestand stehen seit 2026-10-30 als L35 in dieser Liste.
+
+### N10: Verleih
+
+*Aufgenommen 2026-10-30.* **Stand: offen.** Erst nach L35 bewerten.
+
+**Szenario:** AStA oder Fachschaft verleiht Equipment (Beamer, Lastenrad, Zelt, Musikanlage) oder Räume an
+Studierende und Initiativen. Heute per Mail und geteilter Tabelle, Doppelbuchungen inklusive.
+
+**Idee:** Öffentliche Seite mit den verleihbaren Gegenständen (Foto, Beschreibung, Kaution), Kalender der Belegung,
+Anfrage für einen Zeitraum ohne Konto (Adresse per Mail bestätigt, Bot-Schutz Q6), Freigabe durch die Verwaltung,
+Abholung und Rückgabe mit Zustand und QR-Scan, Erinnerungen, Sperre bei überfälliger Rückgabe.
+
+**Wohin damit?** Drei Wege, kleinster zuerst prüfen:
+
+1. **Inventur mit L35** und einer öffentlichen Anfrageseite pro Liste – Bestand, QR-Codes und Fotos gibt es dort
+   schon, es fehlen Zeiträume und Konfliktprüfung.
+2. **Termine**: „Ressourcen“ statt Personen als Kalender (Zeitfenster, Konfliktprüfung, Bestätigung, Erinnerungen
+   gibt es dort) – aber Termine denkt in Stunden, Verleih in Tagen, und die Verfügbarkeit kommt aus Nextcloud.
+3. **Eigenes Tool** „Verleih“ nach dem Muster von Seating (Buchung ohne Konto, Warteliste), angebunden an Inventur.
+
+### N11: Vorbereitung mit Fristen
+
+*Aufgenommen 2026-10-30.* **Stand: offen.**
+
+**Problem:** Die Suite deckt den Tag selbst und die Anmeldung ab, nicht aber die Wochen davor: „Location buchen“,
+„Einladungen raus“, „Menü an Caterer“, „Schichtplan veröffentlichen“. Das steht heute in Notizen oder Nextcloud Deck,
+ohne Bezug zum Datum des Events.
+
+**Idee:** Aufgabenliste pro Event mit Fristen **relativ zum Termin** („8 Wochen vorher“), Zuständigen und
+Erinnerungen; verschiebt sich das Datum, wandern die Fristen mit. Vorlagen pro Event-Typ (Hochzeit, Ball,
+Mitgliederversammlung mit Ladungsfrist) – ein Baustein für Q4. Der eigentliche Suite-Mehrwert: Aufgaben haken sich
+selbst ab, wenn ein verknüpftes Tool den Schritt meldet (Einladungen verschickt, Schichtplan veröffentlicht, Auslosung
+im Wichteln erfolgt), Verknüpfung über Q1.
+
+**Abgrenzung:** Nextcloud Deck läuft schon. Ohne relative Fristen und Haken aus den Tools lohnt kein eigenes Tool;
+dann reicht eine Deck-Vorlage. Als Teil des Zeitplans (Spur „Vorbereitung“) passt es nicht, der denkt in Minuten eines
+Tages.
+
+### N12: Grußwand
+
+*Aufgenommen 2026-10-30.* **Stand: offen.**
+
+**Szenario:** Hochzeit, runder Geburtstag, Abschied, Jubiläum.
+
+**Idee:** Gäste schreiben einen Gruß (Text, optional ein Foto ohne Metadaten wie in der Startseite), die Verwaltung
+gibt frei, die Grüße laufen am Abend auf einer Tafel durch (Muster der Tafel aus Zeitplan und Sitzung) und gibt es
+danach als Druckansicht bzw. PDF-Buch für die Gefeierten. Zugang über rsvp-app (signierter Link, nur Zusagen) oder Link
+mit Code; der Name des Gasts kommt aus der Zusage.
+
+**Wohin damit?** Als eigener Baustein im Zeitplan (Tafel, Gästeansicht und Zugang über rsvp-app gibt es dort, aber
+Zeitplan speichert bewusst keine Namen) oder als kleines eigenes Tool. Fotos der Gäste bleiben bei Immich (Q3); die
+Grußwand nimmt höchstens ein Bild pro Gruß.
+
+### N13: Rundbrief
+
+*Aufgenommen 2026-10-30.* **Stand: offen.**
+
+**Szenario:** Fachschaft, Verein, Freundeskreis: regelmäßige Infos an alle, die das wollen – nicht nur an Gäste eines
+Termins (dafür L29).
+
+**Idee:** Verteiler mit Anmeldung per Double-Opt-In, Abmelden per Link und `List-Unsubscribe`-Header, Ausgaben mit
+Markdown in der Gestaltung von `renderMail`, öffentliches Archiv (auch als Block auf der Startseite), Teilnehmendenkonten
+aus rsvp-app als Abonnierende nur nach eigener Zustimmung. Versand gedrosselt im Hintergrund.
+
+**Abgrenzung:** Wie bei N3 zuerst prüfen, ob ein fertiges selbst gehostetes Tool reicht (listmonk). Begrenzung durch
+das Strato-Postfach (Versandlimit pro Stunde) und die Zustellbarkeit; ab einigen hundert Empfänger\*innen eher nicht
+selbst versenden.
 
 ---
 
@@ -836,3 +1082,84 @@ die Verwaltung, weil sich das Passwort eines Teilnehmendenkontos per Mail zurüc
 Seiten. Die anderen Tools haben keine Teilnehmendenkonten und sind nicht betroffen.
 
 **Problem:** Wer verwaltet und selbst teilnimmt, musste sich zweimal anmelden.
+
+### Q8: Auskunft und Löschung über alle Tools
+
+*Aufgenommen 2026-10-30.* **Stand: offen.**
+
+**Problem:** Fragt jemand nach Art. 15 DSGVO, welche Daten gespeichert sind, oder will alles gelöscht haben, sucht der
+Betreiber heute in neun Datenbanken von Hand. Jedes Tool kennt die Person nur über die Adresse (oder gar nicht, Zeitplan).
+
+**Idee:** In jedem Tool ein Skript wie `create-user.js`, z. B. `auskunft.js <adresse>` bzw. `loeschen.js <adresse>`,
+das im Container läuft und alles zu dieser Adresse als JSON ausgibt (Antworten, Buchungen, Schichten, Wichteln,
+Konten, Push-Abos ohne Endpunkt) bzw. löscht – mit denselben Regeln wie die automatische Löschung. Ein Skript in
+`~/scripts` ruft alle Tools auf und legt eine Datei zum Verschicken an. Kein Endpunkt im Netz, nur auf dem Server.
+Muster einmal in KONVENTIONEN.md festlegen.
+
+### Q9: Passkeys für Verwaltungskonten
+
+*Aufgenommen 2026-10-30.* **Stand: offen.**
+
+**Problem:** Verwaltungskonten melden sich mit Passwort an; Konten mit Admin-Rolle haben bewusst keinen Reset per
+Mail. Ein abgegriffenes Passwort reicht für den Zugang, ein vergessenes sperrt aus.
+
+**Idee:** Passkeys (WebAuthn) als zweiter Weg neben dem Passwort, einmal als Baustein in suite-kit (Registrierung,
+Prüfung, Speicherung pro Konto), dann in jedem Tool unter „Konto-Einstellungen“. Optional „nur noch Passkey“ für Konten
+mit Admin-Rolle. Passt zum Konten-Verbund: Es reicht, sich beim bevorzugten Anbieter (Q5) per Passkey anzumelden.
+
+**Offene Fragen:** Bibliothek (`@simplewebauthn/server`) oder selbst gebaut wie der Proof-of-Work? Wiederherstellung,
+wenn das einzige Gerät weg ist (zweiter Passkey Pflicht?).
+
+### Q10: Automatische Höhe eingebetteter Seiten
+
+*Aus N8 übernommen (2026-10-30), dort unter „Später denkbar“.* **Stand: offen.**
+
+**Problem:** Einbettbare Seiten (Anmeldung in rsvp-app, Fragebögen im Abstimmungstool, Programm im Zeitplan) stehen in
+der Startseite und der Campus-App in iFrames mit fester Höhe: zu klein mit Scrollbalken, zu groß mit Leerraum,
+und nach dem Absenden ändert sich die Höhe.
+
+**Idee:** Ein kleines Skript in suite-kit, das jede einbettbare Seite einbindet: Es meldet seine Höhe per
+`postMessage` an den Elternrahmen, nur an Origins aus der Liste der erlaubten Einbettungen. Gegenstück für
+Einbettende (Startseite, Campus-App) prüft Absender-Origin und Format. Ohne Einbettung passiert nichts.
+
+### Q11: Barrierefreiheit in den Tests
+
+*Aufgenommen 2026-10-30.* **Stand: offen.**
+
+**Problem:** Barrierefreiheit wird heute beim Bauen mitgedacht (Seating ohne Ziehen bedienbar, Abstimmen ohne
+JavaScript), aber nicht geprüft. Rückschritte fallen erst auf, wenn jemand sie bemerkt.
+
+**Idee:** `@axe-core/playwright` in den E2E-Tests aller Tools für die Seiten der Gäste (Anmeldung, Abstimmen,
+Buchen, Eintragen, Wunschzettel, Buchungsseite, Startseiten) und die wichtigsten Seiten der Verwaltung; Regel und
+erlaubte Ausnahmen in KONVENTIONEN.md, Farben einmal in `theme.css` prüfen (Kontrast im Darkmode).
+
+### Q12: Chat-Anbindung für Reihen
+
+*Aufgenommen 2026-10-30.* **Stand: offen.**
+
+**Problem:** Für die Mittwochsrunde gibt es einen eigenen Discord-Bot mit Zu- und Absage, abseits der Suite
+(`~/mittwoch-bot`). Andere Gruppen sprechen sich in Signal ab. Zusagen leben damit an zwei Orten, und rsvp-app erreicht die
+Gruppe nur per Mail und Push.
+
+**Idee:** Optionaler Vertrag zwischen einer Reihe in rsvp-app und einem Bot: rsvp-app meldet neue Termine und
+Änderungen (signiert, eigenes Secret), der Bot postet sie in den Kanal; Knöpfe im Chat schreiben die Antwort über
+einen signierten Aufruf als Zusage in rsvp-app (Zuordnung Chat-Konto ↔ Teilnehmendenkonto einmalig über einen Link).
+Für Signal ginge nur die Richtung rsvp-app → Gruppe (signal-cli läuft schon auf dem Server), Antworten über den Link.
+
+**Abgrenzung:** Der Mittwoch-Bot ist bewusst eigenständig. Erst bewerten, wenn eine zweite Gruppe dasselbe will oder
+die doppelte Pflege stört.
+
+### Q13: Was steht an?
+
+*Aufgenommen 2026-10-30.* **Stand: offen.** Hängt an L38 (Seiten nicht öffentlich) bzw. einer eigenen Anmeldung in der
+Startseite.
+
+**Problem:** Wer mehrere Tools verwaltet, öffnet jedes einzeln, um zu sehen, was ansteht: offene Zahlungen, leere
+Schichten, unbeantwortete Einladungen, Buchungen der Woche, überfällige Ausleihen.
+
+**Idee:** Jedes Tool bietet einen signierten Abruf „Übersicht“ für ein verknüpftes Konto (nur Zahlen und Titel, keine
+Personen), die Startseite zeigt sie als private Seite bzw. Block mit Links in die Tools. Konto-Zuordnung über den
+Konten-Verbund, nicht über die Adresse (Leitprinzip „Identität = Anbieter und Konto-ID“).
+
+**Abgrenzung:** Kein zentrales Dashboard mit Schreibrechten und keine gemeinsame Datenbank (Leitprinzipien 1 und 2);
+nur eine Lesesicht, die ohne die anderen Tools einfach leer bleibt.
