@@ -55,13 +55,19 @@ Karte mit `buttonClass('danger')`.
 | `Badge` (`Tone`) | Status und Merkmale; Töne gray, green, orange, red, blue, indigo, pink, amber, purple, lime, teal. |
 | `buttonClass(variant, size)`, `ButtonLink`, `SubmitButton`, `PrintButton` | Knöpfe: `primary` (eine Hauptaktion pro Bereich), `secondary`, `ghost`, `danger`; `sm` nur für Nebenaktionen in Listen. `SubmitButton` ist volle Breite (Formulare), `inline` daneben. |
 | `inputClass`, `fieldClass`, `labelClass`, `hintClass` | Eingabefelder (16 px auf dem Handy, sonst zoomt iOS hinein) in voller Breite bzw. ohne Breite für Felder mit eigener (`${fieldClass} w-24`), Beschriftung, Hinweis darunter. Nie die Klassen von Hand kopieren. |
+| `linkClass` | Link im Fließtext: unterstrichen und in beiden Schemata kontrastreich - nie nur `text-blue-600` (im Darkmode zu dunkel, ohne Unterstrich nur an der Farbe erkennbar). |
 | `Notice` | Rückmeldung: info, success, warning, error (`role="alert"`). |
-| `Stat`, `ProgressBar` | Kennzahl mit Beschriftung, optional Balken (voll = orange). |
+| `Stat`, `ProgressBar` | Kennzahl mit Beschriftung, optional Balken (voll = orange). `ProgressBar` braucht `label` (Name für Screenreader). |
 | `PageHeader`, `Main`, `Tabs`, `Segmented`, `sectionTitleClass` | Seitenaufbau; `Segmented` schaltet Ansichten einer Seite um (Spuren, Druckart, Filter). |
 | `SettingsSection`, `Disclosure` | Einklappbare Abschnitte, die ihren Zustand selbst halten (klappen nach dem Speichern nicht zu). |
 | `AppHeader`, `AppFooter`, `NavLink`, `AccountMenu`, `menuItemClass`, `menuSeparatorClass` | Rahmen. |
 | `CopyableField`, `ConfirmForm`, `FooterLink` | Link zum Kopieren (mit Knopf), Formular mit Rückfrage, Fußzeilen-Link. |
 | `InstallHint`, `PwaRegister` | „Als App installieren“ und Service Worker (`public/sw.js` des Tools). |
+
+**Barrierefreiheit** (geprüft mit axe in den E2E-Tests jedes Tools, Idee Q11): Text mindestens `gray-500` auf Weiß und
+`gray-400` auf Dunkel (`gray-400` auf Weiß und `gray-500` auf `gray-800` sind zu blass); Links im Text mit
+`linkClass`; ein `aria-label` nur, wenn es den sichtbaren Text enthält - sonst den Namen aus sichtbarem Text plus
+`sr-only` bilden; ein `role="img"` enthält keine Links oder Knöpfe (sonst `role="group"`).
 
 Eigene Bausteine eines Tools (z. B. `formatShortDate`, `SlotsBadge`) liegen in dessen `app/ui/kit.tsx`, das die
 gemeinsamen re-exportiert. Seiten importieren nur aus `app/ui/kit` - nie Farben oder Knopf-Klassen von Hand

@@ -57,6 +57,8 @@ export const fieldClass = 'rounded-lg border border-gray-300 bg-white p-2 text-b
 export const inputClass = `w-full ${fieldClass}`
 export const labelClass = 'block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1'
 export const hintClass = 'text-xs text-gray-500 dark:text-gray-400 mt-1'
+/** Link im Fließtext: unterstrichen (nicht nur an der Farbe erkennbar) und in beiden Schemata kontrastreich (WCAG AA). */
+export const linkClass = 'text-blue-700 underline underline-offset-2 hover:text-blue-900 dark:text-blue-300 dark:hover:text-blue-200'
 
 /** Kennzahl mit Beschriftung, optional mit Fortschrittsbalken (z. B. Plätze belegt). */
 export function Stat({ label, value, hint, tone, progress, testId }: { label: string; value: ReactNode; hint?: ReactNode; tone?: Tone; progress?: { value: number; max: number } | null; testId?: string }) {
@@ -65,16 +67,17 @@ export function Stat({ label, value, hint, tone, progress, testId }: { label: st
     <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4" data-testid={testId}>
       <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">{label}</p>
       <p className={`mt-1 text-2xl font-semibold ${color}`}>{value}</p>
-      {progress && <ProgressBar value={progress.value} max={progress.max} />}
+      {progress && <ProgressBar value={progress.value} max={progress.max} label={label} />}
       {hint && <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{hint}</p>}
     </div>
   )
 }
 
-export function ProgressBar({ value, max }: { value: number; max: number }) {
+/** Fortschritt, z.B. belegte Plätze. `label` nennt ihn für Screenreader (ein Fortschrittsbalken braucht einen Namen). */
+export function ProgressBar({ value, max, label }: { value: number; max: number; label: string }) {
   const percent = max > 0 ? Math.min(100, Math.round((value / max) * 100)) : 0
   return (
-    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700" role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={max}>
+    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700" role="progressbar" aria-label={label} aria-valuenow={value} aria-valuemin={0} aria-valuemax={max}>
       <div className={`h-full rounded-full ${percent >= 100 ? 'bg-orange-500' : 'bg-blue-600'}`} style={{ width: `${percent}%` }} />
     </div>
   )

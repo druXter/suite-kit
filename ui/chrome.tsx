@@ -35,9 +35,12 @@ export function AppHeader({ brand, nav = [], account, login, width = 'wide', cla
   return (
     <header data-chrome className={`sticky top-0 z-30 border-b border-gray-200 bg-white/95 backdrop-blur dark:border-gray-700 dark:bg-gray-900/95 print:hidden ${className}`}>
       <div className={`mx-auto flex h-14 ${WIDTH_CLASS[width]} items-center gap-2 px-4`}>
-        <Link href={brand.href} aria-label={`${brand.name} – Start`} className="mr-1 flex shrink-0 items-center gap-2 font-semibold text-gray-900 dark:text-gray-100">
+        {/* Name für Screenreader aus dem sichtbaren Text plus „– Start“, kein aria-label: Der sichtbare Name muss Teil
+            des zugänglichen Namens sein (WCAG 2.5.3, Idee Q11). Auf dem Handy nur das Symbol, der Name bleibt vorgelesen. */}
+        <Link href={brand.href} className="mr-1 flex shrink-0 items-center gap-2 font-semibold text-gray-900 dark:text-gray-100">
           <span aria-hidden className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-600 text-sm text-white">{brand.letter}</span>
-          <span aria-hidden className="hidden sm:inline">{brand.name}</span>
+          <span className="sr-only sm:not-sr-only">{brand.name}</span>
+          <span className="sr-only"> – Start</span>
         </Link>
         {account ? (
           <>
@@ -48,8 +51,8 @@ export function AppHeader({ brand, nav = [], account, login, width = 'wide', cla
             )}
             <AccountMenu
               summary={<>
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-200">{account.name.slice(0, 1)}</span>
-                <span className="hidden max-w-48 truncate md:inline">{account.name}</span>
+                <span aria-hidden className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-200">{account.name.slice(0, 1)}</span>
+                <span className="sr-only md:not-sr-only md:max-w-48 md:truncate">{account.name}</span>
                 <span aria-hidden className="text-gray-400">▾</span>
               </>}
             >

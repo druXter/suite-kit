@@ -233,6 +233,16 @@ rsvp-app):
   ausgenommen, in rsvp-app alle Verwaltungskonten). Umgesetzt im Cron `cleanup`.
 * Gesundheitsdaten (Essenswünsche, Allergien, Art. 9 DSGVO) verlassen ein Tool nicht über APIs oder Anbindungen,
   höchstens als Anzahl.
+* **Auskunft und Löschung zu einer Adresse** (seit 2026-10-30, Idee Q8): Jedes Tool hat `auskunft.js` im
+  Hauptordner (wie `create-user.js`, läuft im Container, kein Endpunkt im Netz). `node auskunft.js <adresse>` gibt
+  alles zu der Adresse als JSON aus (ohne Groß-/Kleinschreibung, ohne Tokens, Hashes und Push-Schlüssel),
+  `--loeschen` zeigt, was gelöscht würde, `--loeschen --ja` löscht. `scripts/auskunft.sh` in suite-kit ruft alle Tools
+  auf und legt je Tool eine Datei in `~/auskunft/` ab. Regeln: Verwaltungskonten werden nie gelöscht (daran hängen
+  Inhalte), nur ein Hinweis. Wo eine Zeile Plätze, Schichten, Stimmen oder eine Auslosung trägt, wird anonymisiert
+  statt gelöscht (Name, Adresse, Telefon, Freitexte weg, persönlicher Link ungültig, Änderungsprotokolle mit alten
+  Werten gelöscht) - sonst änderten sich Belegung oder Ergebnisse ohne die Verwaltung. Was ein anderes System hält
+  (Nextcloud-Kalender, verknüpfte Tools ohne Adresse), steht in den Hinweisen. Ein neues Modell mit Personendaten
+  kommt im selben Commit in `auskunft.js` und dessen Test (`tests/e2e/auskunft.spec.ts`).
 
 ## Tests
 
@@ -240,6 +250,10 @@ rsvp-app):
   eigenem Port mit frischer Datenbank, Mail/Push/Partner abgeschaltet oder durch Attrappen ersetzt).
 * **Jeder Angriffsfall hat eine Positivkontrolle**: dieselbe Anfrage mit den richtigen Rechten gelingt - sonst
   beweist ein „abgelehnt“ nichts.
+* **Barrierefreiheit** (seit 2026-10-30, Idee Q11): `tests/e2e/a11y.spec.ts` prüft mit `@axe-core/playwright` die
+  wichtigsten Seiten für Gäste und Verwaltung nach WCAG 2.1 A/AA, hell und dunkel, und meldet alle Befunde auf einmal.
+  Ein Befund lässt den Test scheitern; Ausnahmen nur mit Begründung im Test. Eine neue Seite für Gäste kommt in die
+  Liste. Regeln für die Oberfläche in [DESIGN.md](DESIGN.md) („Barrierefreiheit“).
 * Vor jedem Commit: Typen (`tsc --noEmit`), Lint, Unit-Tests; vor jedem Deploy zusätzlich alle E2E-Tests.
 
 ## Doku und Git
