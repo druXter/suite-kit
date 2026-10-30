@@ -141,7 +141,9 @@ import { BASE_RULE, EMBEDDABLE, NO_FRAMING, NO_REFERRER, NOT_STORED, PRIVATE_PAG
    `Permissions-Policy: camera=(), microphone=(), geolocation=()`, `Strict-Transport-Security: max-age=31536000`
    (ohne `includeSubDomains`).
 2. **Einbetten grundsätzlich verboten** (`NO_FRAMING`), erlaubt nur für Gästeseiten, die wirklich eingebettet werden
-   (`EMBEDDABLE`) - Einbetten erlauben ist die Ausnahme, nicht umgekehrt.
+   (`EMBEDDABLE`) - Einbetten erlauben ist die Ausnahme, nicht umgekehrt. Jede einbettbare Seite bindet `EmbedHeight`
+   aus `suite-kit/ui` ein (seit v0.10.0, Idee Q10), damit das iFrame mit ihr mitwächst; einbettende Tools passen die
+   Höhe nur über `readEmbedHeight` an.
 3. Verwaltung, Konto, Login: `PRIVATE_PAGE`. Seiten mit Geheimnis in der URL (Reset, Bestätigung, persönliche Links,
    Anzeige-Schlüssel): zusätzlich `Referrer-Policy: no-referrer`. `/api/suite/*`: `no-referrer`.
 4. `/sw.js`: `Cache-Control: no-cache, no-store, must-revalidate` und `default-src 'self'; script-src 'self'; frame-ancestors 'none'`.

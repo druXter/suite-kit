@@ -281,6 +281,10 @@ Was jedes Tool braucht und überall gleich funktionieren muss, kommt aus suite-k
   * `signLinkedCreate`, `verifyLinkedCreate`, `readLinkedCreateResult`, `linkedCreateSlug` - rsvp-app lässt ein Tool
     ein verknüpftes Event anlegen (Idee Q1, `POST <Tool>/api/rsvp-create`, Regeln in KONVENTIONEN.md).
 * `suite-kit/ui`: `ProofOfWork` - ins Formular setzen, rechnet die Aufgabe im Hintergrund.
+* `suite-kit/ui`: `EmbedHeight` - auf jeder einbettbaren Seite (Idee Q10): meldet eingebettet ihre Höhe per
+  `postMessage` (`{ type: 'suite:height', height }`) an die einbettende Seite und hebt dafür `min-height` am `<body>`
+  auf (`html[data-suite-embedded]` in theme.css). Gegenstück `readEmbedHeight(event, iframe)` für Einbettende: nimmt
+  nur Nachrichten aus genau diesem iFrame und von dessen Origin an (genutzt von der Startseite).
 
 **Bot-Schutz (Proof-of-Work):** Nach dem Muster von ALTCHA, ohne Drittanbieter. Der Server wählt eine Zufallszahl bis
 50 000 und gibt nur `SHA-256(salt + zahl)` mit HMAC und Ablaufzeit heraus; der Browser probiert die Zahlen per

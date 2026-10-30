@@ -11,7 +11,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const TOOLS = ['rsvp-app', 'abstimmungstool', 'seating', 'zeitplan', 'schichten', 'wichteln']
+const TOOLS = ['rsvp-app', 'abstimmungstool', 'seating', 'zeitplan', 'schichten', 'wichteln', 'termine', 'startseite', 'inventur']
 const [tag, ...only] = process.argv.slice(2)
 if (!tag || !/^v\d+\.\d+\.\d+$/.test(tag)) {
   console.error('Aufruf: node scripts/update-apps.mjs vX.Y.Z [tool ...]')

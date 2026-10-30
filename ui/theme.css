@@ -42,3 +42,9 @@
 body {
   overflow-wrap: break-word;
 }
+
+/* Eingebettete Seite (EmbedHeight, Idee Q10): so hoch wie ihr Inhalt, nicht wie der Rahmen - sonst meldet sie nie eine
+   kleinere Höhe, und das iFrame könnte nicht schrumpfen. Ohne Ebene, damit es vor `min-h-screen` am <body> gilt. */
+html[data-suite-embedded] body {
+  min-height: 0;
+}
