@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Am 2026-10-25 umgesetzt: N6 (Wichteln) als neues Tool. Am 2026-10-29 umgesetzt: N9 (Inventur) als neues Tool, dazu L28 als offene Idee. Am 2026-10-30 kamen L29–L38, N10–N13 und Q8–Q13 als neue, noch nicht bewertete Ideen dazu (Bestandsaufnahme aller neun Tools). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Am 2026-10-25 umgesetzt: N6 (Wichteln) als neues Tool. Am 2026-10-29 umgesetzt: N9 (Inventur) als neues Tool, dazu L28 als offene Idee. Am 2026-10-30 kamen L29–L38, N10–N13 und Q8–Q13 als neue Ideen dazu (Bestandsaufnahme aller neun Tools); am selben Tag auf Wunsch des Nutzers umgesetzt: L29 (rsvp-app), L33 (nur Mehrheiten), Q8, Q10 (suite-kit v0.10.0) und Q11 (suite-kit v0.10.1). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -47,11 +47,11 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L26](#l26-antwort-vielleicht) | Antwort „Vielleicht“ mit Erinnerung und automatischer Absage | rsvp-app | M | umgesetzt |
 | [L27](#l27-gäste-von-hand-eintragen) | Gäste von Hand eintragen (Zusage, Vielleicht, Absage, Adresse) | rsvp-app | S | umgesetzt |
 | [L28](#l28-mitbringliste-und-inventur-verknüpfen) | Mitbringliste (rsvp-app) mit einer Inventurliste verknüpfen | rsvp-app, inventur | M | offen |
-| [L29](#l29-nachricht-an-gäste) | Nachricht an Gäste (Mail und Push, gefiltert) | rsvp-app (+ schichten) | S–M | offen |
+| [L29](#l29-nachricht-an-gäste) | Nachricht an Gäste (Mail und Push, gefiltert) | rsvp-app (+ schichten) | S–M | umgesetzt (rsvp-app) |
 | [L30](#l30-rückbestätigung-vor-dem-termin) | Rückbestätigung vor dem Termin („Kommst du noch?“) | rsvp-app | M | offen |
 | [L31](#l31-auswertung-für-reihen) | Auswertung für Reihen (Teilnahme, Nicht-Erschienene) | rsvp-app | S–M | offen |
 | [L32](#l32-sitzwünsche-und-vorschlag-für-die-sitzordnung) | Sitzwünsche der Gäste und Vorschlag für die Sitzordnung | rsvp-app, seating | M–L | offen |
-| [L33](#l33-mehrheiten-und-wahlgänge-in-sitzungen) | Mehrheiten, Personenwahl und Stichwahl in Sitzungen | abstimmungstool | M | offen |
+| [L33](#l33-mehrheiten-und-wahlgänge-in-sitzungen) | Mehrheiten, Personenwahl und Stichwahl in Sitzungen | abstimmungstool | M | umgesetzt (nur Mehrheiten) |
 | [L34](#l34-schichtwünsche-mit-automatischer-verteilung) | Schichtwünsche mit automatischer Verteilung | schichten | M–L | offen |
 | [L35](#l35-ausleihe-und-mindestbestand-in-der-inventur) | Ausleihe mit Rückgabedatum und Mindestbestand | inventur | M | offen |
 | [L36](#l36-fundsachen) | Fundsachen als Vorlage mit öffentlicher Liste | inventur | S–M | offen |
@@ -77,10 +77,10 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [Q5](#q5-direkt-weiter-zum-einzigen-anbieter) | Login: direkt weiter zum einzigen Anbieter | suite-kit, alle Tools | S | umgesetzt |
 | [Q6](#q6-bot-schutz-für-öffentliche-formulare) | Bot-Schutz für öffentliche Formulare (eigener Proof-of-Work) | rsvp-app, seating, schichten, abstimmungstool | S je Tool | umgesetzt |
 | [Q7](#q7-verwaltungs--und-teilnehmendenkonto-verknüpfen) | Verwaltungs- und Teilnehmendenkonto verknüpfen statt zusammenlegen | rsvp-app | S | umgesetzt |
-| [Q8](#q8-auskunft-und-löschung-über-alle-tools) | Auskunft und Löschung zu einer Adresse über alle Tools | alle Tools, scripts | S je Tool | offen |
+| [Q8](#q8-auskunft-und-löschung-über-alle-tools) | Auskunft und Löschung zu einer Adresse über alle Tools | alle Tools, scripts | S je Tool | umgesetzt |
 | [Q9](#q9-passkeys-für-verwaltungskonten) | Passkeys für Verwaltungskonten | suite-kit, alle Tools | M | offen |
-| [Q10](#q10-automatische-höhe-eingebetteter-seiten) | Automatische Höhe eingebetteter Suite-Seiten | suite-kit, einbettbare Seiten, startseite | S | offen |
-| [Q11](#q11-barrierefreiheit-in-den-tests) | Barrierefreiheit automatisch in den E2E-Tests prüfen | alle Tools | S je Tool | offen |
+| [Q10](#q10-automatische-höhe-eingebetteter-seiten) | Automatische Höhe eingebetteter Suite-Seiten | suite-kit, einbettbare Seiten, startseite | S | umgesetzt |
+| [Q11](#q11-barrierefreiheit-in-den-tests) | Barrierefreiheit automatisch in den E2E-Tests prüfen | alle Tools | S je Tool | umgesetzt |
 | [Q12](#q12-chat-anbindung-für-reihen) | Chat-Anbindung für Reihen (Discord, Signal) | rsvp-app (+ mittwoch-bot) | M | offen |
 | [Q13](#q13-was-steht-an) | Übersicht „Was steht an?“ über alle Tools | startseite (+ alle Tools) | M–L | offen |
 
@@ -649,7 +649,14 @@ Vertrag über `signLinkMessage` wie die anderen Anbindungen, Verknüpfung über 
 
 ### L29: Nachricht an Gäste
 
-*Aufgenommen 2026-10-30.* **Stand: offen.**
+*Aufgenommen 2026-10-30.* **Bewertung (2026-10-30): angenommen** auf Wunsch des Nutzers.
+
+**Umgesetzt (2026-10-30) in rsvp-app:** Reiter „Nachrichten“ je Termin, nur für Owner und Admins (wie die Erinnerung;
+Moderator\*innen sehen ihn nicht). Auswahl nach Zusagen, Warteliste, Vielleicht, Ticketkategorie, offener Zahlung und
+Einlass, mit Live-Zählung und Rückfrage. Empfänger\*innen wie bei der Änderungs-Mail (bestätigte Adressen, Vielleicht nur
+bestätigt), Mail in Fünfergruppen plus Push, höchstens 10 Nachrichten je Termin in 24 Stunden, Verlauf ohne
+Empfängerliste (`GuestMessage`). Text als Absätze statt Markdown, nicht auf der Gästeseite. **Offen:** dasselbe als
+Rundmail in Schichten.
 
 **Problem:** rsvp-app schreibt Gäste nur automatisch an (Bestätigung, Erinnerung, Änderung von Zeit oder Ort über
 `notifyAttendeesOfChange`). Für freie Hinweise („Bitte Ausweis mitbringen“, „Parkplatz gesperrt, nehmt den
@@ -717,7 +724,15 @@ sitzen möchte, erfährt das Paar per Zuruf; Gruppen lassen sich nur „zusammen
 
 ### L33: Mehrheiten und Wahlgänge in Sitzungen
 
-*Aufgenommen 2026-10-30.* **Stand: offen.**
+*Aufgenommen 2026-10-30.* **Bewertung (2026-10-30): angenommen, nur Mehrheiten** (Entscheidung des Nutzers: keine
+Personenwahl, damit auch keine Stichwahl).
+
+**Umgesetzt (2026-10-30) im Abstimmungstool** (Konzept `abstimmungstool/docs/KONZEPT-SITZUNG.md` Abschnitt 9): Regel
+pro Ja/Nein/Enthaltung-Abstimmung mit Vorauswahl je Sitzung - einfache Mehrheit, absolute Mehrheit oder zwei Drittel
+der abgegebenen Stimmen, der Anwesenden oder der Mitglieder (Zahl aus den Einstellungen, sonst die Zusagen), zwei
+Drittel auch der Ja- und Nein-Stimmen. Bezugsgrößen beim Schließen festgehalten. Ergebnis „angenommen“/„abgelehnt“ mit
+Rechnung, „kein Beschluss“ ohne Beschlussfähigkeit, „nicht bestimmbar“ ohne Bezugsgröße - in Leitung,
+Mitgliederansicht, Tafel, CSV und (über rsvp-app) im Protokoll des Zeitplan-Rückblicks.
 
 **Problem:** Der Sitzungsmodus (L7) zählt Stimmen und hält die Beschlussfähigkeit fest, entscheidet aber nicht, ob
 ein Antrag angenommen ist. Satzungen verlangen unterschiedliche Mehrheiten (einfach, absolut, zwei Drittel der
@@ -1085,7 +1100,12 @@ Seiten. Die anderen Tools haben keine Teilnehmendenkonten und sind nicht betroff
 
 ### Q8: Auskunft und Löschung über alle Tools
 
-*Aufgenommen 2026-10-30.* **Stand: offen.**
+*Aufgenommen 2026-10-30.* **Bewertung (2026-10-30): angenommen** auf Wunsch des Nutzers.
+
+**Umgesetzt (2026-10-30):** `auskunft.js` in allen neun Tools (ein Skript statt zwei: `--loeschen` zeigt, `--loeschen
+--ja` löscht) und `scripts/auskunft.sh` in suite-kit für alle auf einmal; Regeln in KONVENTIONEN.md („Datenschutz“).
+Verwaltungskonten werden nie gelöscht; wo Zeilen Plätze, Schichten, Stimmen oder eine Auslosung tragen, wird
+anonymisiert statt gelöscht. rsvp-app löscht wie „Meine Daten löschen“, meldet verknüpften Tools aber nichts (Hinweis).
 
 **Problem:** Fragt jemand nach Art. 15 DSGVO, welche Daten gespeichert sind, oder will alles gelöscht haben, sucht der
 Betreiber heute in neun Datenbanken von Hand. Jedes Tool kennt die Person nur über die Adresse (oder gar nicht, Zeitplan).
@@ -1112,7 +1132,15 @@ wenn das einzige Gerät weg ist (zweiter Passkey Pflicht?).
 
 ### Q10: Automatische Höhe eingebetteter Seiten
 
-*Aus N8 übernommen (2026-10-30), dort unter „Später denkbar“.* **Stand: offen.**
+*Aus N8 übernommen (2026-10-30), dort unter „Später denkbar“.* **Bewertung (2026-10-30): angenommen** auf Wunsch des
+Nutzers.
+
+**Umgesetzt (2026-10-30, suite-kit v0.10.0):** `EmbedHeight` (meldet `{ type: 'suite:height', height }`, hebt
+eingebettet `min-height` am `<body>` auf) und `readEmbedHeight` (nur aus genau diesem iFrame und von dessen Origin).
+Eingebunden auf den einbettbaren Seiten von rsvp-app, Seating und Zeitplan; der eingebettete Fragebogen des
+Abstimmungstools meldet zusätzlich zum eigenen Format auch dieses. Die Startseite übernimmt die Höhe bei Suite-Apps mit
+fester Höhe (100–2000 Pixel) und lädt das iFrame erst, wenn sie zuhört. Die Campus-App nutzt weiter das Format des
+Fragebogens.
 
 **Problem:** Einbettbare Seiten (Anmeldung in rsvp-app, Fragebögen im Abstimmungstool, Programm im Zeitplan) stehen in
 der Startseite und der Campus-App in iFrames mit fester Höhe: zu klein mit Scrollbalken, zu groß mit Leerraum,
@@ -1124,7 +1152,13 @@ Einbettende (Startseite, Campus-App) prüft Absender-Origin und Format. Ohne Ein
 
 ### Q11: Barrierefreiheit in den Tests
 
-*Aufgenommen 2026-10-30.* **Stand: offen.**
+*Aufgenommen 2026-10-30.* **Bewertung (2026-10-30): angenommen** auf Wunsch des Nutzers.
+
+**Umgesetzt (2026-10-30):** `tests/e2e/a11y.spec.ts` in allen neun Tools (`@axe-core/playwright` 4.14.0, WCAG 2.1 A/AA,
+hell und dunkel). Gefunden und behoben: Namen von Markenlink, Kontomenü und Fortschrittsbalken in suite-kit (v0.10.1,
+dazu `linkClass`), Links nur an der Farbe erkennbar und zu dunkel im Darkmode (rsvp-app), zu blasses Grau (rsvp-app,
+Abstimmungstool, Wichteln, Termine), Raumplan als Bild mit Links darin (Seating). Regeln in DESIGN.md und
+KONVENTIONEN.md.
 
 **Problem:** Barrierefreiheit wird heute beim Bauen mitgedacht (Seating ohne Ziehen bedienbar, Abstimmen ohne
 JavaScript), aber nicht geprüft. Rückschritte fallen erst auf, wenn jemand sie bemerkt.
