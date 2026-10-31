@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Am 2026-10-25 umgesetzt: N6 (Wichteln) als neues Tool. Am 2026-10-29 umgesetzt: N9 (Inventur) als neues Tool, dazu L28 als offene Idee. Am 2026-10-30 kamen L29–L38, N10–N13 und Q8–Q13 als neue Ideen dazu (Bestandsaufnahme aller neun Tools); am selben Tag auf Wunsch des Nutzers umgesetzt: L29 (rsvp-app), L33 (nur Mehrheiten), Q8, Q10 (suite-kit v0.10.0) und Q11 (suite-kit v0.10.1). Am 2026-10-31 auf Wunsch des Nutzers umgesetzt: L30 und L31 (rsvp-app). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Am 2026-10-25 umgesetzt: N6 (Wichteln) als neues Tool. Am 2026-10-29 umgesetzt: N9 (Inventur) als neues Tool, dazu L28 als offene Idee. Am 2026-10-30 kamen L29–L38, N10–N13 und Q8–Q13 als neue Ideen dazu (Bestandsaufnahme aller neun Tools); am selben Tag auf Wunsch des Nutzers umgesetzt: L29 (rsvp-app), L33 (nur Mehrheiten), Q8, Q10 (suite-kit v0.10.0) und Q11 (suite-kit v0.10.1). Am 2026-10-31 auf Wunsch des Nutzers umgesetzt: L30 und L31 (rsvp-app), danach L35 und L36 (Inventur), L37 (Wichteln) und L38 (Startseite und rsvp-app). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -53,10 +53,10 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L32](#l32-sitzwünsche-und-vorschlag-für-die-sitzordnung) | Sitzwünsche der Gäste und Vorschlag für die Sitzordnung | rsvp-app, seating | M–L | offen |
 | [L33](#l33-mehrheiten-und-wahlgänge-in-sitzungen) | Mehrheiten, Personenwahl und Stichwahl in Sitzungen | abstimmungstool | M | umgesetzt (nur Mehrheiten) |
 | [L34](#l34-schichtwünsche-mit-automatischer-verteilung) | Schichtwünsche mit automatischer Verteilung | schichten | M–L | offen |
-| [L35](#l35-ausleihe-und-mindestbestand-in-der-inventur) | Ausleihe mit Rückgabedatum und Mindestbestand | inventur | M | offen |
-| [L36](#l36-fundsachen) | Fundsachen als Vorlage mit öffentlicher Liste | inventur | S–M | offen |
-| [L37](#l37-anonyme-rückfrage-beim-wichteln) | Anonyme Rückfrage an die beschenkte Person | wichteln | S–M | offen |
-| [L38](#l38-seiten-nur-für-gäste) | Seiten nur für Gäste (Zugang über rsvp-app oder Code) | startseite (+ rsvp-app) | M | offen |
+| [L35](#l35-ausleihe-und-mindestbestand-in-der-inventur) | Ausleihe mit Rückgabedatum und Mindestbestand | inventur | M | umgesetzt |
+| [L36](#l36-fundsachen) | Fundsachen als Vorlage mit öffentlicher Liste | inventur | S–M | umgesetzt |
+| [L37](#l37-anonyme-rückfrage-beim-wichteln) | Anonyme Rückfrage an die beschenkte Person | wichteln | S–M | umgesetzt |
+| [L38](#l38-seiten-nur-für-gäste) | Seiten nur für Gäste (Zugang über rsvp-app oder Code) | startseite (+ rsvp-app) | M | umgesetzt |
 | [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu (schichten) | L | umgesetzt |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
@@ -780,7 +780,18 @@ mit dem Ergebnis; ab dann gelten Tauschbörse und normales Eintragen.
 
 ### L35: Ausleihe und Mindestbestand in der Inventur
 
-*Aus dem Konzept von Inventur übernommen (2026-10-30), dort unter „Später denkbar“.* **Stand: offen.**
+*Aus dem Konzept von Inventur übernommen (2026-10-30), dort unter „Später denkbar“.* **Bewertung (2026-10-31):
+angenommen** auf Wunsch des Nutzers.
+
+**Umgesetzt (2026-10-31) in der Inventur** (Konzept Abschnitt 3a): Funktion „Ausleihe“ mit Reiter: verleihen an ein
+Konto der Liste oder Name mit optionaler Adresse, Rückgabedatum, Notiz zum Zustand; gebucht als „Verliehen“/„Zurück“
+(nicht rückgängig zu machen), Übersicht verliehen/heute fällig/überfällig, in der Arbeitsansicht nach dem Scannen
+sichtbar (Link-Nutzer*innen ohne Namen). Mails an die ausleihende Person (Bestätigung, Tag davor, überfällig) über den
+neuen täglichen Cron `reminders`, Push ans Team bei Überfälligkeit. Mindestbestand zählt Bestand plus Verliehenes,
+einmal Push beim Unterschreiten, Einkaufsliste zum Abhaken (auch für den Link „Mengen ändern“). Web-Push neu in der
+Inventur (aus Wichteln übernommen, je Gerät und Sitzung unter „Mein Konto“). **Entschieden:** „zurück per QR-Scan“ als
+Anzeige in der Arbeitsansicht mit Weg zur Ausleihe (Zurückbuchen braucht Netz); die Adresse wird bei der Rückgabe
+gelöscht.
 
 **Problem:** AStA-Equipment (Beamer, Kabeltrommeln, Pavillons) wird verliehen. Heute ginge das nur als Buchung auf
 einen Ort der Art „Person“ – ohne Rückgabedatum, ohne Erinnerung, ohne Übersicht „was ist gerade draußen“.
@@ -797,7 +808,13 @@ Grundlage für N10.
 
 ### L36: Fundsachen
 
-*Aufgenommen 2026-10-30.* **Stand: offen.**
+*Aufgenommen 2026-10-30.* **Bewertung (2026-10-31): angenommen** auf Wunsch des Nutzers.
+
+**Umgesetzt (2026-10-31) in der Inventur** (Konzept Abschnitt 3b): Vorlage „Fundsachen“, Funddatum und Fundort am
+Artikel, Reiter „Fundsachen“ mit Aufbewahrungsfrist (Standard 90 Tage), „Abgeholt/Gespendet/Entsorgt“ (trägt aus),
+Löschen 30 Tage nach dem Erledigen, Push bei abgelaufener Frist. Öffentliche Liste `/fundsachen/<id>` (aus als
+Voreinstellung, einbettbar mit automatischer Höhe) ohne Fotos und Beschreibung. In rsvp-app pro Termin ein
+Fundsachen-Link (wie der Foto-Link aus Q3), sichtbar für Zusagen ab dem Ende des Termins.
 
 **Problem:** Nach Ball oder Party bleiben Jacken, Schlüssel und Handys liegen. Gesucht wird per Rundmail oder Story,
 die Sachen liegen in einer Kiste im AStA.
@@ -810,8 +827,14 @@ gelöscht. Optional verlinkt aus rsvp-app nach dem Termin (wie der Foto-Link aus
 
 ### L37: Anonyme Rückfrage beim Wichteln
 
-*Aufgenommen 2026-10-30.* **Stand: offen.** Im README von Wichteln heute als bewusste Grenze geführt („keine anonymen
-Nachrichten“); hier zur Neubewertung.
+*Aufgenommen 2026-10-30.* **Bewertung (2026-10-31): angenommen** auf Wunsch des Nutzers.
+
+**Umgesetzt (2026-10-31) in Wichteln:** Schalter „Anonyme Rückfragen“ (aus als Voreinstellung). Nach der
+Veröffentlichung fragt der Wichtel auf seiner Seite (höchstens 2 offen, 5 je Paar), die beschenkte Person antwortet
+einmal auf ihrer Seite; Mails ohne Text und ohne Namen. **Entschieden zu den offenen Fragen:** kein „Danke“ zurück
+(wäre ein zweiter Kanal), Meldeknopf an die Verwaltung - sie sieht gemeldete Fragen im Wortlaut ohne Namen und löscht
+sie oder gibt sie frei, sonst nur die Zahl. Fragen gehören zum Paar und verschwinden mit einer neuen Zuordnung, beim
+Austreten und mit den Wunschzetteln 30 Tage nach der Bescherung.
 
 **Problem:** Der Wunschzettel lässt oft Fragen offen (Kleidergröße, „Buch – welches hast du schon?“). Fragen geht nur,
 indem man sich verrät oder über die Verwaltung, die dann die Zuordnung kennt.
@@ -825,7 +848,15 @@ kleinen, bekannten Gruppen gering, aber Meldeknopf an die Verwaltung?
 
 ### L38: Seiten nur für Gäste
 
-*Aus N8 übernommen (2026-10-30), dort unter „Später denkbar“.* **Stand: offen.**
+*Aus N8 übernommen (2026-10-30), dort unter „Später denkbar“.* **Bewertung (2026-10-31): angenommen** auf Wunsch des
+Nutzers.
+
+**Umgesetzt (2026-10-31) in Startseite und rsvp-app:** Gäste-Bereich je Seite (aus, Zugangscode, Zusage in rsvp-app)
+mit Haken „Nur für Gäste“ je Block - **entschieden:** Schutz je Block statt ganzer Seiten (Datum und Anmeldung bleiben
+öffentlich), neue Blöcke sind mit Gäste-Bereich zuerst geschützt. rsvp-app bindet die Startseite als weiteres
+verknüpftes Tool an (`infopage`, eigenes Secret, Vertrag wie beim Zeitplan): „Infos für Gäste“ für Zusagen, die
+zählen, mit frischem signiertem Link; eine Absage beendet die Gast-Sitzung per Webhook. Code nur als HMAC, Eingabe
+gedrosselt.
 
 **Problem:** Die geplante Hochzeitsseite in der Startseite soll Dinge zeigen, die nicht öffentlich gehören: Adresse
 der Location, Hotelkontingent, Dresscode, WLAN, Ansprechperson mit Handynummer.
