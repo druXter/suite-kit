@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Am 2026-10-25 umgesetzt: N6 (Wichteln) als neues Tool. Am 2026-10-29 umgesetzt: N9 (Inventur) als neues Tool, dazu L28 als offene Idee. Am 2026-10-30 kamen L29–L38, N10–N13 und Q8–Q13 als neue Ideen dazu (Bestandsaufnahme aller neun Tools); am selben Tag auf Wunsch des Nutzers umgesetzt: L29 (rsvp-app), L33 (nur Mehrheiten), Q8, Q10 (suite-kit v0.10.0) und Q11 (suite-kit v0.10.1). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Am 2026-10-25 umgesetzt: N6 (Wichteln) als neues Tool. Am 2026-10-29 umgesetzt: N9 (Inventur) als neues Tool, dazu L28 als offene Idee. Am 2026-10-30 kamen L29–L38, N10–N13 und Q8–Q13 als neue Ideen dazu (Bestandsaufnahme aller neun Tools); am selben Tag auf Wunsch des Nutzers umgesetzt: L29 (rsvp-app), L33 (nur Mehrheiten), Q8, Q10 (suite-kit v0.10.0) und Q11 (suite-kit v0.10.1). Am 2026-10-31 auf Wunsch des Nutzers umgesetzt: L30 und L31 (rsvp-app). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -48,8 +48,8 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L27](#l27-gäste-von-hand-eintragen) | Gäste von Hand eintragen (Zusage, Vielleicht, Absage, Adresse) | rsvp-app | S | umgesetzt |
 | [L28](#l28-mitbringliste-und-inventur-verknüpfen) | Mitbringliste (rsvp-app) mit einer Inventurliste verknüpfen | rsvp-app, inventur | M | offen |
 | [L29](#l29-nachricht-an-gäste) | Nachricht an Gäste (Mail und Push, gefiltert) | rsvp-app (+ schichten) | S–M | umgesetzt (rsvp-app) |
-| [L30](#l30-rückbestätigung-vor-dem-termin) | Rückbestätigung vor dem Termin („Kommst du noch?“) | rsvp-app | M | offen |
-| [L31](#l31-auswertung-für-reihen) | Auswertung für Reihen (Teilnahme, Nicht-Erschienene) | rsvp-app | S–M | offen |
+| [L30](#l30-rückbestätigung-vor-dem-termin) | Rückbestätigung vor dem Termin („Kommst du noch?“) | rsvp-app | M | umgesetzt |
+| [L31](#l31-auswertung-für-reihen) | Auswertung für Reihen (Teilnahme, Nicht-Erschienene) | rsvp-app | S–M | umgesetzt |
 | [L32](#l32-sitzwünsche-und-vorschlag-für-die-sitzordnung) | Sitzwünsche der Gäste und Vorschlag für die Sitzordnung | rsvp-app, seating | M–L | offen |
 | [L33](#l33-mehrheiten-und-wahlgänge-in-sitzungen) | Mehrheiten, Personenwahl und Stichwahl in Sitzungen | abstimmungstool | M | umgesetzt (nur Mehrheiten) |
 | [L34](#l34-schichtwünsche-mit-automatischer-verteilung) | Schichtwünsche mit automatischer Verteilung | schichten | M–L | offen |
@@ -674,7 +674,16 @@ viele Mails verträgt das Strato-Konto pro Stunde?
 
 ### L30: Rückbestätigung vor dem Termin
 
-*Aufgenommen 2026-10-30.* **Stand: offen.**
+*Aufgenommen 2026-10-30.* **Bewertung (2026-10-31): angenommen** auf Wunsch des Nutzers.
+
+**Umgesetzt (2026-10-31) in rsvp-app:** Schalter „Rückbestätigung“ pro Termin (Abschnitt „Erinnerung und Einlass“),
+2–30 Tage vorher, Frist 24 Stunden vor Beginn. Der Erinnerungs-Cron fragt jede feste Zusage einmal per Mail und Push;
+die Knöpfe „Ja, ich komme“ / „Nein, ich kann nicht“ stehen auf der Gästeseite (nur POST), eine Absage gibt den Platz
+sofort an die Warteliste, eigenes Speichern der Zusage im Zeitraum gilt als Bestätigung. Gästeliste mit Stand je
+Zusage, Filter „Unbestätigt“ und CSV-Spalte. Zweite Stufe „automatisch absagen“: nur wer mindestens 24 Stunden Zeit
+zum Antworten hatte, nie Zusagen mit Ticketpreis, Helfer\*innen aus Schichten oder Eingecheckte. **Entschieden:**
+nicht im Einladungsmodus (dort gelten Antwortfrist und Erinnerung) statt Einladungen nur zu markieren; Verschiebung des
+Termins fragt Unbestätigte erneut.
 
 **Problem:** Bei kostenlosen, vollen Terminen mit Warteliste (Ersti-Events, Kneipenabende, Workshops) erscheinen
 erfahrungsgemäß 10–30 % der Zusagen nicht. Die Plätze bleiben leer, obwohl die Warteliste lang ist.
@@ -690,7 +699,15 @@ die sich bestätigen sollen.
 
 ### L31: Auswertung für Reihen
 
-*Aufgenommen 2026-10-30.* **Stand: offen.**
+*Aufgenommen 2026-10-30.* **Bewertung (2026-10-31): angenommen** auf Wunsch des Nutzers.
+
+**Umgesetzt (2026-10-31) in rsvp-app:** Reiter „Auswertung“ an der Reihe für alle mit Zugriff auf die Reihe:
+Kennzahlen, Verlauf pro Termin (mit Balken, inklusive verfallener Zusagen aus L30), Personen über alle vergangenen
+Termine mit Zusagen, Erschienen, Gefehlt, Absagen und Stammgast (mindestens die Hälfte der Termine, mindestens 2), beide
+Tabellen als CSV. **Entschieden zu den offenen Fragen:** Zusammenführen über Teilnehmendenkonto, sonst bestätigte
+Adresse, sonst persönlichen Link der Reihe - ohne Hash, weil nichts gespeichert, sondern bei jedem Aufruf aus den
+Antworten berechnet wird (unbestätigte Adressen führen nichts zusammen). Die Datenschutzerklärung nennt die Auswertung
+pro Person (Punkt 13, berechtigtes Interesse).
 
 **Problem:** Bei Reihen (Freundesrunde, Stammtisch, Fachschaftssitzung) sieht die Verwaltung jeden Termin einzeln,
 aber nicht, wie sich die Teilnahme entwickelt, wer regelmäßig kommt oder wer oft zusagt und dann fehlt.
