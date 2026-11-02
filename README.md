@@ -280,6 +280,10 @@ Was jedes Tool braucht und überall gleich funktionieren muss, kommt aus suite-k
     Formulare, Teil für den Server.
   * `signLinkedCreate`, `verifyLinkedCreate`, `readLinkedCreateResult`, `linkedCreateSlug` - rsvp-app lässt ein Tool
     ein verknüpftes Event anlegen (Idee Q1, `POST <Tool>/api/rsvp-create`, Regeln in KONVENTIONEN.md).
+  * `askAi`, `aiSettings`, `aiConfigured` - KI-Aufrufe über die OpenAI Responses API (`store: false`, Antwort als
+    JSON nach festem Schema, Fehler ins Log ohne Inhalt). Eingerichtet über `OPENAI_API_KEY`, optional
+    `OPENAI_MODEL` (Voreinstellung `gpt-6-luna`), `OPENAI_REASONING_EFFORT` (`none`) und `OPENAI_BASE_URL` (Attrappe
+    in Tests). Regeln in KONVENTIONEN.md, „KI-Funktionen“.
 * `suite-kit/ui`: `ProofOfWork` - ins Formular setzen, rechnet die Aufgabe im Hintergrund.
 * `suite-kit/ui`: `EmbedHeight` - auf jeder einbettbaren Seite (Idee Q10): meldet eingebettet ihre Höhe per
   `postMessage` (`{ type: 'suite:height', height }`) an die einbettende Seite und hebt dafür `min-height` am `<body>`
@@ -302,7 +306,7 @@ npm install
 npm test        # baut mit tsc und führt die Tests aus (node:test, keine Zusatz-Abhängigkeiten)
 ```
 
-Die Föderation (`suite-kit`) hat keine Laufzeit-Abhängigkeiten, nur `node:crypto`; `suite-kit/web` nicht einmal
+Die Föderation (`suite-kit`) hat keine Laufzeit-Abhängigkeiten, nur `node:crypto` (und `fetch` für `askAi`); `suite-kit/web` nicht einmal
 das; die Oberfläche (`suite-kit/ui`) braucht React und Next.js aus dem Tool. `dist/` wird nicht eingecheckt. Änderungen am Protokoll, am Token-Format oder an
 der Gestaltung erhöhen die Version (Tag `vX.Y.Z`); die Tools pinnen ihre Version bewusst und ziehen sie mit
 `scripts/update-apps.mjs` nach.

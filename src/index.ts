@@ -1,4 +1,5 @@
 // src/index.ts
+export * from './ai.js'
 export * from './assertion.js'
 export * from './authorize.js'
 export * from './config.js'

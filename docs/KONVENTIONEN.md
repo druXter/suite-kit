@@ -76,6 +76,7 @@ Gleiche Bedeutung, gleicher Name in jedem Tool (`.env.example` listet alle mit P
 | Pflichtangaben | `IMPRESSUM_NAME`, `IMPRESSUM_STREET`, `IMPRESSUM_ZIP`, `IMPRESSUM_CITY`, `IMPRESSUM_EMAIL`, `IMPRESSUM_PHONE` |
 | Mail | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` - ohne `SMTP_HOST` verschickt das Tool nichts und läuft weiter |
 | Push | `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` - optional |
+| KI | `OPENAI_API_KEY` - optional, ohne bleibt die KI aus; dazu `OPENAI_MODEL`, `OPENAI_REASONING_EFFORT`, `OPENAI_BASE_URL` (README, „Gemeinsame Helfer“). Am besten je Tool ein eigenes OpenAI-Projekt mit Ausgabenlimit (Kosten getrennt sichtbar, einzeln sperrbar) |
 | Konten-Verbund | `SUITE_*`, siehe README |
 | Anbindungen | `<PARTNER>_BASE_URL` und ein Secret je Tool-Paar (Tabelle unten) |
 | Eigene Link-Geheimnisse | `<ZWECK>_SECRET`, beim Wechsel `<ZWECK>_SECRET_PREVIOUS` (z.B. `MANAGE_LINK_SECRET`, `DISPLAY_LINK_SECRET`) |
@@ -207,6 +208,23 @@ rsvp-app):
   - ohne Prüfung könnte jede*r, die ein Abo anlegen darf (auch Gäste mit persönlichem Link), Anfragen an beliebige
   Adressen auslösen, etwa ins interne Netz (SSRF).
 * Abos hängen an einer Sitzung, einem Konto oder einem Zugang und verschwinden mit ihm; Inhalt Ende-zu-Ende verschlüsselt.
+
+### KI-Funktionen
+
+Seit v0.11.0 (2026-11-02; Bilderkennung in der Inventur, Zusammenfassung von Freitext im Abstimmungstool):
+
+* Nur über `askAi` aus `suite-kit` (OpenAI Responses API, `store: false`, Antwort als JSON nach festem Schema). Ohne
+  `OPENAI_API_KEY` ist die Funktion unsichtbar bzw. ihr Schalter gesperrt - das Tool läuft sonst unverändert.
+* **Je Inhalt einschaltbar, Voreinstellung aus** (Liste, Fragebogen …). Wer Daten eingibt, die an OpenAI gehen,
+  erfährt das vorher an derselben Stelle (Hinweis im Formular) und in der Datenschutzerklärung (OpenAI Ireland als
+  Auftragsverarbeiter, Verarbeitung auch in den USA, bis zu 30 Tage Missbrauchskontrolle). Daten, die vor dem
+  Einschalten erhoben wurden, gehen nicht raus.
+* So wenig schicken wie möglich: keine Namen, Adressen oder Kennungen (Nummern statt IDs, das Tool ordnet die Antwort
+  selbst wieder zu); Bilder verkleinert und ohne Metadaten. **Keine Gesundheitsdaten** (Essenswünsche, Allergien).
+* Die Antwort ist ein Vorschlag: nie ungeprüft speichern, was Gäste sehen; Zitate nur als Verweis auf echte Einträge,
+  nicht als Text des Modells. Gespeicherte Ergebnisse verschwinden mit den Daten, aus denen sie entstanden sind.
+* Jeder Aufruf kostet: gedrosselt (`reserve`, je IP bzw. Konto und je Inhalt) und nie automatisch beim Seitenaufruf.
+* E2E-Tests gegen eine Attrappe (`OPENAI_BASE_URL`), nie gegen OpenAI.
 
 ### Ausgaben
 

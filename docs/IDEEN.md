@@ -5,7 +5,7 @@ Sammlung von Lücken, Feature-Ideen und möglichen neuen Tools, entstanden aus e
 bewertet (anstehend: eine Hochzeit und ein Ball mit Eintritt). Die Begründung steht jeweils am Anfang des Abschnitts.
 
 **Reihenfolge der angenommenen Ideen:** die Quick Wins Q5, Q3, L5 und L10 sind umgesetzt (2026-10-07), für den Ball
-L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Am 2026-10-25 umgesetzt: N6 (Wichteln) als neues Tool. Am 2026-10-29 umgesetzt: N9 (Inventur) als neues Tool, dazu L28 als offene Idee. Am 2026-10-30 kamen L29–L38, N10–N13 und Q8–Q13 als neue Ideen dazu (Bestandsaufnahme aller neun Tools); am selben Tag auf Wunsch des Nutzers umgesetzt: L29 (rsvp-app), L33 (nur Mehrheiten), Q8, Q10 (suite-kit v0.10.0) und Q11 (suite-kit v0.10.1). Am 2026-10-31 auf Wunsch des Nutzers umgesetzt: L30 und L31 (rsvp-app), danach L35 und L36 (Inventur), L37 (Wichteln) und L38 (Startseite und rsvp-app). Am 2026-11-02 auf Wunsch des Nutzers aufgenommen und umgesetzt: L39 (Bilderkennung per Foto in der Inventur). Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
+L4 und L1 (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-TICKETS.md`), L2 und L3 für die Hochzeit (2026-10-10, Konzept in `rsvp-app/docs/KONZEPT-EINLADUNGEN.md`), am 2026-10-11 deren Nachzügler (Einlass und Alkohol pro Person, Küchenliste pro Tisch, Einladungen für Reihen) und N4 (Wunschliste, `rsvp-app/docs/KONZEPT-WUNSCHLISTE.md`). Am 2026-10-12 umgesetzt: N1 (Dienste/Schichten) als neues Tool „Schichten“ für den Winterball, Konzept in `schichten/docs/KONZEPT.md`, angebunden an rsvp-app und Zeitplan. Am 2026-10-13 kamen für den Zeitplan L15–L25 dazu, alle angenommen, ebenso die bisher zurückgestellten L6, L7, L11 und L12; am selben Tag umgesetzt: L15, L20, L24, danach L22, L18, L21 und L16. Am 2026-10-14 umgesetzt: L11, L19 und L17 im Zeitplan. Am 2026-10-15 umgesetzt: L8 Teil 2, die Vorlage aus L5 und L7 (Sitzungsmodus über alle drei Tools). Am 2026-10-17 nach einer Probesitzung zu L7 nachgezogen: Sitzungsleitung in einem Tab, Ein- und Auschecken ohne Scan und selbst, Tafel mit Ergebnissen. Am 2026-10-22 umgesetzt: L12 (Erinnerungen für Gäste per Push) im Zeitplan; am selben Tag L6 und L23 zurückgestellt, L25 verworfen. Am 2026-10-24 umgesetzt: Q6 (Bot-Schutz als eigener Proof-of-Work, suite-kit v0.8.0) und Q1 für Zeitplan und Schichten (suite-kit v0.9.0). Am 2026-10-25 umgesetzt: N6 (Wichteln) als neues Tool. Am 2026-10-29 umgesetzt: N9 (Inventur) als neues Tool, dazu L28 als offene Idee. Am 2026-10-30 kamen L29–L38, N10–N13 und Q8–Q13 als neue Ideen dazu (Bestandsaufnahme aller neun Tools); am selben Tag auf Wunsch des Nutzers umgesetzt: L29 (rsvp-app), L33 (nur Mehrheiten), Q8, Q10 (suite-kit v0.10.0) und Q11 (suite-kit v0.10.1). Am 2026-10-31 auf Wunsch des Nutzers umgesetzt: L30 und L31 (rsvp-app), danach L35 und L36 (Inventur), L37 (Wichteln) und L38 (Startseite und rsvp-app). Am 2026-11-02 auf Wunsch des Nutzers aufgenommen und umgesetzt: L39 (Bilderkennung per Foto in der Inventur), danach L40 (KI-Zusammenfassung im Abstimmungstool, gemeinsamer KI-Helfer `askAi` in suite-kit v0.11.0); L41–L43 aus derselben Durchsicht („Wo hilft KI in der Suite?“) als offene Ideen aufgenommen. Zurückgestellte Ideen werden neu bewertet, sobald ein Anlass sie braucht.
 
 **Status:** `offen` (noch nicht bewertet) · `angenommen` · `in Arbeit` · `umgesetzt` · `zurückgestellt` · `verworfen`
 (verworfene Ideen bleiben mit Begründung stehen, damit sie nicht wieder auftauchen).
@@ -58,6 +58,10 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [L37](#l37-anonyme-rückfrage-beim-wichteln) | Anonyme Rückfrage an die beschenkte Person | wichteln | S–M | umgesetzt |
 | [L38](#l38-seiten-nur-für-gäste) | Seiten nur für Gäste (Zugang über rsvp-app oder Code) | startseite (+ rsvp-app) | M | umgesetzt |
 | [L39](#l39-bilderkennung-per-foto-in-der-inventur) | Bilderkennung per Foto (finden, Vorschlag beim Anlegen) | inventur | S–M | umgesetzt |
+| [L40](#l40-ki-zusammenfassung-von-freitext-antworten) | KI-Zusammenfassung von Freitext-Antworten in Fragebögen | abstimmungstool (+ suite-kit) | S–M | umgesetzt |
+| [L41](#l41-ablauf-aus-text-übernehmen) | Ablauf aus Text oder Foto übernehmen (KI-Vorschlag) | zeitplan | M | offen |
+| [L42](#l42-alt-texte-für-bilder-vorschlagen) | Alt-Texte für hochgeladene Bilder vorschlagen (KI) | startseite | S | offen |
+| [L43](#l43-allergene-als-auswahl) | Allergene als Auswahl statt Freitext (Küchenübersicht ohne KI) | rsvp-app | S–M | offen |
 | [N1](#n1-dienste--schichten) | Neues Tool: Dienste/Schichten | neu (schichten) | L | umgesetzt |
 | [N2](#n2-wertung--scoreboard) | Neues Tool: Wertung/Scoreboard (Quiz, Turniere) | neu | L | zurückgestellt |
 | [N3](#n3-kasse--abrechnung) | Neues Tool: Kasse/Abrechnung (Kostenteilung) | neu | M–L | verworfen |
@@ -97,7 +101,7 @@ Die Suite deckt den Kern **anmelden → entscheiden → platzieren → Ablauf st
 | Winterball | L1, L3, L4, N1, L23, L29, L30, L34, L36 |
 | Hochzeit | L2, L3, N4, N5, Q3, L15, L16, L18, L22, L32, L38, N11, N12 |
 | Workshops, Ersti-Woche, Barcamp, Tag der offenen Tür | L6 (+ abstimmungstool für Session-Vorschläge) |
-| Mitgliederversammlung, Fachschaft, StuPa | L7, L24, L33 |
+| Mitgliederversammlung, Fachschaft, StuPa | L7, L24, L33, L40 |
 | Freizeiten, Ersti-Fahrt, Vereinsausflug | N5, N3, Zimmerverteilung über seating `ASSIGNED` (schon möglich) |
 | Turniere, Spieleabend, Sportfest | N2 |
 | Internationales Publikum | Q2 |
@@ -891,6 +895,67 @@ schlägt für neue einen Namen vor. Nur als Vorschlag, den man bestätigt.
 **Grenzen:** Zählen ist bei vielen kleinen oder gestapelten Dingen unzuverlässig (bewusst weggelassen), feine
 Varianten unterscheidet es nur, wenn sie auf dem Foto lesbar sind. Braucht Netz, kostet je Foto einen Bruchteil eines
 Cents.
+
+### L40: KI-Zusammenfassung von Freitext-Antworten
+
+*Aufgenommen 2026-11-02 auf Frage des Nutzers („Welche Apps könnten noch von KI profitieren?“).* **Bewertung
+(2026-11-02): angenommen** auf Wunsch des Nutzers, zusammen mit einem gemeinsamen KI-Helfer in suite-kit.
+
+**Umgesetzt (2026-11-02) im Abstimmungstool** (README „Fragebögen“, `docs/KONZEPT-FRAGEBOGEN.md`): Häkchen je
+Fragebogen (aus als Voreinstellung, nur mit `OPENAI_API_KEY`), Hinweis im Formular auf Deutsch und Englisch, an OpenAI
+nur Antworten seit dem Einschalten. Unter jeder Freitext-Frage „Mit KI zusammenfassen“: Überblick und bis zu 8 Themen,
+die KI nennt je Thema nur Antwortnummern, Anzahl und Zitate kommen aus der Datenbank. Gespeichert je Frage, fällt beim
+Löschen von Abgaben weg; gedrosselt je Konto und Fragebogen. Dazu suite-kit v0.11.0: `askAi`, `aiSettings`,
+`aiConfigured` (OpenAI Responses API, `store: false`, JSON-Schema) und die Regeln „KI-Funktionen“ in KONVENTIONEN.md;
+die Bilderkennung der Inventur (L39) nutzt ihn ebenfalls.
+
+**Problem:** Bei 80 Feedbackbögen mit „Was sollen wir besser machen?“ liest niemand alle Antworten.
+
+**Idee:** Ein Knopf fasst die Antworten zu Themen mit Häufigkeit und Beispielen zusammen.
+
+**Grenzen:** Die Zahlen sind die Zuordnung der KI, keine Auszählung; Themen können fehlen oder zu grob sein. Freitexte
+können persönliche Angaben enthalten - deshalb nur mit Hinweis vorab und nur für neue Antworten.
+
+### L41: Ablauf aus Text übernehmen
+
+*Aufgenommen 2026-11-02 (Durchsicht „Wo hilft KI in der Suite?“).* **Stand: offen.**
+
+**Problem:** Der Ablaufplan einer Hochzeit oder eines Balls existiert meist schon - als Mail, Word-Dokument oder Zettel.
+Ihn im Zeitplan Punkt für Punkt neu einzutippen (Uhrzeit, Dauer, Ort, Zuständige) ist die mühsamste Stelle beim Anlegen.
+
+**Idee:** „Aus Text übernehmen“ beim Anlegen oder in der Planung: Text einfügen oder ein Foto des Zettels hochladen,
+die KI (`askAi`) schlägt Programmpunkte mit Beginn, Dauer und Ort vor - Orte möglichst aus den vorhandenen, Zuständige
+nur als Text, nie als Konto. Vorschau als Tabelle zum Korrigieren, erst „Übernehmen“ legt an (wie der Foto-Vorschlag
+in der Inventur). Funktion je Zeitplan einschaltbar, Text und Foto werden nicht gespeichert.
+
+**Offene Fragen:** Namen von Zuständigen und Dienstleistern stehen oft im Ablaufplan - vorher entfernen lassen oder
+in Kauf nehmen (es lädt ja die Verwaltung selbst hoch)? Nur Text oder auch Foto/PDF?
+
+### L42: Alt-Texte für Bilder vorschlagen
+
+*Aufgenommen 2026-11-02 (Durchsicht „Wo hilft KI in der Suite?“).* **Stand: offen.**
+
+**Problem:** Auf selbstgebauten Seiten fehlen fast immer Bildbeschreibungen - der häufigste Mangel an
+Barrierefreiheit (Q11), und axe meldet ihn nur, wenn das Feld ganz fehlt.
+
+**Idee:** Beim Hochladen eines Bilds in der Startseite schlägt die KI eine kurze Beschreibung vor (Bild verkleinert,
+ohne Metadaten, wie in der Inventur); sie landet im Feld für den Alt-Text und lässt sich ändern. Nur in leere Felder,
+nie automatisch beim Anzeigen. Funktion je Seite oder für die ganze Installation über `OPENAI_API_KEY`.
+
+**Offene Fragen:** Personen auf Fotos - beschreiben lassen („zwei Personen vor einem Brautbogen“) oder nur Motive?
+
+### L43: Allergene als Auswahl
+
+*Aufgenommen 2026-11-02 (Durchsicht „Wo hilft KI in der Suite?“, bewusst ohne KI).* **Stand: offen.**
+
+**Problem:** Allergien kommen in rsvp-app als Freitext an. Für die Küche braucht es eine Zählung („3× Nüsse, 2×
+Laktose“), die heute jemand von Hand macht. Eine KI-Zusammenfassung schied aus: Allergien sind Gesundheitsdaten (Art. 9
+DSGVO) und sollen das Tool nicht verlassen (KONVENTIONEN.md, „Datenschutz“).
+
+**Idee:** Statt Freitext eine Auswahl der 14 kennzeichnungspflichtigen Allergene (LMIV) plus „Sonstiges: ___“. Die
+Küchenliste zählt je Allergen und Tisch selbst; Freitext bleibt nur für „Sonstiges“.
+
+**Offene Fragen:** Bestehende Freitexte übernehmen (von Hand zuordnen) oder nur für neue Events?
 
 ## Mögliche neue Tools
 
