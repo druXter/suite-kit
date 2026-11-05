@@ -223,6 +223,10 @@ Seit v0.11.0 (2026-11-02; Bilderkennung in der Inventur, Zusammenfassung von Fre
   Einschalten erhoben wurden, gehen nicht raus.
 * So wenig schicken wie möglich: keine Namen, Adressen oder Kennungen (Nummern statt IDs, das Tool ordnet die Antwort
   selbst wieder zu); Bilder verkleinert und ohne Metadaten. **Keine Gesundheitsdaten** (Essenswünsche, Allergien).
+* Wo die KI nur die **Form** der Daten braucht (Spalten einer Datei zuordnen), geht **Schema statt Inhalt**: der
+  Browser bildet Überschriften und Formatmasken (Buchstaben → X, Ziffern → 9), zeigt genau den Text vor dem Senden, der
+  Server prüft ihn gegen eine Positivliste erlaubter Zeichen und lehnt sonst ab; die Antwort (Spaltennummern) wendet das
+  Tool selbst an. Vorbild: `haushaltsbuch/app/lib/file-profile.ts` (seit 2026-11-05).
 * Die Antwort ist ein Vorschlag: nie ungeprüft speichern, was Gäste sehen; Zitate nur als Verweis auf echte Einträge,
   nicht als Text des Modells. Gespeicherte Ergebnisse verschwinden mit den Daten, aus denen sie entstanden sind.
 * Jeder Aufruf kostet: gedrosselt (`reserve`, je IP bzw. Konto und je Inhalt) und nie automatisch beim Seitenaufruf.
