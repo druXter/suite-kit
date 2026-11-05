@@ -33,7 +33,7 @@ man hier und zieht dann alle Tools nach, nicht umgekehrt.
   `suite-kit`), **`USER node`** (nie root), `npm ci`, `npx prisma generate` und `npm run build` im Image, beim
   Start `npx prisma db push --skip-generate && npm start`. Im Container lauscht Next auf 3000.
 * **Ports auf dem Server:** 3005 rsvp-app, 3006 Abstimmungstool, 3007 Seating, 3008 Zeitplan, 3009 Schichten,
-  3010 Wichteln, 3011 Termine, 3012 Startseite, 3013 Inventur. Das nächste Tool bekommt 3014. **Nur an `127.0.0.1` binden** (`"127.0.0.1:<port>:3000"`): Von außen kommt alles über
+  3010 Wichteln, 3011 Termine, 3012 Startseite, 3013 Inventur, 3014 Haushaltsbuch. Das nächste Tool bekommt 3015. **Nur an `127.0.0.1` binden** (`"127.0.0.1:<port>:3000"`): Von außen kommt alles über
   den Cloudflare-Tunnel (`cloudflared` auf dem Host, Ziel `http://127.0.0.1:<port>`). Ein Port auf allen Schnittstellen
   wäre über die öffentliche IPv6 des Servers direkt erreichbar - am Tunnel vorbei, mit selbst gesetztem
   `X-Forwarded-For`, also auch an der IP-Drosselung vorbei.
@@ -169,6 +169,8 @@ Drosselung den Bot-Schutz aus suite-kit (seit v0.8.0, Idee Q6):
   ohne Bot-Schutz und sind nur gedrosselt.
 * E2E-Tests, die eine Server Action nachspielen, holen je Aufruf eine frische Lösung (`powSolution` in den
   Test-Helfern); jeder Tool-Test prüft fehlende, falsche und verbrauchte Lösungen mit Positivkontrolle.
+
+Das Haushaltsbuch hat kein solches Formular (die Zahlseite ist nur lesend, Mails an Personen löst nur ein Konto aus).
 
 Geschützt (Stand 2026-10-24): rsvp-app neue Antworten ohne Konto und Registrierung; Seating Reservieren und
 Warteliste; Schichten Eintragen ohne Konto und Link anfordern; Wichteln (seit 2026-10-25) Beitreten über den Link und

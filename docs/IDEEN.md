@@ -75,6 +75,8 @@ Phase wie bei Seating/Zeitplan (Konzept, mehrere Schritte, eigene Tests).
 | [N11](#n11-vorbereitung-mit-fristen) | Vorbereitung: Aufgaben mit Fristen relativ zum Termin | neu (oder Nextcloud Deck) | M–L | offen |
 | [N12](#n12-grußwand) | Grußwand / Gästebuch mit Tafel und Druck | neu oder zeitplan | M | offen |
 | [N13](#n13-rundbrief) | Rundbrief mit An- und Abmeldung (Fachschaft, Verein) | neu (oder listmonk) | M | offen |
+| [N14](#n14-haushaltsbuch) | Neues Tool: Haushaltsbuch (Buchungen offline, Kontoauszug-Abgleich, Forderungen mit GiroCode, Depot, haushaltsbuch.ramonroeser.de) | neu (haushaltsbuch) | L | umgesetzt |
+| [N15](#n15-fints-im-haushaltsbuch) | FinTS-Abruf im Haushaltsbuch (Umsätze direkt von der Bank) | haushaltsbuch | M–L | offen (wartet auf Registrierung) |
 | [Q1](#q1-einmal-anlegen-überall-verknüpfen) | Einmal anlegen, überall verknüpfen | rsvp-app, zeitplan, schichten (seating später) | M je Paar | umgesetzt (ohne Seating) |
 | [Q2](#q2-mehrsprachigkeit) | Mehrsprachigkeit (mindestens Deutsch/Englisch) | alle Tools | L | zurückgestellt |
 | [Q3](#q3-fotos-der-gäste-über-immich) | Fotos der Gäste über Immich statt eigener App | rsvp-app / zeitplan | S | umgesetzt |
@@ -1136,6 +1138,30 @@ aus rsvp-app als Abonnierende nur nach eigener Zustimmung. Versand gedrosselt im
 **Abgrenzung:** Wie bei N3 zuerst prüfen, ob ein fertiges selbst gehostetes Tool reicht (listmonk). Begrenzung durch
 das Strato-Postfach (Versandlimit pro Stunde) und die Zustellbarkeit; ab einigen hundert Empfänger\*innen eher nicht
 selbst versenden.
+
+### N14: Haushaltsbuch
+
+**Stand (2026-11-05): umgesetzt** auf Wunsch des Nutzers als eigenes Tool „Haushaltsbuch“
+(`haushaltsbuch.ramonroeser.de`, Port 3014, Repo `haushaltsbuch`), Konzept in `haushaltsbuch/docs/KONZEPT.md`. Vorbild
+für den Umfang war eine Android-Haushaltsbuch-App mit Premium-Funktionen (Budgets, Split-Buchungen, Buchungspläne,
+Depot, Kontoabgleich, Belegscan, Analysen, QIF/CSV, Sync). Bücher wie Listen der Inventur mit Team („mitbuchen“,
+„ansehen“), Buch-App offline mit Warteschlange. Kontoauszug-Import (ING CSV/PDF, CAMT, MT940, CSV anderer Banken) und
+Abgleich nach dem Skript `abgleich.py` des Nutzers mit Differenzsuche. Forderungen mit RF-Referenz und GiroCode,
+Zahlungen werden beim Import erkannt. Pläne mit ICS-Abo, Budgets mit Push, Depot mit Kursen von Yahoo/CoinGecko,
+EZB-Wechselkurse, Belegscan über `askAi`, WebDAV-Sicherung. Entscheidungen des Nutzers: teilbare Bücher, erst Dateien
+(FinTS später, N15), alle vier Dienste je Buch einschaltbar. Abweichung von der Suite: Admins sehen fremde Bücher nicht.
+
+**Abgrenzung zu N3** (verworfen): N3 verteilt Kosten in einer Gruppe; N14 ist die eigene Buchführung. Forderungen an
+Einzelne sind enthalten, Gruppen-Abrechnung bleibt draußen.
+
+### N15: FinTS im Haushaltsbuch
+
+*Aufgenommen 2026-11-05.* **Stand: offen**, wartet auf eine Produktregistrierung bei der Deutschen Kreditwirtschaft
+(kostenlos, Antrag durch den Nutzer).
+
+**Idee:** Knopf „Umsätze abrufen“ statt Datei-Import: FinTS 3.0 mit PIN/TAN (ING: `https://fints.ing.de/fints/`,
+Freigabe in der Banking-App), Ergebnis geht durch denselben Import und Abgleich. Zugangsdaten werden nie gespeichert,
+die PIN nur für den einen Abruf eingegeben.
 
 ---
 

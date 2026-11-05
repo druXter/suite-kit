@@ -42,3 +42,10 @@ Datenschutzerklärung, Laufzeiten, Oberfläche), Befunde in docs/KONVENTIONEN.md
 - [x] Schichten (24.10.2026) - Befunde in KONVENTIONEN.md, „Durchsicht Schichten“
 - [x] Seating (24.10.2026) - ohne eigenen Befund, siehe KONVENTIONEN.md, „Durchsicht Seating“
 - [x] Abstimmungstool (24.10.2026) - ein Befund (Zugangscode-Cookie berechenbar), behoben; KONVENTIONEN.md, „Durchsicht Abstimmungstool“
+
+## Haushaltsbuch (2026-11-05)
+
+* `readLimitedBytes` (Body als Bytes begrenzt lesen) steht jetzt in Inventur und Haushaltsbuch je in `app/lib/api.ts` –
+  beim nächsten suite-kit-Release nach `suite-kit/web` (wie `readLimitedText`) und in beiden Tools daraus importieren.
+* IBAN/BIC/EPC-QR stehen in rsvp-app (`app/lib/payment.ts`) und im Haushaltsbuch (`app/lib/iban.ts`) – braucht ein drittes
+  Tool sie, nach suite-kit.
