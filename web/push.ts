@@ -11,10 +11,14 @@ export const PUSH_SERVICE_HOSTS = ['fcm.googleapis.com', 'updates.push.services.
 export type PushSubscriptionInput = { endpoint?: unknown; keys?: { p256dh?: unknown; auth?: unknown } | null } | null | undefined
 export type ValidPushSubscription = { endpoint: string; p256dh: string; auth: string }
 
+// Gespeichert wird die rohe Zeichenkette, und nicht jeder Versender liest sie wie `new URL` (web-push in rsvp-app nimmt
+// `url.parse`, das bei ; ' ` { im Host einen anderen Host sieht). Deshalb nur Hosts aus a-z, 0-9, - und Punkten, und nur
+// Endpoints, die schon in der Form vorliegen, die `new URL` daraus macht (kein still entferntes Leer- oder Steuerzeichen).
 export function isKnownPushService(endpoint: string): boolean {
   try {
     const url = new URL(endpoint)
-    return url.protocol === 'https:' && !url.port && !url.username && !url.password &&
+    return url.href === endpoint && /^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(url.hostname) &&
+      url.protocol === 'https:' && !url.port && !url.username && !url.password &&
       PUSH_SERVICE_HOSTS.some(host => url.hostname === host || url.hostname.endsWith(`.${host}`))
   } catch {
     return false

@@ -10,7 +10,9 @@ test('nur Push-Dienste der Browser-Hersteller', () => {
     assert.ok(isKnownPushService(ok), ok)
   }
   for (const bad of ['http://fcm.googleapis.com/x', 'https://fcm.googleapis.com:8443/x', 'https://evilfcm.googleapis.com.evil.de/x',
-    'https://192.168.178.126:8123/api', 'https://localhost/x', 'https://user:pw@fcm.googleapis.com/x', 'kein link', 'https://fcm.googleapis.com.evil.de/']) {
+    'https://192.168.178.126:8123/api', 'https://localhost/x', 'https://user:pw@fcm.googleapis.com/x', 'kein link', 'https://fcm.googleapis.com.evil.de/',
+    // A-01: Host, den url.parse (web-push) anders liest, und was new URL still glättet
+    'https://evil.example;.fcm.googleapis.com/x', ' https://fcm.googleapis.com/x', 'https://fcm.googleapis.com/x\n', 'https://FCM.googleapis.com/x']) {
     assert.ok(!isKnownPushService(bad), bad)
   }
 })
