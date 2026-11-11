@@ -44,6 +44,8 @@ Funde, Szenarien und Behebung in [docs/AUDIT-2026-11.md](docs/AUDIT-2026-11.md),
 - [x] **A-06** bis **A-12** (v0.13.0): `SUITE_IDPS`-Schalter nur als Boolean, `SUITE_SIGNING_KEY_PREVIOUS` allein ist
   ein Fehler, Aussteller hält die Grenzen des Prüfers ein, `/api/suite/*` mit `no-store`, CSV-Schutz auch nach
   Leer- und Steuerzeichen, base64url nur kanonisch, `exp > iat`.
+- [x] Beobachtungen ohne Fund (v0.14.0): Bot-Schutz mit Obergrenze und seltenerem Aufräumen; einzeilige Angaben über
+  `singleLine` - in allen Tools liest `formString` nur noch eine Zeile, Textareas `formText` (2026-11-11).
 
 ## Eigene Durchsicht je Tool
 
