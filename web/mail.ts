@@ -10,6 +10,7 @@
 // und Gmail hält; immer hell (Mail-Programme dunkeln selbst ab, wenn sie wollen).
 
 import { escapeHtml } from './html.js'
+import { singleLine } from './text.js'
 
 /** Ein Stück Fließtext: einfach Text, fett, Festbreite (Codes, IBAN) oder ein Link. */
 export type MailInline = string | { strong: string } | { mono: string } | { link: string; href: string }
@@ -70,14 +71,21 @@ function br(html: string): string {
   return html.replace(/\r?\n/g, '<br>')
 }
 
+/**
+ * Für Stellen, die immer einzeilig sind (Überschrift, Bezeichnungen, Knöpfe, Linktexte, Titel): Zeilenumbrüche aus
+ * fremden Angaben werden dort nie zu eigenen Zeilen. Fließtext und Werte bleiben mehrzeilig - Namen gehören deshalb
+ * schon bei der Eingabe auf eine Zeile (`singleLine`).
+ */
+const line = (text: string) => escapeHtml(singleLine(text))
+
 function inlineHtml(text: MailText): string {
   return inlines(text).map(part => {
     if (typeof part === 'string') return br(escapeHtml(part))
     if ('strong' in part) return `<strong>${br(escapeHtml(part.strong))}</strong>`
     if ('mono' in part) return `<span style="font-family: ${MONO};">${escapeHtml(part.mono)}</span>`
     return isSafeMailHref(part.href)
-      ? `<a href="${escapeHtml(part.href.trim())}" style="color: ${C.blue}; text-decoration: underline; word-break: break-all;">${escapeHtml(part.link)}</a>`
-      : escapeHtml(part.link)
+      ? `<a href="${escapeHtml(part.href.trim())}" style="color: ${C.blue}; text-decoration: underline; word-break: break-all;">${line(part.link)}</a>`
+      : line(part.link)
   }).join('')
 }
 
@@ -86,7 +94,7 @@ function inlineText(text: MailText): string {
     if (typeof part === 'string') return part
     if ('strong' in part) return part.strong
     if ('mono' in part) return part.mono
-    return part.link === part.href ? part.href : `${part.link} (${part.href})`
+    return part.link === part.href ? part.href : `${singleLine(part.link)} (${part.href})`
   }).join('')
 }
 
@@ -104,30 +112,30 @@ function blockHtml(block: MailBlock): string {
       return `<table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin: 0 0 16px; font-size: 15px;">${block.rows.map(r => {
         const { label, value, strong, mono } = row(r)
         const style = `padding: 3px 0; vertical-align: top;${strong ? ' font-weight: 600;' : ''}${mono ? ` font-family: ${MONO};` : ''}`
-        return `<tr><td style="padding: 3px 16px 3px 0; color: ${C.muted}; vertical-align: top; white-space: nowrap;">${escapeHtml(label)}</td><td style="${style}">${br(escapeHtml(value))}</td></tr>`
+        return `<tr><td style="padding: 3px 16px 3px 0; color: ${C.muted}; vertical-align: top; white-space: nowrap;">${line(label)}</td><td style="${style}">${br(escapeHtml(value))}</td></tr>`
       }).join('')}</table>`
     case 'list':
       return `<ul style="margin: 0 0 16px; padding-left: 20px;">${block.items.map(item => `<li style="margin: 0 0 4px;">${inlineHtml(item)}</li>`).join('')}</ul>`
     case 'button': {
-      if (!isSafeMailHref(block.href)) return `<p style="margin: 0 0 16px;">${escapeHtml(block.label)}</p>`
+      if (!isSafeMailHref(block.href)) return `<p style="margin: 0 0 16px;">${line(block.label)}</p>`
       const href = escapeHtml(block.href.trim())
       const style = block.secondary
         ? `background-color: #ffffff; color: ${C.text}; border: 1px solid #d1d5db;`
         : `background-color: ${C.blue}; color: #ffffff; border: 1px solid ${C.blue};`
       const fallback = block.fallback ?? !block.secondary
-      return `<p style="margin: 24px 0 ${fallback ? '8px' : '24px'};"><a href="${href}" style="display: inline-block; ${style} padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 15px; text-decoration: none;">${escapeHtml(block.label)}</a></p>`
+      return `<p style="margin: 24px 0 ${fallback ? '8px' : '24px'};"><a href="${href}" style="display: inline-block; ${style} padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 15px; text-decoration: none;">${line(block.label)}</a></p>`
         + (fallback ? `<p style="margin: 0 0 24px; font-size: 13px; line-height: 1.5; color: ${C.muted};">Falls der Knopf nicht funktioniert, diesen Link öffnen:<br><a href="${href}" style="color: ${C.muted}; word-break: break-all;">${href}</a></p>` : '')
     }
     case 'box': {
       const tone = TONES[block.tone ?? 'gray']
-      const title = block.title ? `<p style="margin: 0 0 8px; font-weight: 600;">${escapeHtml(block.title)}</p>` : ''
+      const title = block.title ? `<p style="margin: 0 0 8px; font-weight: 600;">${line(block.title)}</p>` : ''
       // Unten kein Innenabstand: den bringt der Abstand des letzten Bausteins mit.
       return `<div style="background-color: ${tone.bg}; border: 1px solid ${tone.border}; border-radius: 8px; padding: 16px 16px 0; margin: 0 0 16px;">${title}${block.blocks.map(blockHtml).join('')}</div>`
     }
     case 'image':
       if (!isSafeMailHref(block.src)) return ''
-      return `<p style="margin: 8px 0 ${block.caption ? '4px' : '16px'}; text-align: center;"><img src="${escapeHtml(block.src.trim())}" alt="${escapeHtml(block.alt)}" width="${Math.round(block.width)}" height="${Math.round(block.height)}" style="display: inline-block; width: ${Math.round(block.width)}px; height: ${Math.round(block.height)}px; border: 0;"></p>`
-        + (block.caption ? `<p style="margin: 0 0 16px; text-align: center; font-size: 13px; color: ${C.muted};">${escapeHtml(block.caption)}</p>` : '')
+      return `<p style="margin: 8px 0 ${block.caption ? '4px' : '16px'}; text-align: center;"><img src="${escapeHtml(block.src.trim())}" alt="${line(block.alt)}" width="${Math.round(block.width)}" height="${Math.round(block.height)}" style="display: inline-block; width: ${Math.round(block.width)}px; height: ${Math.round(block.height)}px; border: 0;"></p>`
+        + (block.caption ? `<p style="margin: 0 0 16px; text-align: center; font-size: 13px; color: ${C.muted};">${line(block.caption)}</p>` : '')
   }
 }
 
@@ -137,29 +145,30 @@ function blockText(block: MailBlock): string {
     case 'rows': return block.rows.map(r => {
       const { label, value } = row(r)
       // Mehrzeilige Werte (z.B. mehrere Namen) eingerückt unter der Bezeichnung.
-      return value.includes('\n') ? `${label}:\n${value.split(/\r?\n/).map(line => `  ${line}`).join('\n')}` : `${label}: ${value}`
+      const name = singleLine(label)
+      return value.includes('\n') ? `${name}:\n${value.split(/\r?\n/).map(part => `  ${part}`).join('\n')}` : `${name}: ${value}`
     }).join('\n')
     case 'list': return block.items.map(item => `- ${inlineText(item)}`).join('\n')
-    case 'button': return isSafeMailHref(block.href) ? `${block.label}:\n${block.href.trim()}` : block.label
-    case 'box': return [block.title, ...block.blocks.map(blockText)].filter(Boolean).join('\n\n')
-    case 'image': return block.caption ?? ''
+    case 'button': return isSafeMailHref(block.href) ? `${singleLine(block.label)}:\n${block.href.trim()}` : singleLine(block.label)
+    case 'box': return [block.title && singleLine(block.title), ...block.blocks.map(blockText)].filter(Boolean).join('\n\n')
+    case 'image': return block.caption ? singleLine(block.caption) : ''
   }
 }
 
 export function mailHtml(mail: Mail): string {
   const brand = `<span style="display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 8px; background-color: ${C.blue}; color: #ffffff; font-weight: 600; font-size: 14px; vertical-align: middle;">${escapeHtml(mail.brand.letter)}</span>`
-    + `<span style="margin-left: 8px; font-weight: 600; font-size: 15px; color: ${C.text}; vertical-align: middle;">${escapeHtml(mail.brand.name)}</span>`
+    + `<span style="margin-left: 8px; font-weight: 600; font-size: 15px; color: ${C.text}; vertical-align: middle;">${line(mail.brand.name)}</span>`
   const preheader = mail.preheader
-    ? `<div style="display: none; max-height: 0; overflow: hidden; mso-hide: all;">${escapeHtml(mail.preheader)}</div>`
+    ? `<div style="display: none; max-height: 0; overflow: hidden; mso-hide: all;">${line(mail.preheader)}</div>`
     : ''
   return `<!DOCTYPE html>
-<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>${escapeHtml(mail.heading)}</title></head>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>${line(mail.heading)}</title></head>
 <body style="margin: 0; padding: 0; background-color: ${C.page};">${preheader}
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: ${C.page};"><tr><td align="center" style="padding: 24px 12px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; font-family: ${FONT};">
 <tr><td style="padding: 0 4px 12px;">${brand}</td></tr>
 <tr><td style="background-color: #ffffff; border: 1px solid ${C.border}; border-radius: 12px; padding: 28px 24px 12px; color: ${C.text}; font-size: 16px; line-height: 1.55;">
-<h1 style="margin: 0 0 16px; font-size: 22px; line-height: 1.3; font-weight: 700; color: ${C.text};">${escapeHtml(mail.heading)}</h1>
+<h1 style="margin: 0 0 16px; font-size: 22px; line-height: 1.3; font-weight: 700; color: ${C.text};">${line(mail.heading)}</h1>
 ${mail.blocks.map(blockHtml).join('\n')}
 </td></tr>
 ${mail.footer ? `<tr><td style="padding: 16px 4px 0; font-size: 12px; line-height: 1.5; color: ${C.muted};">${br(escapeHtml(mail.footer))}</td></tr>\n` : ''}</table>

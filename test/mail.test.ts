@@ -67,3 +67,22 @@ test('Klartext aus denselben Bausteinen', () => {
   assert.ok(text.endsWith('-- \nDu bekommst diese Mail, weil du zugesagt hast.\nRSVP\n'))
   assert.deepEqual(renderMail(sample()), { html: mailHtml(sample()), text })
 })
+
+test('Einzeilige Stellen bleiben einzeilig, Fließtext und Werte nicht', () => {
+  const mail: Mail = {
+    brand: { letter: 'R', name: 'RSVP' },
+    heading: 'Hallo\nAnna',
+    blocks: [
+      { kind: 'rows', rows: [['Name\nBitte überweisen', 'Anna\nBen']] },
+      { kind: 'button', label: 'Öffnen\nJetzt', href: 'https://example.de' },
+      { kind: 'box', title: 'Titel\nZweite', blocks: [{ kind: 'p', text: ['Zeile 1\nZeile 2', { link: 'Link\ntext', href: 'https://example.de/x' }] }] }
+    ]
+  }
+  const html = mailHtml(mail)
+  assert.ok(html.includes('>Hallo Anna</h1>') && html.includes('<title>Hallo Anna</title>'))
+  assert.ok(html.includes('>Name Bitte überweisen</td>') && html.includes('Anna<br>Ben'))
+  assert.ok(html.includes('>Öffnen Jetzt</a>') && html.includes('>Titel Zweite</p>') && html.includes('>Link text</a>'))
+  assert.ok(html.includes('Zeile 1<br>Zeile 2'))
+  const text = mailText(mail)
+  assert.ok(text.includes('Name Bitte überweisen:\n  Anna\n  Ben') && text.includes('Öffnen Jetzt:\n') && text.includes('Titel Zweite'))
+})

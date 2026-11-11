@@ -2,6 +2,7 @@
 import { sign, verify } from 'node:crypto'
 import { safeEqual } from './secrets.js'
 import { b64uDecode, b64uEncode } from './base64url.js'
+import { singleLine } from '../web/text.js'
 import { importPublicKey, type Signer } from './keys.js'
 
 /**
@@ -72,8 +73,8 @@ export function issueLoginAssertion(
     aud: requireClaim(input.audience, 'aud'),
     sub: requireClaim(input.subject, 'sub'),
     email: requireClaim(input.email.toLowerCase(), 'email'),
-    // Der Name ist nur Anzeige: gekürzt statt abgelehnt. Die Rolle nicht - gekürzt wäre sie eine andere.
-    ...(input.name ? { name: input.name.slice(0, CLAIM_LIMITS.name) } : {}),
+    // Der Name ist nur Anzeige: einzeilig und gekürzt statt abgelehnt. Die Rolle nicht - gekürzt wäre sie eine andere.
+    ...(input.name && singleLine(input.name) ? { name: singleLine(input.name).slice(0, CLAIM_LIMITS.name) } : {}),
     ...(input.role ? { role: requireClaim(input.role, 'role') } : {}),
     nonce: requireClaim(input.nonce, 'nonce'),
     ...lifetime(opts)
@@ -213,12 +214,14 @@ export function verifyLoginAssertion(token: string, expect: VerifyExpectation): 
   )
   if (!result.ok) return result
   const { iss, aud, sub, email, name, role, nonce } = result.payload as Record<string, string>
+  // Namen auf eine Zeile, auch von Anbietern mit älterer Version (landen beim Empfänger in Mails).
+  const shownName = name === undefined ? '' : singleLine(name)
   return {
     ok: true,
     claims: {
       iss, aud, sub,
       email: email.toLowerCase(),
-      ...(name !== undefined ? { name } : {}),
+      ...(shownName ? { name: shownName } : {}),
       ...(role !== undefined ? { role } : {}),
       nonce,
       iat: result.iat,

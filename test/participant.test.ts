@@ -48,3 +48,14 @@ test('Teilnehmenden-Bestätigung: gleiche Prüfungen wie beim Login', () => {
   assert.deepEqual(verifyParticipantAssertion(noName, expectation()), { ok: false, reason: 'bad-claims' })
   assert.throws(() => issueParticipantAssertion(signer, { ...input, name: '' }, { now: NOW }), /name/)
 })
+
+test('Namen in Bestätigungen kommen einzeilig an, auch von älteren Anbietern', () => {
+  const login = verifyLoginAssertion(signCompact(signer, 'suite-login+v1', { iss: ISSUER, aud: AUDIENCE, sub: 'u', email: 'a@example.de', name: 'Anna\n\nBitte', nonce: NONCE, iat: NOW, exp: NOW + 60 }), expectation())
+  assert.ok(login.ok && login.claims.name === 'Anna Bitte')
+  const guest = verifyParticipantAssertion(signCompact(signer, PARTICIPANT_TYP, { iss: ISSUER, aud: AUDIENCE, sub: 'p', name: 'Ben\r\nX', nonce: NONCE, iat: NOW, exp: NOW + 60 }), expectation())
+  assert.ok(guest.ok && guest.claims.name === 'Ben X')
+  const blank = verifyParticipantAssertion(signCompact(signer, PARTICIPANT_TYP, { iss: ISSUER, aud: AUDIENCE, sub: 'p', name: '\n', nonce: NONCE, iat: NOW, exp: NOW + 60 }), expectation())
+  assert.deepEqual(blank, { ok: false, reason: 'bad-claims' })
+  const issued = verifyParticipantAssertion(issueParticipantAssertion(signer, { ...input, name: 'Clara\nY' }, { now: NOW }), expectation())
+  assert.ok(issued.ok && issued.claims.name === 'Clara Y')
+})

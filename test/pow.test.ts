@@ -1,7 +1,7 @@
 // test/pow.test.ts
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createPowChallenge, powChallengeResponse, powError, verifyPowSolution } from '../src/pow.js'
+import { createPowChallenge, POW_MAX_USED, POW_TTL_MS, powChallengeResponse, powError, verifyPowSolution } from '../src/pow.js'
 import { POW_FIELD, POW_MESSAGE, solvePowChallenge } from '../web/pow.js'
 
 test('Proof-of-Work: lösen, einmal gültig, dann verbraucht', async () => {
@@ -57,4 +57,21 @@ test('powError: Formular mit gültiger Lösung, ohne und mit verbrauchter', asyn
   form.set(POW_FIELD, (await solvePowChallenge(createPowChallenge({ maxNumber: 100 })))!)
   assert.equal(powError(form), null)
   assert.equal(powError(form), POW_MESSAGE)
+})
+
+test('Proof-of-Work: verbrauchte Lösungen haben eine Obergrenze, abgelaufene machen wieder Platz', () => {
+  // maxNumber 0: die Lösung ist immer 0, so lässt sich die Liste ohne Rechenzeit füllen.
+  const now = Date.now()
+  const solve = (ttlMs = POW_TTL_MS) => {
+    const challenge = createPowChallenge({ maxNumber: 0, ttlMs, now })
+    return `${challenge.salt}:0:${challenge.signature}`
+  }
+  let result = 'ok'
+  for (let i = 0; i <= POW_MAX_USED && result === 'ok'; i++) result = verifyPowSolution(solve(), now)
+  assert.equal(result, 'busy')
+  // Eine Aufgabe, die länger gilt: Nach Ablauf der anderen ist wieder Platz.
+  const later = solve(2 * POW_TTL_MS)
+  assert.equal(verifyPowSolution(later, now), 'busy')
+  assert.equal(verifyPowSolution(later, now + POW_TTL_MS + 1), 'ok')
+  assert.equal(verifyPowSolution(later, now + POW_TTL_MS + 2), 'used')
 })

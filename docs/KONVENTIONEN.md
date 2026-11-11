@@ -164,7 +164,8 @@ Drosselung den Bot-Schutz aus suite-kit (seit v0.8.0, Idee Q6):
   (`POW_MESSAGE`); bei Weiterleitungen als eigener Fehlercode (`error=pow`, Hinweis `mail-pruefung`).
 * Eine Lösung gilt einmal und höchstens 10 Minuten. Schlüssel und verbrauchte Lösungen liegen nur im Speicher des
   Prozesses: keine Variable, kein Drittanbieter, keine Cookies. Die Datenschutzerklärung nennt die Rechenaufgabe im
-  Abschnitt zur Drosselung.
+  Abschnitt zur Drosselung. Höchstens 100 000 verbrauchte Lösungen auf einmal (seit v0.14.0); darüber wird abgelehnt,
+  bis alte ablaufen - die Drosselung pro IP im Tool sorgt dafür, dass das nie erreicht wird.
 * Das Formular braucht damit JavaScript. Formulare, die bewusst ohne auskommen (Abstimmen im Abstimmungstool), bleiben
   ohne Bot-Schutz und sind nur gedrosselt.
 * E2E-Tests, die eine Server Action nachspielen, holen je Aufruf eine frische Lösung (`powSolution` in den
@@ -240,6 +241,12 @@ Seit v0.11.0 (2026-11-02; Bilderkennung in der Inventur, Zusammenfassung von Fre
   „Mails“). Die Vorlage escapet jeden Text - Namen und Angaben von Gästen genauso wie Titel, Ort und Texte der
   Verwaltung - und lässt nur sichere Links zu. Gäste können sich mit fremder Adresse anmelden, ohne Escaping käme
   fremdes HTML über unseren (DKIM-signierten) Absender. Der Betreff wird nicht escapet.
+* **Einzeilige Angaben bleiben einzeilig** (seit suite-kit v0.14.0): Namen, Titel, Orte und alles andere ohne
+  Textarea gehen bei der Eingabe durch `singleLine` aus `suite-kit/web` - auf jedem Weg (Formular, Import, Anbindung,
+  JSON). In den Tools macht das `formString` in `app/lib/form.ts`; mehrzeilige Felder (Textarea) lesen mit
+  `formText`. Sonst stünde ein Name wie „Anna\n\nBitte überweisen Sie an …“ als eigener Absatz in unserer Mail. Die
+  Mail-Vorlage hält Überschrift, Bezeichnungen, Knöpfe, Linktexte und Titel zusätzlich selbst einzeilig, Namen aus
+  Bestätigungen der Föderation kommen einzeilig an.
 * **CSV:** `csvResponse`/`toCsv` aus `suite-kit/web` - Semikolon, CRLF, BOM für Excel, Anführungszeichen nur wo
   nötig, Textzellen mit `= + - @` am Anfang (auch nach Leer- oder Steuerzeichen) oder mit Tab bzw. Zeilenumbruch am Anfang
   mit vorangestelltem Hochkomma (CSV-Injection);

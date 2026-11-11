@@ -6,6 +6,7 @@ import { readLimitedBytes, readLimitedText } from '../web/body.js'
 import { csvCell, csvResponse, toCsv } from '../web/csv.js'
 import { BASE_RULE, NO_FRAMING, PRIVATE_PAGE, SECRET_URL_PAGE, SUITE_RULES } from '../web/headers.js'
 import { escapeHtml } from '../web/html.js'
+import { singleLine } from '../web/text.js'
 
 test('csvCell: Formeln entschärft, Zahlen bleiben Zahlen, Anführungszeichen nur wo nötig', () => {
   for (const formula of ['=HYPERLINK("x")', '+1', '-2+3', '@SUM(A1)', '\tx', '\rx']) {
@@ -81,4 +82,11 @@ test('Header-Bausteine: Reihenfolge und Inhalte', () => {
   assert.deepEqual(PRIVATE_PAGE.slice(0, 2), NO_FRAMING)
   assert.ok(SECRET_URL_PAGE.some(h => h.key === 'Referrer-Policy' && h.value === 'no-referrer'))
   assert.deepEqual(SUITE_RULES.map(r => r.source), ['/sw.js', '/api/suite/:path*'])
+})
+
+test('singleLine: Umbrüche und Steuerzeichen werden ein Leerzeichen, Ränder weg', () => {
+  assert.equal(singleLine('  Anna\r\n\r\nBitte überweisen  '), 'Anna Bitte überweisen')
+  assert.equal(singleLine('A\u2028B\u2029C\tD\u0000E\u0085F'), 'A B C D E F')
+  assert.equal(singleLine('Anna  Berger'), 'Anna  Berger')
+  assert.equal(singleLine('\n\n'), '')
 })

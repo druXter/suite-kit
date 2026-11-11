@@ -1,6 +1,7 @@
 // src/participant.ts
 import { CLAIM_LIMITS, lifetime, requireClaim, signCompact, verifySigned, type VerifyExpectation, type VerifyFailure } from './assertion.js'
 import type { Signer } from './keys.js'
+import { singleLine } from '../web/text.js'
 
 /**
  * Teilnehmenden-Bestätigung: Ein Tool mit Teilnehmendenkonten (Gäste, Abstimmende - ohne jede
@@ -40,7 +41,7 @@ export function issueParticipantAssertion(
     aud: requireClaim(input.audience, 'aud'),
     sub: requireClaim(input.subject, 'sub'),
     // Gekürzt wie bisher; leer geht nicht (der Prüfer verlangt einen Namen).
-    name: requireClaim(input.name.slice(0, CLAIM_LIMITS.name), 'name'),
+    name: requireClaim(singleLine(input.name).slice(0, CLAIM_LIMITS.name), 'name'),
     nonce: requireClaim(input.nonce, 'nonce'),
     ...lifetime(opts)
   }
@@ -52,9 +53,9 @@ export type ParticipantVerifyResult = { ok: true; claims: ParticipantClaims } | 
 /** Wie verifyLoginAssertion, nur für Teilnehmende. Eine Login-Bestätigung scheitert hier an `unsupported-header`. */
 export function verifyParticipantAssertion(token: string, expect: VerifyExpectation): ParticipantVerifyResult {
   const result = verifySigned(token, PARTICIPANT_TYP, expect, ({ name, email, role }) =>
-    typeof name === 'string' && name.length > 0 && name.length <= CLAIM_LIMITS.name && email === undefined && role === undefined
+    typeof name === 'string' && singleLine(name).length > 0 && name.length <= CLAIM_LIMITS.name && email === undefined && role === undefined
   )
   if (!result.ok) return result
   const { iss, aud, sub, name, nonce } = result.payload as Record<string, string>
-  return { ok: true, claims: { iss, aud, sub, name, nonce, iat: result.iat, exp: result.exp } }
+  return { ok: true, claims: { iss, aud, sub, name: singleLine(name), nonce, iat: result.iat, exp: result.exp } }
 }

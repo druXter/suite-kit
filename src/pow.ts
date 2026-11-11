@@ -18,14 +18,22 @@ export type { PowChallenge } from '../web/pow.js'
 export const POW_MAX_NUMBER = 50_000
 /** So lange gilt eine Aufgabe. Die Formular-Komponente holt vorher eine neue. */
 export const POW_TTL_MS = 10 * 60_000
+/**
+ * Höchstens so viele verbrauchte Lösungen auf einmal (etwa 10 MB). Mehr in zehn Minuten heißt, die Drosselung im Tool
+ * greift nicht - dann werden weitere Lösungen abgelehnt (`busy`), bis alte ablaufen, statt Speicher und Rechenzeit
+ * ohne Grenze wachsen zu lassen.
+ */
+export const POW_MAX_USED = 100_000
+/** Abgelaufene Einträge werden höchstens so oft entfernt (sonst liefe jede Prüfung über die ganze Liste). */
+const SWEEP_INTERVAL_MS = 60_000
 
-type PowState = { key: Buffer; used: Map<string, number> }
+type PowState = { key: Buffer; used: Map<string, number>; sweptAt: number }
 const STATE = Symbol.for('suite-kit.pow')
 
 /** Auf globalThis, weil Next.js Route Handler und Server Actions in getrennten Modul-Instanzen laden kann. */
 function state(): PowState {
   const g = globalThis as typeof globalThis & { [STATE]?: PowState }
-  return (g[STATE] ??= { key: randomBytes(32), used: new Map() })
+  return (g[STATE] ??= { key: randomBytes(32), used: new Map(), sweptAt: 0 })
 }
 
 const sha256 = (text: string) => createHash('sha256').update(text).digest('hex')
@@ -45,10 +53,10 @@ export function powChallengeResponse(options?: Parameters<typeof createPowChalle
 
 /**
  * `missing`: Feld leer (kein JavaScript oder vor dem Laden abgeschickt), `expired`: Aufgabe abgelaufen, `used`: Lösung
- * schon einmal verwendet, `invalid`: falsch, manipuliert oder aus der Zeit vor einem Neustart. Der Person zeigt das
- * Tool in jedem Fall `POW_MESSAGE`.
+ * schon einmal verwendet, `invalid`: falsch, manipuliert oder aus der Zeit vor einem Neustart, `busy`: gerade zu viele
+ * Lösungen (`POW_MAX_USED`). Der Person zeigt das Tool in jedem Fall `POW_MESSAGE`.
  */
-export type PowResult = 'ok' | 'missing' | 'invalid' | 'expired' | 'used'
+export type PowResult = 'ok' | 'missing' | 'invalid' | 'expired' | 'used' | 'busy'
 
 const SOLUTION = /^([0-9a-f]{24}\.(\d{13})):(\d{1,9}):([0-9a-f]{64})$/
 
@@ -62,9 +70,14 @@ export function verifyPowSolution(value: unknown, now = Date.now()): PowResult {
   if (!safeEqual(sign(sha256(salt + number)), signature)) return 'invalid'
   if (Number(expiresAt) < now) return 'expired'
 
-  const { used } = state()
-  for (const [key, until] of used) if (until < now) used.delete(key)
+  const pow = state()
+  const { used } = pow
   if (used.has(salt)) return 'used'
+  if (now - pow.sweptAt >= SWEEP_INTERVAL_MS || used.size >= POW_MAX_USED) {
+    for (const [key, until] of used) if (until < now) used.delete(key)
+    pow.sweptAt = now
+  }
+  if (used.size >= POW_MAX_USED) return 'busy'
   used.set(salt, Number(expiresAt))
   return 'ok'
 }
