@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { b64uDecode } from '../src/base64url.js'
-import { issueLoginAssertion, verifyLoginAssertion, type VerifyExpectation } from '../src/assertion.js'
+import { issueLoginAssertion, signCompact, verifyLoginAssertion, type VerifyExpectation } from '../src/assertion.js'
 import { issueParticipantAssertion, PARTICIPANT_TYP, verifyParticipantAssertion } from '../src/participant.js'
 import { generateKeyPair, loadSigner } from '../src/keys.js'
 
@@ -44,6 +44,7 @@ test('Teilnehmenden-Bestätigung: gleiche Prüfungen wie beim Login', () => {
   const other = loadSigner(generateKeyPair().privateKey)
   const forged = issueParticipantAssertion({ ...other, kid: signer.kid }, input, { now: NOW })
   assert.deepEqual(verifyParticipantAssertion(forged, expectation()), { ok: false, reason: 'bad-signature' })
-  const noName = issueParticipantAssertion(signer, { ...input, name: '' }, { now: NOW })
+  const noName = signCompact(signer, PARTICIPANT_TYP, { iss: ISSUER, aud: AUDIENCE, sub: 'paarweise-123', name: '', nonce: NONCE, iat: NOW, exp: NOW + 60 })
   assert.deepEqual(verifyParticipantAssertion(noName, expectation()), { ok: false, reason: 'bad-claims' })
+  assert.throws(() => issueParticipantAssertion(signer, { ...input, name: '' }, { now: NOW }), /name/)
 })

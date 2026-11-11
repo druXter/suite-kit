@@ -53,10 +53,11 @@ export const SERVICE_WORKER: Header[] = [
 export const BASE_RULE: HeaderRule = { source: '/:path*', headers: BASE_HEADERS }
 
 /**
- * Letzte Regeln jeder `headers()`-Liste: Service Worker und Föderations-Endpunkte (Einmal-Werte in der URL). Sie
+ * Letzte Regeln jeder `headers()`-Liste: Service Worker und Föderations-Endpunkte (Einmal-Werte in der URL, deshalb
+ * weder Referer noch Cache - auch für Antworten, die nicht über die Route selbst gehen). Sie
  * stehen am Ende, damit sie Einbett- und Referer-Regeln davor überschreiben.
  */
 export const SUITE_RULES: HeaderRule[] = [
   { source: '/sw.js', headers: SERVICE_WORKER },
-  { source: '/api/suite/:path*', headers: NO_REFERRER }
+  { source: '/api/suite/:path*', headers: [...NO_REFERRER, { key: 'Cache-Control', value: 'no-store' }] }
 ]

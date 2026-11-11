@@ -135,7 +135,7 @@ import { BASE_RULE, EMBEDDABLE, NO_FRAMING, NO_REFERRER, NOT_STORED, PRIVATE_PAG
 // NO_FRAMING = X-Frame-Options DENY + frame-ancestors 'none'     NOT_STORED = noindex + no-store
 // PRIVATE_PAGE = NO_FRAMING + NOT_STORED                         SECRET_URL_PAGE = PRIVATE_PAGE + no-referrer
 // EMBEDDABLE = frame-ancestors *                                 BASE_RULE = Punkt 1 unten für '/:path*'
-// SUITE_RULES = /sw.js (SERVICE_WORKER) und /api/suite/* (NO_REFERRER), als letzte Regeln
+// SUITE_RULES = /sw.js (SERVICE_WORKER) und /api/suite/* (NO_REFERRER + no-store), als letzte Regeln
 ```
 
 1. Auf alle Pfade: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`,
@@ -146,7 +146,7 @@ import { BASE_RULE, EMBEDDABLE, NO_FRAMING, NO_REFERRER, NOT_STORED, PRIVATE_PAG
    aus `suite-kit/ui` ein (seit v0.10.0, Idee Q10), damit das iFrame mit ihr mitwächst; einbettende Tools passen die
    Höhe nur über `readEmbedHeight` an.
 3. Verwaltung, Konto, Login: `PRIVATE_PAGE`. Seiten mit Geheimnis in der URL (Reset, Bestätigung, persönliche Links,
-   Anzeige-Schlüssel): zusätzlich `Referrer-Policy: no-referrer`. `/api/suite/*`: `no-referrer`.
+   Anzeige-Schlüssel): zusätzlich `Referrer-Policy: no-referrer`. `/api/suite/*`: `no-referrer` und `no-store`.
 4. `/sw.js`: `Cache-Control: no-cache, no-store, must-revalidate` und `default-src 'self'; script-src 'self'; frame-ancestors 'none'`.
 5. Bei mehreren passenden Regeln gewinnt die spätere. Ein E2E-Test (`tests/e2e/headers.spec.ts`) prüft die
    Pfadgruppen; eine neue einteilige Route wird dort und in der Ausnahmeliste ergänzt.
@@ -241,7 +241,8 @@ Seit v0.11.0 (2026-11-02; Bilderkennung in der Inventur, Zusammenfassung von Fre
   Verwaltung - und lässt nur sichere Links zu. Gäste können sich mit fremder Adresse anmelden, ohne Escaping käme
   fremdes HTML über unseren (DKIM-signierten) Absender. Der Betreff wird nicht escapet.
 * **CSV:** `csvResponse`/`toCsv` aus `suite-kit/web` - Semikolon, CRLF, BOM für Excel, Anführungszeichen nur wo
-  nötig, Textzellen mit `= + - @`, Tab oder Zeilenumbruch am Anfang mit vorangestelltem Hochkomma (CSV-Injection);
+  nötig, Textzellen mit `= + - @` am Anfang (auch nach Leer- oder Steuerzeichen) oder mit Tab bzw. Zeilenumbruch am Anfang
+  mit vorangestelltem Hochkomma (CSV-Injection);
   Zahlen bleiben Zahlen. Export-Routen prüfen Anmeldung und Zugriff wie jede Seite, Antwort mit `Cache-Control: no-store`.
 * Kein `dangerouslySetInnerHTML`, kein `$queryRawUnsafe`.
 * Öffentliche Gästelisten: Abfrage mit ausdrücklicher Feldliste (`select`), nie E-Mail, Telefon oder Allergien.

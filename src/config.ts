@@ -52,7 +52,7 @@ export function parseIdpConfig(value: string | undefined): IdpConfig[] {
   const trimmed = value?.trim()
   if (!trimmed) return []
 
-  let entries: { issuer: string; label?: string; autoProvision?: boolean; mapAdminRole?: boolean; participants?: boolean }[]
+  let entries: { issuer: string; label?: string; autoProvision?: unknown; mapAdminRole?: unknown; participants?: unknown }[]
   if (trimmed.startsWith('[')) {
     try {
       const parsed: unknown = JSON.parse(trimmed)
@@ -77,10 +77,21 @@ export function parseIdpConfig(value: string | undefined): IdpConfig[] {
     result.push({
       issuer,
       label: typeof entry.label === 'string' && entry.label ? entry.label.slice(0, 100) : undefined,
-      autoProvision: entry.autoProvision !== false,
-      mapAdminRole: entry.mapAdminRole === true,
-      participants: entry.participants === true
+      autoProvision: idpFlag(issuer, 'autoProvision', entry.autoProvision, true),
+      mapAdminRole: idpFlag(issuer, 'mapAdminRole', entry.mapAdminRole, false),
+      participants: idpFlag(issuer, 'participants', entry.participants, false)
     })
   }
   return result
+}
+
+/**
+ * Schalter in SUITE_IDPS: nur echte Booleans. Fehlt er, gilt der Standard; alles andere ("false", 0, null …) wird mit
+ * Warnung als `false` gelesen - ein Tippfehler darf nie die Kontoanlage oder Rechte einschalten.
+ */
+function idpFlag(issuer: string, name: string, value: unknown, fallback: boolean): boolean {
+  if (value === undefined) return fallback
+  if (typeof value === 'boolean') return value
+  console.warn(`[suite-kit] SUITE_IDPS: ${name} für ${issuer} ist kein Boolean (${JSON.stringify(value)}) und gilt als false`)
+  return false
 }

@@ -1,5 +1,5 @@
 // src/participant.ts
-import { lifetime, signCompact, verifySigned, type VerifyExpectation, type VerifyFailure } from './assertion.js'
+import { CLAIM_LIMITS, lifetime, requireClaim, signCompact, verifySigned, type VerifyExpectation, type VerifyFailure } from './assertion.js'
 import type { Signer } from './keys.js'
 
 /**
@@ -36,11 +36,12 @@ export function issueParticipantAssertion(
   opts: { ttlSeconds?: number; now?: number } = {}
 ): string {
   const claims: ParticipantClaims = {
-    iss: input.issuer,
-    aud: input.audience,
-    sub: input.subject,
-    name: input.name.slice(0, 200),
-    nonce: input.nonce,
+    iss: requireClaim(input.issuer, 'iss'),
+    aud: requireClaim(input.audience, 'aud'),
+    sub: requireClaim(input.subject, 'sub'),
+    // Gekürzt wie bisher; leer geht nicht (der Prüfer verlangt einen Namen).
+    name: requireClaim(input.name.slice(0, CLAIM_LIMITS.name), 'name'),
+    nonce: requireClaim(input.nonce, 'nonce'),
     ...lifetime(opts)
   }
   return signCompact(signer, PARTICIPANT_TYP, claims)
@@ -51,7 +52,7 @@ export type ParticipantVerifyResult = { ok: true; claims: ParticipantClaims } | 
 /** Wie verifyLoginAssertion, nur für Teilnehmende. Eine Login-Bestätigung scheitert hier an `unsupported-header`. */
 export function verifyParticipantAssertion(token: string, expect: VerifyExpectation): ParticipantVerifyResult {
   const result = verifySigned(token, PARTICIPANT_TYP, expect, ({ name, email, role }) =>
-    typeof name === 'string' && name.length > 0 && name.length <= 200 && email === undefined && role === undefined
+    typeof name === 'string' && name.length > 0 && name.length <= CLAIM_LIMITS.name && email === undefined && role === undefined
   )
   if (!result.ok) return result
   const { iss, aud, sub, name, nonce } = result.payload as Record<string, string>

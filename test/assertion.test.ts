@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { b64uEncode } from '../src/base64url.js'
-import { issueLoginAssertion, verifyLoginAssertion, MAX_TTL_SECONDS, type VerifyExpectation } from '../src/assertion.js'
+import { ASSERTION_TYP, issueLoginAssertion, signCompact, verifyLoginAssertion, MAX_TTL_SECONDS, type VerifyExpectation } from '../src/assertion.js'
 import { generateKeyPair, loadSigner } from '../src/keys.js'
 
 const ISSUER = 'https://rsvp.example.de'
@@ -99,6 +99,19 @@ test('kaputte Eingaben werfen nie, sondern liefern malformed/bad-signature', () 
 })
 
 test('leere Pflicht-Claims -> bad-claims, auch bei gültiger Signatur', () => {
-  assert.deepEqual(verifyLoginAssertion(issue({ subject: '' }), expectation()), { ok: false, reason: 'bad-claims' })
-  assert.deepEqual(verifyLoginAssertion(issue({ email: '' }), expectation()), { ok: false, reason: 'bad-claims' })
+  const signed = (over: Record<string, unknown>) => signCompact(signer, ASSERTION_TYP,
+    { iss: ISSUER, aud: AUDIENCE, sub: 'user-1', email: 'a@example.de', nonce: NONCE, iat: NOW, exp: NOW + 60, ...over })
+  assert.equal(verifyLoginAssertion(signed({}), expectation()).ok, true)
+  assert.deepEqual(verifyLoginAssertion(signed({ sub: '' }), expectation()), { ok: false, reason: 'bad-claims' })
+  assert.deepEqual(verifyLoginAssertion(signed({ email: '' }), expectation()), { ok: false, reason: 'bad-claims' })
+  // Der Aussteller stellt so etwas gar nicht erst aus.
+  assert.throws(() => issue({ subject: '' }), /sub/)
+  assert.throws(() => issue({ email: '' }), /email/)
+})
+
+test('Aussteller hält die Grenzen des Prüfers ein: Name gekürzt, zu lange Kennung oder Rolle scheitern laut', () => {
+  const long = verifyLoginAssertion(issue({ name: 'x'.repeat(300) }), expectation())
+  assert.ok(long.ok && long.claims.name?.length === 200)
+  assert.throws(() => issue({ role: 'r'.repeat(65) }), /role/)
+  assert.throws(() => issue({ subject: 's'.repeat(129) }), /sub/)
 })

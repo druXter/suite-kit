@@ -84,6 +84,9 @@ test('loadSignersFromEnv: aktiver + vorheriger Schlüssel, leer ohne Konfigurati
   const signers = loadSignersFromEnv({ SUITE_SIGNING_KEY: a.privateKey, SUITE_SIGNING_KEY_PREVIOUS: b.privateKey })
   assert.deepEqual(signers.map(s => s.kid), [a.kid, b.kid])
   assert.throws(() => loadSignersFromEnv({ SUITE_SIGNING_KEY: 'kaputt' }))
+  // Der abgelöste Schlüssel allein wird nie aktiv; zweimal derselbe ergibt einen Eintrag.
+  assert.throws(() => loadSignersFromEnv({ SUITE_SIGNING_KEY_PREVIOUS: b.privateKey }), /SUITE_SIGNING_KEY_PREVIOUS/)
+  assert.deepEqual(loadSignersFromEnv({ SUITE_SIGNING_KEY: a.privateKey, SUITE_SIGNING_KEY_PREVIOUS: a.privateKey }).map(s => s.kid), [a.kid])
 })
 
 test('parseTrustedApps verwirft ungültige Einträge', () => {

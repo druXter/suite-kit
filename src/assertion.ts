@@ -26,6 +26,20 @@ export const DEFAULT_TTL_SECONDS = 60
 export const MAX_TTL_SECONDS = 120
 export const CLOCK_SKEW_SECONDS = 10
 
+/**
+ * Höchstlängen der Felder (Zeichen), gemeinsam für Aussteller und Prüfer: Was ausgestellt wird, muss die eigene Prüfung
+ * bestehen - sonst bekäme ein Konto eine gültig signierte Bestätigung, die jeder Empfänger als `bad-claims` verwirft.
+ */
+export const CLAIM_LIMITS = { iss: 300, aud: 300, sub: 128, nonce: 128, email: 254, name: 200, role: 64 } as const
+
+/** Beim Ausstellen: Feld nicht leer und nicht zu lang, sonst laut scheitern (der Anbieter zeigt seine Fehlerseite). */
+export function requireClaim(value: string, field: keyof typeof CLAIM_LIMITS): string {
+  if (!value || value.length > CLAIM_LIMITS[field]) {
+    throw new Error(`Bestätigung nicht ausgestellt: ${field} ist leer oder länger als ${CLAIM_LIMITS[field]} Zeichen`)
+  }
+  return value
+}
+
 export type LoginClaims = {
   iss: string
   aud: string
@@ -54,13 +68,14 @@ export function issueLoginAssertion(
   opts: { ttlSeconds?: number; now?: number } = {}
 ): string {
   const claims: LoginClaims = {
-    iss: input.issuer,
-    aud: input.audience,
-    sub: input.subject,
-    email: input.email.toLowerCase(),
-    ...(input.name ? { name: input.name } : {}),
-    ...(input.role ? { role: input.role } : {}),
-    nonce: input.nonce,
+    iss: requireClaim(input.issuer, 'iss'),
+    aud: requireClaim(input.audience, 'aud'),
+    sub: requireClaim(input.subject, 'sub'),
+    email: requireClaim(input.email.toLowerCase(), 'email'),
+    // Der Name ist nur Anzeige: gekürzt statt abgelehnt. Die Rolle nicht - gekürzt wäre sie eine andere.
+    ...(input.name ? { name: input.name.slice(0, CLAIM_LIMITS.name) } : {}),
+    ...(input.role ? { role: requireClaim(input.role, 'role') } : {}),
+    nonce: requireClaim(input.nonce, 'nonce'),
     ...lifetime(opts)
   }
   return signCompact(signer, ASSERTION_TYP, claims)
@@ -146,8 +161,8 @@ export function verifySigned(
 
   const { iss, aud, sub, nonce, iat, exp } = payload
   if (
-    !isNonEmptyString(iss, 300) || !isNonEmptyString(aud, 300) || !isNonEmptyString(sub, 128) ||
-    !isNonEmptyString(nonce, 128) || !Number.isInteger(iat) || !Number.isInteger(exp) || !checkClaims(payload)
+    !isNonEmptyString(iss, CLAIM_LIMITS.iss) || !isNonEmptyString(aud, CLAIM_LIMITS.aud) || !isNonEmptyString(sub, CLAIM_LIMITS.sub) ||
+    !isNonEmptyString(nonce, CLAIM_LIMITS.nonce) || !Number.isInteger(iat) || !Number.isInteger(exp) || !checkClaims(payload)
   ) {
     return fail('bad-claims')
   }
@@ -159,6 +174,7 @@ export function verifySigned(
   if (iss !== expect.issuer) return fail('wrong-issuer')
   if (aud !== expect.audience) return fail('wrong-audience')
   if (!safeEqual(nonce, expect.nonce)) return fail('wrong-nonce')
+  if (expiresAt <= issuedAt) return fail('bad-claims')
   if (expiresAt - issuedAt > MAX_TTL_SECONDS) return fail('lifetime-too-long')
   if (issuedAt > now + CLOCK_SKEW_SECONDS) return fail('not-yet-valid')
   if (expiresAt + CLOCK_SKEW_SECONDS < now) return fail('expired')
@@ -191,9 +207,9 @@ export function lifetime(opts: { ttlSeconds?: number; now?: number } = {}): { ia
  */
 export function verifyLoginAssertion(token: string, expect: VerifyExpectation): VerifyResult {
   const result = verifySigned(token, ASSERTION_TYP, expect, ({ email, name, role }) =>
-    isNonEmptyString(email, 254) &&
-    (name === undefined || isNonEmptyString(name, 200)) &&
-    (role === undefined || isNonEmptyString(role, 64))
+    isNonEmptyString(email, CLAIM_LIMITS.email) &&
+    (name === undefined || isNonEmptyString(name, CLAIM_LIMITS.name)) &&
+    (role === undefined || isNonEmptyString(role, CLAIM_LIMITS.role))
   )
   if (!result.ok) return result
   const { iss, aud, sub, email, name, role, nonce } = result.payload as Record<string, string>

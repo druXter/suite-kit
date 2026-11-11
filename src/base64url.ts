@@ -7,10 +7,13 @@ export function b64uEncode(input: Buffer | string): string {
 /**
  * Strikt: Buffer.from(..., 'base64') ignoriert ungültige Zeichen stillschweigend - für
  * signierte Daten wollen wir stattdessen, dass jede Abweichung vom Alphabet als
- * "kaputt" gilt (gibt dann null zurück).
+ * "kaputt" gilt (gibt dann null zurück). Dazu nur die eine kanonische Schreibweise:
+ * gesetzte Füllbits im letzten Zeichen oder eine unmögliche Länge ergäben sonst eine
+ * zweite gültige Zeichenkette für dieselben Bytes (z.B. dieselbe Signatur).
  */
 export function b64uDecode(input: string): Buffer | null {
   if (!/^[A-Za-z0-9_-]*$/.test(input)) return null
   const padded = input + '='.repeat((4 - (input.length % 4)) % 4)
-  return Buffer.from(padded.replace(/-/g, '+').replace(/_/g, '/'), 'base64')
+  const bytes = Buffer.from(padded.replace(/-/g, '+').replace(/_/g, '/'), 'base64')
+  return b64uEncode(bytes) === input ? bytes : null
 }

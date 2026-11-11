@@ -4,12 +4,13 @@
 // Anführungszeichen nur, wo nötig (Semikolon, Anführungszeichen, Zeilenumbruch).
 //
 // Formel-Schutz (CSV-Injection, Empfehlung von OWASP): Namen, Notizen und Antworten tippen Gäste selbst ein. Beginnt
-// eine Zelle mit = + - @, Tab oder Wagenrücklauf, führte eine Tabellenkalkulation sie als Formel aus - davor kommt
-// deshalb ein Hochkomma. Zahlen bleiben Zahlen (auch negative).
+// eine Zelle mit = + - @, Tab oder Zeilenumbruch, führte eine Tabellenkalkulation sie als Formel aus - davor kommt
+// deshalb ein Hochkomma. Auch wenn Leer- oder Steuerzeichen davor stehen: Importe, die Zellen trimmen, sähen sonst
+// eine Formel. Zahlen bleiben Zahlen (auch negative).
 
 export type CsvValue = string | number | boolean | null | undefined
 
-const FORMULA_START = /^[=+\-@\t\r]/
+const FORMULA_START = /^[\t\r\n]|^[\s\x00-\x1f]*[=+\-@]/
 
 export function csvCell(value: CsvValue): string {
   if (value === null || value === undefined) return ''

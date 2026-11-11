@@ -103,6 +103,9 @@ eine Anmeldung fehlschlägt, die Empfänger müssen nichts tun:
 3. Nach mindestens **5 Minuten** (Cache der Empfänger; Bestätigungen leben höchstens 2 Minuten)
    `SUITE_SIGNING_KEY_PREVIOUS` entfernen und den Anbieter erneut starten.
 
+`SUITE_SIGNING_KEY_PREVIOUS` ohne `SUITE_SIGNING_KEY` (leer, Name vertippt) ist ein Fehler, das Tool startet dann
+nicht als Anbieter (seit v0.13.0) - sonst signierte es still mit dem abgelösten Schlüssel weiter.
+
 **Notfall** (Schlüssel ist bekannt geworden): `SUITE_SIGNING_KEY=<neu>` **ohne**
 `SUITE_SIGNING_KEY_PREVIOUS`, Anbieter neu starten - und danach **alle Empfänger neu starten**.
 Sonst nehmen sie den alten Schlüssel bis zu 5 Minuten aus ihrem Cache weiter an. Anschließend die
@@ -127,7 +130,8 @@ klappt beim nächsten Versuch. Den Ablauf prüfen `test/rotation.test.ts` (hier)
 `autoProvision` (Standard `true`): erster Login legt automatisch ein lokales Konto
 ohne Passwort an. `mapAdminRole` (Standard `false`): Admins des Anbieters werden auch
 hier Admin, sonst Creator. `participants` (Standard `false`, ab v0.2.0): Teilnehmendenkonten
-dieses Anbieters annehmen.
+dieses Anbieters annehmen. Alle drei nur als JSON-Boolean (seit v0.13.0): `"false"`, `0` oder `null`
+gelten mit Warnung im Log als `false`, nie als „an“.
 
 ## Sicherheitsregeln, die jede App einhalten muss
 

@@ -68,13 +68,19 @@ export function loadSigner(privateKey: string): Signer {
  * Schlüsselrotation, damit der alte öffentliche Schlüssel noch im Discovery-Dokument
  * bleibt). Gibt eine leere Liste zurück, wenn kein Schlüssel gesetzt ist - das Tool
  * ist dann nur Empfänger, nie Anbieter von Logins (oder gar nicht föderiert).
- * Der ERSTE Eintrag ist der aktive Signierschlüssel.
+ * Der ERSTE Eintrag ist der aktive Signierschlüssel. SUITE_SIGNING_KEY_PREVIOUS ohne SUITE_SIGNING_KEY ist ein
+ * Fehler: sonst signierte das Tool still mit dem Schlüssel weiter, der gerade abgelöst werden soll.
  */
 export function loadSignersFromEnv(env: Record<string, string | undefined> = process.env): Signer[] {
-  const signers: Signer[] = []
-  for (const name of ['SUITE_SIGNING_KEY', 'SUITE_SIGNING_KEY_PREVIOUS']) {
-    const value = env[name]?.trim()
-    if (value) signers.push(loadSigner(value))
+  const current = env.SUITE_SIGNING_KEY?.trim()
+  const previous = env.SUITE_SIGNING_KEY_PREVIOUS?.trim()
+  if (previous && !current) {
+    throw new Error('SUITE_SIGNING_KEY_PREVIOUS ist gesetzt, SUITE_SIGNING_KEY aber nicht - der abgelöste Schlüssel wird nie aktiver Schlüssel')
+  }
+  const signers = current ? [loadSigner(current)] : []
+  if (previous) {
+    const old = loadSigner(previous)
+    if (old.kid !== signers[0].kid) signers.push(old)
   }
   return signers
 }
