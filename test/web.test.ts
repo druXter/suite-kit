@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { safeEqual } from '../src/secrets.js'
-import { readLimitedText } from '../web/body.js'
+import { readLimitedBytes, readLimitedText } from '../web/body.js'
 import { csvCell, csvResponse, toCsv } from '../web/csv.js'
 import { BASE_RULE, NO_FRAMING, PRIVATE_PAGE, SECRET_URL_PAGE, SUITE_RULES } from '../web/headers.js'
 import { escapeHtml } from '../web/html.js'
@@ -59,6 +59,13 @@ test('readLimitedText: bis zum Limit gelesen, darüber null - auch bei falscher 
   const lying = new Request('http://localhost/', { method: 'POST', body: chunks, headers: { 'content-length': '10' }, duplex: 'half' } as RequestInit)
   assert.equal(await readLimitedText(lying, 5000), null)
   assert.equal(await readLimitedText(new Request('http://localhost/'), 10), '')
+})
+
+test('readLimitedBytes: Bytes aus Anfrage oder Antwort, darüber null', async () => {
+  assert.deepEqual(await readLimitedBytes(new Response(new Uint8Array([1, 2, 3])), 3), new Uint8Array([1, 2, 3]))
+  assert.equal(await readLimitedBytes(new Response(new Uint8Array(4)), 3), null)
+  assert.equal(await readLimitedBytes(new Response('x', { headers: { 'content-length': '999' } }), 10), null)
+  assert.deepEqual(await readLimitedBytes(new Response(null), 10), new Uint8Array())
 })
 
 test('safeEqual', () => {

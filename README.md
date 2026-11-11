@@ -266,7 +266,8 @@ Was jedes Tool braucht und überall gleich funktionieren muss, kommt aus suite-k
     escapet selbst (Regeln in [docs/DESIGN.md](docs/DESIGN.md#mails)).
   * `escapeHtml` - für alles in HTML, was nicht wörtlich im Code steht (Mails bauen mit `renderMail`).
   * `csvCell`, `toCsv`, `csvResponse` - CSV-Exporte mit Semikolon, CRLF, BOM und Formel-Schutz.
-  * `readLimitedText(request, max)` - Body begrenzt einlesen, `null` heißt 413.
+  * `readLimitedText(request, max)`, `readLimitedBytes(request, max)` - Body begrenzt einlesen (als Text bzw. Bytes,
+    für Anfragen wie für Antworten), `null` heißt 413.
   * `validPushSubscription` - Push-Abo aus dem Browser prüfen, bevor es gespeichert wird (nur Push-Dienste der
     Browser-Hersteller, sonst SSRF).
   * Header-Bausteine für `next.config.ts`: `BASE_RULE`, `NO_FRAMING`, `NOT_STORED`, `PRIVATE_PAGE`, `EMBEDDABLE`,
@@ -281,9 +282,9 @@ Was jedes Tool braucht und überall gleich funktionieren muss, kommt aus suite-k
   * `signLinkedCreate`, `verifyLinkedCreate`, `readLinkedCreateResult`, `linkedCreateSlug` - rsvp-app lässt ein Tool
     ein verknüpftes Event anlegen (Idee Q1, `POST <Tool>/api/rsvp-create`, Regeln in KONVENTIONEN.md).
   * `askAi`, `aiSettings`, `aiConfigured` - KI-Aufrufe über die OpenAI Responses API (`store: false`, Antwort als
-    JSON nach festem Schema, Fehler ins Log ohne Inhalt). Eingerichtet über `OPENAI_API_KEY`, optional
-    `OPENAI_MODEL` (Voreinstellung `gpt-6-luna`), `OPENAI_REASONING_EFFORT` (`none`) und `OPENAI_BASE_URL` (Attrappe
-    in Tests). Regeln in KONVENTIONEN.md, „KI-Funktionen“.
+    JSON nach festem Schema, keine Weiterleitungen, Fehler ins Log nur mit Statuscode und Fehlerkennung).
+    Eingerichtet über `OPENAI_API_KEY`, optional `OPENAI_MODEL` (Voreinstellung `gpt-6-luna`),
+    `OPENAI_REASONING_EFFORT` (`none`) und `OPENAI_BASE_URL` (Attrappe in Tests). Regeln in KONVENTIONEN.md, „KI-Funktionen“.
 * `suite-kit/ui`: `ProofOfWork` - ins Formular setzen, rechnet die Aufgabe im Hintergrund.
 * `suite-kit/ui`: `EmbedHeight` - auf jeder einbettbaren Seite (Idee Q10): meldet eingebettet ihre Höhe per
   `postMessage` (`{ type: 'suite:height', height }`) an die einbettende Seite und hebt dafür `min-height` am `<body>`

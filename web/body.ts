@@ -1,15 +1,22 @@
 // web/body.ts
 
+/** Was `readLimitedBytes` liest: eine Anfrage (`Request`) oder eine Antwort (`Response`). */
+export type LimitedBodySource = { headers: Headers; body: ReadableStream<Uint8Array> | null }
+
 /**
- * Liest den Body einer Anfrage, höchstens `max` Bytes - sonst `null` (Antwort dann 413). Bricht schon beim Lesen ab,
- * statt erst alles in den Speicher zu holen: `(await request.text()).slice(...)` begrenzt nichts, der Body ist dann
- * schon vollständig gelesen. Eine falsche Content-Length hilft nicht, gezählt wird, was tatsächlich ankommt.
+ * Liest einen Body als Bytes, höchstens `max` - sonst `null`. Bricht schon beim Lesen ab, statt erst alles in den
+ * Speicher zu holen: `(await request.text()).slice(...)` begrenzt nichts, der Body ist dann schon vollständig gelesen.
+ * Eine falsche Content-Length hilft nicht, gezählt wird, was tatsächlich ankommt. Für Anfragen (Uploads) wie für
+ * Antworten (Abrufe bei anderen Diensten).
  */
-export async function readLimitedText(request: Request, max: number): Promise<string | null> {
-  const declared = Number(request.headers.get('content-length') ?? 0)
-  if (Number.isFinite(declared) && declared > max) return null
-  if (!request.body) return ''
-  const reader = request.body.getReader()
+export async function readLimitedBytes(source: LimitedBodySource, max: number): Promise<Uint8Array | null> {
+  const declared = Number(source.headers.get('content-length') ?? 0)
+  if (Number.isFinite(declared) && declared > max) {
+    await source.body?.cancel().catch(() => {})
+    return null
+  }
+  if (!source.body) return new Uint8Array()
+  const reader = source.body.getReader()
   const chunks: Uint8Array[] = []
   let size = 0
   try {
@@ -32,5 +39,11 @@ export async function readLimitedText(request: Request, max: number): Promise<st
     bytes.set(chunk, offset)
     offset += chunk.byteLength
   }
-  return new TextDecoder().decode(bytes)
+  return bytes
+}
+
+/** Wie `readLimitedBytes`, als Text (UTF-8) - `null` heißt zu groß (Antwort dann 413). */
+export async function readLimitedText(source: LimitedBodySource, max: number): Promise<string | null> {
+  const bytes = await readLimitedBytes(source, max)
+  return bytes && new TextDecoder().decode(bytes)
 }

@@ -23,7 +23,7 @@ man hier und zieht dann alle Tools nach, nicht umgekehrt.
   (Live-Steuerung in Zeitplan: größere Knöpfe für die Bedienung mit einer Hand).
 * **Hilfsfunktionen, die jedes Tool braucht, kommen aus suite-kit**, nie als eigene Kopie (seit v0.5.1, README
   „Gemeinsame Helfer“): aus `suite-kit/web` `escapeHtml` (Mails), `csvCell`/`toCsv`/`csvResponse` (Exporte),
-  `readLimitedText` (Bodies) und die Header-Bausteine; aus `suite-kit` `safeEqual` (Geheimnisse) und
+  `readLimitedText`/`readLimitedBytes` (Bodies) und die Header-Bausteine; aus `suite-kit` `safeEqual` (Geheimnisse) und
   `signLinkMessage`/`verifyLinkMessage` (Anbindungen). Eine Verbesserung daran kommt so mit dem nächsten
   suite-kit-Update in alle Tools. Was ein drittes Tool ebenfalls braucht, wandert nach suite-kit.
 
@@ -188,8 +188,8 @@ rsvp-app):
   vom Empfänger geprüft (eine Nachricht einer Art gilt nie als andere), `aud` = Origin des Empfängers,
   Lebensdauer höchstens eine Stunde (Standard 10 Minuten). Länger nur begründet und auf beiden Seiten ausdrücklich
   (`maxTtlSeconds`, z.B. der Fragebogen-Nachweis mit 12 Stunden). Signatur mit `timingSafeEqual` vergleichen.
-* Body **begrenzt einlesen** (`readLimitedText(request, MAX_BODY)`) - `(await request.text()).slice(...)` begrenzt
-  nichts, der Body ist dann schon im Speicher.
+* Body **begrenzt einlesen** (`readLimitedText(request, MAX_BODY)`, Dateien mit `readLimitedBytes`) - `(await request.text()).slice(...)` begrenzt
+  nichts, der Body ist dann schon im Speicher. Dasselbe gilt für Antworten bei Abrufen (`readLimitedText(response, max)`).
 * Antworten: `401` ungültige Nachricht, `404` nicht konfiguriert bzw. nicht verknüpft, `409` Zustand passt nicht,
   immer `Cache-Control: no-store`. Abrufe beim Partner ohne Weiterleitungen (`redirect: 'error'`) und mit Timeout.
 * Übertragen wird nur, was der Partner braucht (Kennungen statt Namen, wo es geht).
@@ -230,6 +230,8 @@ Seit v0.11.0 (2026-11-02; Bilderkennung in der Inventur, Zusammenfassung von Fre
 * Die Antwort ist ein Vorschlag: nie ungeprüft speichern, was Gäste sehen; Zitate nur als Verweis auf echte Einträge,
   nicht als Text des Modells. Gespeicherte Ergebnisse verschwinden mit den Daten, aus denen sie entstanden sind.
 * Jeder Aufruf kostet: gedrosselt (`reserve`, je IP bzw. Konto und je Inhalt) und nie automatisch beim Seitenaufruf.
+* Ins Log nur Statuscode und Fehlerkennung, nie die Antwort von OpenAI (die nennt bei 401 Teile des Schlüssels) und
+  nie die Meldung eines `fetch`-Fehlers (kann den Header zitieren) - `askAi` hält sich daran (seit v0.12.0).
 * E2E-Tests gegen eine Attrappe (`OPENAI_BASE_URL`), nie gegen OpenAI.
 
 ### Ausgaben

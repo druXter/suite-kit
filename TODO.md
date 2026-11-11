@@ -45,7 +45,10 @@ Datenschutzerklärung, Laufzeiten, Oberfläche), Befunde in docs/KONVENTIONEN.md
 
 ## Haushaltsbuch (2026-11-05)
 
-* `readLimitedBytes` (Body als Bytes begrenzt lesen) steht jetzt in Inventur und Haushaltsbuch je in `app/lib/api.ts` –
-  beim nächsten suite-kit-Release nach `suite-kit/web` (wie `readLimitedText`) und in beiden Tools daraus importieren.
+* `readLimitedBytes` (Body als Bytes begrenzt lesen) steht in Inventur und Haushaltsbuch je in `app/lib/api.ts` –
+  seit suite-kit v0.12.0 in `suite-kit/web`: beim Update beider Tools die Kopie löschen und daraus importieren.
+* Seit v0.12.0 bremst `fetchDiscovery` erzwungene Abrufe selbst (einmal pro Minute und Anbieter): beim Update jedes
+  Tools die Kopie `loadDiscoveryForVerification`/`lastForcedRefresh` in `app/api/suite/callback/route.ts` löschen und
+  `fetchDiscovery(issuer, { force })` direkt aufrufen.
 * IBAN/BIC/EPC-QR stehen in rsvp-app (`app/lib/payment.ts`) und im Haushaltsbuch (`app/lib/iban.ts`) – braucht ein drittes
   Tool sie, nach suite-kit.

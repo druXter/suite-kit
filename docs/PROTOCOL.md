@@ -109,7 +109,8 @@ Sonst nehmen sie den alten Schlüssel bis zu 5 Minuten aus ihrem Cache weiter an
 Server-Logs auf Anmeldungen seit dem vermuteten Zeitpunkt prüfen.
 
 Hinweise: Ein Empfänger lädt wegen unbekannter `kid` höchstens einmal pro Minute und Anbieter neu
-(Schutz gegen erzwungene Abrufe) - eine Anmeldung in dieser Minute kann einmal fehlschlagen und
+(Schutz gegen erzwungene Abrufe; seit suite-kit v0.12.0 in `fetchDiscovery` selbst, das außerdem Fehlschläge 30 s
+merkt und gleichzeitige Abrufe zusammenlegt) - eine Anmeldung in dieser Minute kann einmal fehlschlagen und
 klappt beim nächsten Versuch. Den Ablauf prüfen `test/rotation.test.ts` (hier) und der Test
 "Schlüsselwechsel beim Anbieter" im Abstimmungstool (`tests/e2e/suite.spec.ts`, über Login und Callback).
 
@@ -143,7 +144,8 @@ dieses Anbieters annehmen.
 5. Fehlerseiten zeigen dem Nutzer nur "Anmeldung fehlgeschlagen" - der `reason` aus
    `verifyLoginAssertion` gehört ins Server-Log.
 6. Bei `unknown-key` das Discovery-Dokument **einmal** mit `force: true` neu laden und
-   erneut prüfen (Rotation), nicht in einer Schleife.
+   erneut prüfen (Rotation), nicht in einer Schleife. `fetchDiscovery` bremst `force` auf einmal pro Minute und
+   Anbieter (seit v0.12.0); eine eigene Bremse im Tool ist nicht mehr nötig.
 7. Der Callback-Endpunkt antwortet mit `Referrer-Policy: no-referrer` und
    `Cache-Control: no-store`.
 

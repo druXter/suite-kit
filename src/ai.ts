@@ -8,6 +8,8 @@
 // Regeln (docs/KONVENTIONEN.md „KI-Funktionen“): `store: false` (OpenAI hebt die Antwort nicht auf), nur so viel
 // schicken wie nötig, keine Namen oder Adressen, keine Gesundheitsdaten; Fehler ins Log ohne Inhalt und Schlüssel.
 
+import { readLimitedText } from '../web/body.js'
+
 /** Voreinstellung: das günstige Modell für viele kleine Aufgaben (Stand 11/2026). Mit OPENAI_MODEL änderbar. */
 export const AI_DEFAULT_MODEL = 'gpt-6-luna'
 export const AI_DEFAULT_TIMEOUT_MS = 45_000
@@ -21,10 +23,21 @@ export type AiSettings = {
   effort: string
 }
 
-/** Einstellungen aus der Umgebung; null ohne OPENAI_API_KEY. */
+let warnedBrokenKey = false
+
+/**
+ * Einstellungen aus der Umgebung; null ohne OPENAI_API_KEY. Ein Schlüssel mit Leer- oder Steuerzeichen in der Mitte
+ * (zwei Zeilen zusammenkopiert) gilt als nicht gesetzt: `fetch` würde ihn als ungültigen Header samt Wert in die
+ * Fehlermeldung schreiben, also ins Log. Gemeldet wird das einmal, ohne den Wert.
+ */
 export function aiSettings(env: Record<string, string | undefined> = process.env): AiSettings | null {
   const apiKey = env.OPENAI_API_KEY?.trim()
   if (!apiKey) return null
+  if (!/^[\x21-\x7e]+$/.test(apiKey)) {
+    if (!warnedBrokenKey) console.warn('KI aus: OPENAI_API_KEY enthält Leer- oder Steuerzeichen (z.B. Zeilenumbruch), bitte prüfen')
+    warnedBrokenKey = true
+    return null
+  }
   return {
     apiKey,
     baseUrl: (env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/+$/, ''),
@@ -111,17 +124,45 @@ export async function askAi(
       method: 'POST',
       headers: { Authorization: `Bearer ${settings.apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(aiRequestBody(task, settings)),
+      // Eine Weiterleitung (falsche OPENAI_BASE_URL, Proxy davor) schickte Bilder und Texte an die Adresse aus Location.
+      redirect: 'error',
       signal: AbortSignal.timeout(timeoutMs)
     })
     if (!response.ok) {
-      console.error(`${label}: OpenAI antwortet ${response.status}: ${(await response.text().catch(() => '')).slice(0, 300)}`)
+      // Nie den Body: OpenAI nennt darin Anfang und Ende des Schlüssels (401) oder zitiert die Anfrage (400).
+      console.error(`${label}: OpenAI antwortet ${response.status}${aiErrorCode(await readJson(response))}`)
       return null
     }
-    const value = aiOutputJson(await response.json().catch(() => null))
+    const value = aiOutputJson(await readJson(response))
     if (value === null) console.error(`${label}: Antwort von OpenAI nicht lesbar (abgebrochen, abgelehnt oder kein JSON)`)
     return value
   } catch (error) {
-    console.error(`${label}: OpenAI nicht erreichbar: ${error instanceof Error ? error.message : String(error)}`)
+    // Nur Name und Code: die Meldung kann den Authorization-Header samt Schlüssel zitieren.
+    const cause = error instanceof Error ? (error.cause as { code?: unknown } | undefined)?.code : undefined
+    console.error(`${label}: OpenAI nicht erreichbar: ${error instanceof Error ? error.name : 'Fehler'}${typeof cause === 'string' && SAFE_CODE.test(cause) ? ` (${cause})` : ''}`)
     return null
   }
+}
+
+const SAFE_CODE = /^[A-Za-z0-9_]{1,40}$/
+/** Antworten sind wenige KiB (auch bei großem max_output_tokens weit unter 1 MiB); größer heißt kaputt oder fremd. */
+const MAX_RESPONSE_BYTES = 1024 * 1024
+
+async function readJson(response: Response): Promise<unknown> {
+  const text = await readLimitedText(response, MAX_RESPONSE_BYTES)
+  if (text === null) return null
+  try {
+    return JSON.parse(text)
+  } catch {
+    return null
+  }
+}
+
+/** `error.type`/`error.code` aus einer Fehlerantwort, nur wenn sie wie Kennungen aussehen; sonst leer. */
+function aiErrorCode(body: unknown): string {
+  const error = body && typeof body === 'object' ? (body as { error?: unknown }).error : undefined
+  if (!error || typeof error !== 'object') return ''
+  const { type, code } = error as { type?: unknown; code?: unknown }
+  const parts = [type, code].filter((part): part is string => typeof part === 'string' && /^[a-z0-9_]{1,40}$/.test(part))
+  return parts.length ? ` (${parts.join(', ')})` : ''
 }

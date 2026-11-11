@@ -38,11 +38,37 @@ test('fetchDiscovery lädt, validiert und cached', async () => {
 })
 
 test('fetchDiscovery gibt bei Fehlern null zurück statt zu werfen', async () => {
-  assert.equal(await fetchDiscovery(ISSUER, { fetchImpl: (async () => { throw new Error('offline') }) as typeof fetch }), null)
-  assert.equal(await fetchDiscovery(ISSUER, { fetchImpl: (async () => new Response('nope', { status: 500 })) as typeof fetch }), null)
-  assert.equal(await fetchDiscovery(ISSUER, { fetchImpl: (async () => new Response('kein json')) as typeof fetch }), null)
-  assert.equal(await fetchDiscovery(ISSUER, { fetchImpl: (async () => new Response('x'.repeat(20_000))) as typeof fetch }), null)
+  const failing: Array<() => Promise<Response>> = [
+    async () => { throw new Error('offline') },
+    async () => new Response('nope', { status: 500 }),
+    async () => new Response('kein json'),
+    async () => new Response('x'.repeat(20_000))
+  ]
+  for (const respond of failing) {
+    clearDiscoveryCache() // sonst käme null schon aus dem gemerkten Fehlschlag
+    let calls = 0
+    assert.equal(await fetchDiscovery(ISSUER, { fetchImpl: (async () => { calls++; return respond() }) as typeof fetch }), null)
+    assert.equal(calls, 1)
+  }
   assert.equal(await fetchDiscovery('http://unsicher.example.de'), null)
+})
+
+test('fetchDiscovery: force lädt höchstens einmal pro Minute neu, ein Fehlschlag verdrängt den Cache nicht', async () => {
+  let calls = 0
+  let up = true
+  const fetchImpl = (async () => { calls++; return up ? jsonResponse(doc) : new Response('', { status: 502 }) }) as typeof fetch
+  assert.ok(await fetchDiscovery(ISSUER, { fetchImpl }))
+  assert.ok(await fetchDiscovery(ISSUER, { fetchImpl, force: true }))
+  assert.equal(calls, 2)
+  // Erfundene kid in Serie: kein weiterer Abruf, das Dokument kommt aus dem Cache.
+  for (let i = 0; i < 5; i++) assert.ok(await fetchDiscovery(ISSUER, { fetchImpl, force: true }))
+  assert.equal(calls, 2)
+
+  clearDiscoveryCache()
+  assert.ok(await fetchDiscovery(ISSUER, { fetchImpl }))
+  up = false
+  assert.equal(await fetchDiscovery(ISSUER, { fetchImpl, force: true }), null)
+  assert.ok(await fetchDiscovery(ISSUER, { fetchImpl }), 'gültiger Cache bleibt nach gescheitertem Neuladen nutzbar')
 })
 
 test('fetchDiscovery folgt keinen Weiterleitungen', async () => {

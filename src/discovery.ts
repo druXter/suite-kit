@@ -1,4 +1,5 @@
 // src/discovery.ts
+import { readLimitedText } from '../web/body.js'
 import { AUTHORIZE_PATH } from './authorize.js'
 import { importPublicKey, type Signer } from './keys.js'
 import { normalizeOrigin } from './origin.js'
@@ -74,29 +75,72 @@ export function parseDiscoveryDocument(json: unknown, expectedIssuer: string): D
 
 type CacheEntry = { doc: DiscoveryDocument; expiresAt: number }
 const cache = new Map<string, CacheEntry>()
+/** Bis wann ein Fehlschlag gilt - so lange kein neuer Abruf, sofort null. */
+const failedUntil = new Map<string, number>()
+/** Laufende Abrufe: gleichzeitige Aufrufe für denselben Anbieter teilen sich einen. */
+const inFlight = new Map<string, Promise<DiscoveryDocument | null>>()
+/** Wann zuletzt mit `force` neu geladen wurde (Bremse aus PROTOCOL.md, Sicherheitsregel 6). */
+const lastForced = new Map<string, number>()
 
 export type FetchDiscoveryOptions = {
   fetchImpl?: typeof fetch
   timeoutMs?: number
   cacheTtlMs?: number
-  /** Cache umgehen - nötig, wenn eine Bestätigung mit unbekannter `kid` kam (Rotation). */
+  /**
+   * Cache umgehen - nötig, wenn eine Bestätigung mit unbekannter `kid` kam (Rotation). Höchstens einmal pro Minute und
+   * Anbieter; innerhalb der Minute zählt der Aufruf wie ohne `force`.
+   */
   force?: boolean
 }
 
 const MAX_DOC_BYTES = 16 * 1024
+/** Wie lange ein Fehlschlag gemerkt wird. */
+export const DISCOVERY_FAILURE_TTL_MS = 30 * 1000
+/** Mindestabstand zwischen zwei erzwungenen Abrufen je Anbieter. */
+export const DISCOVERY_FORCE_INTERVAL_MS = 60 * 1000
 
 /**
  * Lädt (und cached) das Discovery-Dokument eines Anbieters. Gibt null zurück, wenn der
  * Anbieter nicht erreichbar oder das Dokument ungültig ist - "Anbieter gerade nicht
  * da" darf ein Tool nie blockieren, der lokale Login bleibt davon unberührt.
+ *
+ * Gebremst, weil `/api/suite/login?idp=…` ohne Anmeldung aufrufbar ist und eine erfundene `kid` `force` auslöst:
+ * Fehlschläge gelten 30 s (dann sofort null), gleichzeitige Aufrufe teilen sich einen Abruf, `force` lädt
+ * höchstens einmal pro Minute und Anbieter neu. Gelesen werden höchstens 16 KiB.
  */
 export async function fetchDiscovery(issuer: string, opts: FetchDiscoveryOptions = {}): Promise<DiscoveryDocument | null> {
   const origin = normalizeOrigin(issuer)
   if (!origin) return null
 
-  const cached = cache.get(origin)
-  if (!opts.force && cached && cached.expiresAt > Date.now()) return cached.doc
+  const now = Date.now()
+  let force = false
+  if (opts.force && now - (lastForced.get(origin) ?? 0) >= DISCOVERY_FORCE_INTERVAL_MS) {
+    lastForced.set(origin, now)
+    force = true
+  }
 
+  const running = inFlight.get(origin)
+  if (running) return running
+  const cached = cache.get(origin)
+  if (!force && cached && cached.expiresAt > now) return cached.doc
+  if (!force && (failedUntil.get(origin) ?? 0) > now) return null
+
+  const request = loadDiscovery(origin, opts).then(doc => {
+    if (doc) {
+      cache.set(origin, { doc, expiresAt: Date.now() + (opts.cacheTtlMs ?? 5 * 60 * 1000) })
+      failedUntil.delete(origin)
+    } else {
+      failedUntil.set(origin, Date.now() + DISCOVERY_FAILURE_TTL_MS)
+    }
+    return doc
+  }).finally(() => {
+    if (inFlight.get(origin) === request) inFlight.delete(origin)
+  })
+  inFlight.set(origin, request)
+  return request
+}
+
+async function loadDiscovery(origin: string, opts: FetchDiscoveryOptions): Promise<DiscoveryDocument | null> {
   try {
     const res = await (opts.fetchImpl ?? fetch)(`${origin}${DISCOVERY_PATH}`, {
       headers: { Accept: 'application/json' },
@@ -105,13 +149,14 @@ export async function fetchDiscovery(issuer: string, opts: FetchDiscoveryOptions
       redirect: 'error',
       signal: AbortSignal.timeout(opts.timeoutMs ?? 5000)
     })
-    if (!res.ok) return null
-    const text = await res.text()
-    if (text.length > MAX_DOC_BYTES) return null
-    const doc = parseDiscoveryDocument(JSON.parse(text), origin)
-    if (!doc) return null
-    cache.set(origin, { doc, expiresAt: Date.now() + (opts.cacheTtlMs ?? 5 * 60 * 1000) })
-    return doc
+    if (!res.ok) {
+      await res.body?.cancel().catch(() => {})
+      return null
+    }
+    // Begrenzt lesen: ein Body ohne Ende darf den Empfänger nicht in die Speichergrenze treiben.
+    const text = await readLimitedText(res, MAX_DOC_BYTES)
+    if (text === null) return null
+    return parseDiscoveryDocument(JSON.parse(text), origin)
   } catch {
     return null
   }
@@ -120,4 +165,7 @@ export async function fetchDiscovery(issuer: string, opts: FetchDiscoveryOptions
 /** Nur für Tests. */
 export function clearDiscoveryCache(): void {
   cache.clear()
+  failedUntil.clear()
+  inFlight.clear()
+  lastForced.clear()
 }
