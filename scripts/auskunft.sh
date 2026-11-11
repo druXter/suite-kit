@@ -13,7 +13,7 @@
 set -euo pipefail
 umask 077
 
-TOOLS=(rsvp-app abstimmungstool seating zeitplan schichten wichteln termine startseite inventur)
+TOOLS=(rsvp-app abstimmungstool seating zeitplan schichten wichteln termine startseite inventur haushaltsbuch)
 email="${1:-}"
 if [[ "$email" != *@* ]]; then
   echo "Aufruf: $0 <adresse> [--loeschen [--ja]]" >&2
