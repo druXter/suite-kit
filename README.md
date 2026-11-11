@@ -27,6 +27,9 @@ Ideen für Erweiterungen und neue Tools sammelt [docs/IDEEN.md](docs/IDEEN.md), 
 (zuletzt bewertet am 2026-10-07, zuletzt ergänzt am 2026-10-30), darunter das Suite-Paket für ein gemeinsames Deployment. Offene Wartungs- und
 Betriebsaufgaben, die mehrere Tools betreffen (z.B. Node-Updates), stehen in [TODO.md](TODO.md).
 
+Die Sicherheitsprüfung von suite-kit vom November 2026 steht in [docs/AUDIT-2026-11.md](docs/AUDIT-2026-11.md): 13 Funde
+(A-01 bis A-13), alle behoben (v0.11.1 bis v0.13.0); je Fund ein Regressionstest in `test/audit-2026-11.test.ts`.
+
 ## Leitprinzipien
 
 1. **Eigenständig zuerst.** Ohne Konfiguration der Suite verhält sich jedes Tool wie ein einzelnes Programm - es gibt

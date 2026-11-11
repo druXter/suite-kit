@@ -31,6 +31,20 @@ ist umgesetzt.
 - [x] **Gemeinsamer Mail-Baustein** (`renderMail` in suite-kit v0.6): alle Mails aller Tools aus einer Vorlage,
   Gestaltung in docs/DESIGN.md („Mails“).
 
+## Sicherheitsprüfung suite-kit (11.11.2026)
+
+Funde, Szenarien und Behebung in [docs/AUDIT-2026-11.md](docs/AUDIT-2026-11.md), je Fund ein Test in
+`test/audit-2026-11.test.ts`. Alles behoben und in allen Tools eingespielt.
+
+- [x] **A-01** (mittel) Push-Endpoint: Prüfung und Versand (`web-push`) lesen den Host gleich - v0.11.1, rsvp-app
+  aktualisiert, Bestand geprüft (nichts zu löschen).
+- [x] **A-02** (mittel) `haushaltsbuch` in `scripts/auskunft.sh` und `scripts/update-apps.mjs`.
+- [x] **A-03** bis **A-05**, **A-13** (v0.12.0): Discovery begrenzt gelesen, gebremst und gemerkt; `askAi` ohne fremden
+  Text im Log und ohne Weiterleitungen.
+- [x] **A-06** bis **A-12** (v0.13.0): `SUITE_IDPS`-Schalter nur als Boolean, `SUITE_SIGNING_KEY_PREVIOUS` allein ist
+  ein Fehler, Aussteller hält die Grenzen des Prüfers ein, `/api/suite/*` mit `no-store`, CSV-Schutz auch nach
+  Leer- und Steuerzeichen, base64url nur kanonisch, `exp > iat`.
+
 ## Eigene Durchsicht je Tool
 
 Die Prüfung vom 24.10. ging von rsvp-app aus; die anderen Tools wurden dabei nur verglichen. Jedes Tool bekommt eine
