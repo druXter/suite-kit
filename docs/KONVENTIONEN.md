@@ -114,7 +114,11 @@ Jede dieser Regeln steht in mindestens einem Tool schon im Code samt Test; Begr�
   Kosten 12 und höchstens 72 Byte (rsvp-app); veraltete Parameter werden beim nächsten Login neu gehasht.
 * Drosselung: Versuch **vor** der Prüfung atomar reservieren; Login 10 pro E-Mail und 20 pro IP in 15 Minuten,
   Reset-Mails 3 pro E-Mail und Stunde. Keine dauerhafte Sperre. Unbekannte Adresse: gleiche Meldung, gleiche
-  Rechenzeit (Prüfung gegen einen Wegwerf-Hash).
+  Rechenzeit (Prüfung gegen einen Wegwerf-Hash) und gleiche Antwortzeit - Mails an bekannte Adressen nicht abwarten.
+  „Pro IP“ heißt bei IPv6 pro /64: `visitorOf` aus `suite-kit/web` (seit v0.15.0) in `clientIp`.
+* E-Mail-Adressen aus Formularen nur, wenn `isSingleEmail` (suite-kit/web, seit v0.15.0) sie annimmt - nach Trim und
+  Kleinschreibung. Sonst gehen `x<a@b.c>` oder `(x)a@b.c` an dieselbe Adresse, zählen für Drosselung und „eine
+  Adresse je Termin“ aber als neue.
 * Konten mit Admin-Rolle: kein Passwort-Reset per Mail, in der Oberfläche weder löschbar noch herabstufbar
   (nur per Skript auf dem Server).
 * API-Tokens: nur als Hash gespeichert, einmal angezeigt, einzeln widerrufbar. Ein Token trägt keine eigenen Rechte,

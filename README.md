@@ -270,6 +270,8 @@ Was jedes Tool braucht und überall gleich funktionieren muss, kommt aus suite-k
   * `escapeHtml` - für alles in HTML, was nicht wörtlich im Code steht (Mails bauen mit `renderMail`).
   * `singleLine` - Namen und andere einzeilige Angaben bei der Eingabe auf eine Zeile bringen (Zeilenumbrüche und
     Steuerzeichen werden ein Leerzeichen).
+  * `isSingleEmail` - genau eine nackte E-Mail-Adresse (keine Anzeigenamen, Kommentare, Gruppen oder Listen, die
+    nodemailer anders liest); `visitorOf(ip)` - Kennung für die Drosselung „pro IP“, IPv6 als /64 (seit v0.15.0).
   * `csvCell`, `toCsv`, `csvResponse` - CSV-Exporte mit Semikolon, CRLF, BOM und Formel-Schutz.
   * `readLimitedText(request, max)`, `readLimitedBytes(request, max)` - Body begrenzt einlesen (als Text bzw. Bytes,
     für Anfragen wie für Antworten), `null` heißt 413.

@@ -65,3 +65,15 @@ Datenschutzerklärung, Laufzeiten, Oberfläche), Befunde in docs/KONVENTIONEN.md
   eigene Bremse für erzwungene Discovery-Abrufe ist in allen zehn Callback-Routen entfallen.
 * IBAN/BIC/EPC-QR stehen in rsvp-app (`app/lib/payment.ts`) und im Haushaltsbuch (`app/lib/iban.ts`) – braucht ein drittes
   Tool sie, nach suite-kit.
+
+## v0.15.0 in allen Tools (15.11.2026)
+
+`isSingleEmail` und `visitorOf` aus den Audits von Wichteln (W-08, W-09) und rsvp-app (R-07, R-08) liegen jetzt in
+`suite-kit/web`. Wichteln und rsvp-app nutzen sie. Die übrigen Tools haben eigene Kopien von `throttle.ts` und
+`normalizeEmail` ohne /64 bzw. mit lockererem Muster - je Tool beim nächsten Update umstellen.
+
+- [x] Wichteln
+- [x] rsvp-app
+- [ ] Abstimmungstool, Seating, Zeitplan, Schichten, Termine, Inventur, Haushaltsbuch, Startseite (soweit sie
+  `clientIp` bzw. E-Mail-Felder haben)
+
