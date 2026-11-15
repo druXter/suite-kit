@@ -204,8 +204,11 @@ rsvp-app):
   (eine Minute gültig, Secret der Anbindung). Das Event gehört nur dem Konto, das über den Konten-Verbund verknüpft
   ist (`ExternalIdentity` mit rsvp-app als Anbieter oder die mitgeschickte Konto-ID beim Tool), nie über die E-Mail,
   nie Moderator\*innen. Ohne Verknüpfung entsteht nichts (`no-account` mit Anmelde-Link). Neue Events sind Entwurf.
-  Wiederholungen liefern das schon verknüpfte Event (`linked`). rsvp-app übernimmt Links aus der Antwort nur mit dem
-  Origin des Tools (`readLinkedCreateResult`). Eingerichtet für Zeitplan, Schichten und Wichteln; Seating folgt, wenn Raumplan,
+  Wiederholungen liefern das schon verknüpfte Event (`linked`) - **nur eines, das dem anfragenden Konto gehört**, auch
+  für Admins; eine Kennung, die ein anderes Konto selbst eingetragen hat und die rsvp-app nie bestätigt hat, sperrt
+  nicht (Audit Wichteln W-02). Antworten `created`/`linked` tragen den Titel des Events (`title`, seit v0.16.0).
+  rsvp-app übernimmt Links aus der Antwort nur mit dem Origin des Tools (`readLinkedCreateResult`) und ein schon
+  vorhandenes Event (`linked`) nur, wenn die Verwaltung genau dieses Event (Titel, Link) bestätigt hat. Eingerichtet für Zeitplan, Schichten und Wichteln; Seating folgt, wenn Raumplan,
   Modus und Ende geklärt sind.
 
 ### Push-Mitteilungen

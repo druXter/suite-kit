@@ -14,6 +14,12 @@
 // (`no-account` mit Anmelde-Link). Antwort immer 200 mit `LinkedCreateResult`; 401 ungültige Nachricht, 404 nicht
 // eingerichtet, 413 zu groß. Wiederholungen sind harmlos: Gibt es schon ein Event zu diesem Termin, kommt es zurück
 // (`linked`), sofern das Konto es verwalten darf (sonst `taken`).
+//
+// `created` und `linked` tragen seit v0.16.0 den Titel des Events im Tool (`title`, optional für ältere Tools).
+// rsvp-app übernimmt ein schon vorhandenes Event (`linked`) nie stillschweigend, sondern zeigt Titel und Link und
+// speichert erst, wenn die Verwaltung genau dieses Event bestätigt - ein Tool, das ein falsches Event nennt (Audit
+// Wichteln W-02: ein fremdes Konto hatte sich selbst mit dem Termin verknüpft), bekäme sonst dessen Daten.
+import { singleLine } from '../web/text.js'
 import { signLinkMessage, verifyLinkMessage } from './link-message.js'
 
 export const LINKED_CREATE_PATH = '/api/rsvp-create'
@@ -42,7 +48,7 @@ export type LinkedCreateMessage =
 
 export type LinkedCreateResult =
   | { status: 'ready' }
-  | { status: 'created' | 'linked'; eventId: string; linkUrl: string; adminUrl: string }
+  | { status: 'created' | 'linked'; eventId: string; linkUrl: string; adminUrl: string; title?: string }
   | { status: 'no-account'; loginUrl: string }
   | { status: 'no-permission' }
   | { status: 'taken' }
@@ -96,6 +102,13 @@ function isUrlOf(value: unknown, origin: string): value is string {
   }
 }
 
+/** Titel aus einer Antwort: einzeilig, nicht leer, höchstens TITLE_MAX Zeichen - sonst ohne Titel (nicht ungültig). */
+function readTitle(value: unknown): { title?: string } {
+  if (typeof value !== 'string') return {}
+  const title = singleLine(value)
+  return title && title.length <= TITLE_MAX ? { title } : {}
+}
+
 /**
  * Antwort des Tools prüfen (in rsvp-app): Alle Links müssen auf den erwarteten Origin des Tools zeigen, sonst ließe
  * ein falsch eingerichtetes oder fremdes Tool uns beliebige Links speichern bzw. anzeigen. `null` = unbrauchbar.
@@ -114,7 +127,7 @@ export function readLinkedCreateResult(value: unknown, toolOrigin: string): Link
     case 'linked':
       if (typeof r.eventId !== 'string' || !ID.test(r.eventId)) return null
       if (!isUrlOf(r.linkUrl, toolOrigin) || !isUrlOf(r.adminUrl, toolOrigin)) return null
-      return { status: r.status, eventId: r.eventId, linkUrl: r.linkUrl, adminUrl: r.adminUrl }
+      return { status: r.status, eventId: r.eventId, linkUrl: r.linkUrl, adminUrl: r.adminUrl, ...readTitle(r.title) }
     default:
       return null
   }

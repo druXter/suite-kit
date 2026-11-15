@@ -56,6 +56,16 @@ test('Antwort des Tools: nur Links auf den Origin des Tools', () => {
   assert.equal(readLinkedCreateResult([], TOOL), null)
 })
 
+test('Antwort des Tools: Titel des Events optional, einzeilig und begrenzt (seit v0.16.0)', () => {
+  const ok = { status: 'linked', eventId: 'cmevent12345', linkUrl: `${TOOL}/rsvp/cmevent12345`, adminUrl: `${TOOL}/admin/events/cmevent12345` }
+  assert.deepEqual(readLinkedCreateResult({ ...ok, title: 'Weihnachtsfeier' }, TOOL), { ...ok, title: 'Weihnachtsfeier' })
+  assert.deepEqual(readLinkedCreateResult({ ...ok, title: 'Weih\nnachts\u2028feier ' }, TOOL), { ...ok, title: 'Weih nachts feier' })
+  // Ohne, leer, zu lang oder kein Text: Antwort bleibt gültig, nur ohne Titel (ältere Tools schicken keinen)
+  for (const title of [undefined, '', '   ', 'x'.repeat(201), 42, { a: 1 }]) {
+    assert.deepEqual(readLinkedCreateResult({ ...ok, title }, TOOL), ok, String(title))
+  }
+})
+
 test('Adresse aus dem Titel', () => {
   assert.equal(linkedCreateSlug('Winterball 2026', 'a1b2'), 'winterball-2026-a1b2')
   assert.equal(linkedCreateSlug('Hochzeit Müller & Größe', 'ff00'), 'hochzeit-mueller-groesse-ff00')

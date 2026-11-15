@@ -287,7 +287,8 @@ Was jedes Tool braucht und überall gleich funktionieren muss, kommt aus suite-k
   * `powChallengeResponse`, `powError`, `createPowChallenge`, `verifyPowSolution` - Bot-Schutz für öffentliche
     Formulare, Teil für den Server.
   * `signLinkedCreate`, `verifyLinkedCreate`, `readLinkedCreateResult`, `linkedCreateSlug` - rsvp-app lässt ein Tool
-    ein verknüpftes Event anlegen (Idee Q1, `POST <Tool>/api/rsvp-create`, Regeln in KONVENTIONEN.md).
+    ein verknüpftes Event anlegen (Idee Q1, `POST <Tool>/api/rsvp-create`, Regeln in KONVENTIONEN.md). Antworten
+    `created`/`linked` mit dem Titel des Events im Tool (`title`, seit v0.16.0).
   * `askAi`, `aiSettings`, `aiConfigured` - KI-Aufrufe über die OpenAI Responses API (`store: false`, Antwort als
     JSON nach festem Schema, keine Weiterleitungen, Fehler ins Log nur mit Statuscode und Fehlerkennung).
     Eingerichtet über `OPENAI_API_KEY`, optional `OPENAI_MODEL` (Voreinstellung `gpt-6-luna`),

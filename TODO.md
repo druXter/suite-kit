@@ -77,3 +77,12 @@ Datenschutzerklärung, Laufzeiten, Oberfläche), Befunde in docs/KONVENTIONEN.md
 - [ ] Abstimmungstool, Seating, Zeitplan, Schichten, Termine, Inventur, Haushaltsbuch, Startseite (soweit sie
   `clientIp` bzw. E-Mail-Felder haben)
 
+## v0.16.0: Titel in der Antwort von `/api/rsvp-create` (15.11.2026)
+
+rsvp-app übernimmt ein schon vorhandenes Event nur noch nach Bestätigung und zeigt dazu den Titel (Audit Wichteln
+W-02). Ohne `title` zeigt es nur den Link.
+
+- [x] Wichteln schickt `title`, rsvp-app zeigt ihn und verlangt die Bestätigung.
+- [ ] Zeitplan und Schichten: `title` in `created`/`linked` mitschicken und beim `linked` nur eigene Events nennen
+  (wie Wichteln nach W-02 prüfen).
+
