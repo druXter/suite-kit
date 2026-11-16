@@ -37,3 +37,30 @@ export function visitorOf(ip: string): string {
   if (groups.length !== 8 || !groups.every(g => /^[0-9a-f]{1,4}$/.test(g))) return address
   return `${groups.slice(0, 4).map(g => Number.parseInt(g, 16).toString(16)).join(':')}::/64`
 }
+
+/**
+ * E-Mail-Adresse aus einem Formular: Ränder weg, klein geschrieben, und nur, wenn es genau EINE nackte Adresse ist
+ * (`isSingleEmail`) - sonst null. Die fertige Funktion für `app/lib/form.ts` der Tools (seit v0.17.0), damit die Regel
+ * nicht je Tool nachgebaut wird: Dieselbe Lücke stand in mehreren Audits (rsvp-app R-07, Wichteln W-08, Termine
+ * T-10), jeweils in einer eigenen Kopie.
+ */
+export function normalizeEmail(input: string): string | null {
+  const email = input.trim().toLowerCase()
+  return isSingleEmail(email) ? email : null
+}
+
+/**
+ * Besucher-Kennung für die Drosselung aus `X-Forwarded-For` (seit v0.17.0) - die fertige Rechnung für `clientIp` der
+ * Tools: `clientIpFrom((await headers()).get('x-forwarded-for'), process.env.TRUST_PROXY_HOPS)`.
+ *
+ * Jeder Proxy HÄNGT die Adresse, die er sieht, hinten an; der Wert ganz links kann vom Client erfunden sein. Gezählt
+ * wird deshalb von rechts: `hops` eigene Proxys (Standard 1). 0 oder Ungültiges ignoriert den Header - alle Besucher
+ * teilen sich dann die Kennung "unknown" (sicher, aber grob). IPv6 kommt als /64 zurück (`visitorOf`).
+ */
+export function clientIpFrom(forwardedFor: string | null | undefined, hops: string | number | undefined = 1): string {
+  const count = typeof hops === 'number' ? hops : Number.parseInt(hops ?? '1', 10)
+  if (!Number.isInteger(count) || count < 1 || !forwardedFor) return 'unknown'
+  const parts = forwardedFor.split(',').map(part => part.trim()).filter(Boolean)
+  const ip = parts[parts.length - count]
+  return ip ? visitorOf(ip) : 'unknown'
+}

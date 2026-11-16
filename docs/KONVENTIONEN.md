@@ -115,9 +115,11 @@ Jede dieser Regeln steht in mindestens einem Tool schon im Code samt Test; Begr�
 * Drosselung: Versuch **vor** der Prüfung atomar reservieren; Login 10 pro E-Mail und 20 pro IP in 15 Minuten,
   Reset-Mails 3 pro E-Mail und Stunde. Keine dauerhafte Sperre. Unbekannte Adresse: gleiche Meldung, gleiche
   Rechenzeit (Prüfung gegen einen Wegwerf-Hash) und gleiche Antwortzeit - Mails an bekannte Adressen nicht abwarten.
-  „Pro IP“ heißt bei IPv6 pro /64: `visitorOf` aus `suite-kit/web` (seit v0.15.0) in `clientIp`.
-* E-Mail-Adressen aus Formularen nur, wenn `isSingleEmail` (suite-kit/web, seit v0.15.0) sie annimmt - nach Trim und
-  Kleinschreibung. Sonst gehen `x<a@b.c>` oder `(x)a@b.c` an dieselbe Adresse, zählen für Drosselung und „eine
+  „Pro IP“ heißt bei IPv6 pro /64: `clientIp` des Tools ist nur noch
+  `clientIpFrom((await headers()).get('x-forwarded-for'), process.env.TRUST_PROXY_HOPS)` aus `suite-kit/web` (seit
+  v0.17.0; davor `visitorOf` von Hand) - keine eigene Rechnung.
+* E-Mail-Adressen aus Formularen nur über `normalizeEmail` aus `suite-kit/web` (seit v0.17.0; prüft mit
+  `isSingleEmail`, nach Trim und Kleinschreibung) - `app/lib/form.ts` reicht sie durch, statt sie nachzubauen. Sonst gehen `x<a@b.c>` oder `(x)a@b.c` an dieselbe Adresse, zählen für Drosselung und „eine
   Adresse je Termin“ aber als neue.
 * Konten mit Admin-Rolle: kein Passwort-Reset per Mail, in der Oberfläche weder löschbar noch herabstufbar
   (nur per Skript auf dem Server).
@@ -297,6 +299,66 @@ Seit v0.11.0 (2026-11-02; Bilderkennung in der Inventur, Zusammenfassung von Fre
   Liste. Regeln für die Oberfläche in [DESIGN.md](DESIGN.md) („Barrierefreiheit“).
 * Vor jedem Commit: Typen (`tsc --noEmit`), Lint, Unit-Tests; vor jedem Deploy zusätzlich alle E2E-Tests.
 
+### Gemeinsame Regeln (`suite-kit/rules`, seit v0.17.0)
+
+Jedes Tool hat `tests/unit/suite-rules.test.ts` und gibt dort seine eigenen Funktionen an die Sammlung aus suite-kit:
+
+```ts
+import { it, vi } from 'vitest'
+import { suiteRules } from 'suite-kit/rules'
+
+let forwardedFor: string | null = null
+vi.mock('next/headers', () => ({ headers: async () => new Headers(forwardedFor === null ? {} : { 'x-forwarded-for': forwardedFor }) }))
+vi.mock('../../app/lib/prisma', () => ({ prisma: {} }))
+const { clientIp } = await import('../../app/lib/throttle')
+const { normalizeEmail } = await import('../../app/lib/form')
+
+const rules = suiteRules({
+  clientIp: header => { vi.stubEnv('TRUST_PROXY_HOPS', '1'); forwardedFor = header; return clientIp() },
+  normalizeEmail
+})
+for (const rule of rules) it(rule.name, rule.run)
+```
+
+* Die Sammlung prüft das **Tool**, nicht suite-kit: Auch wer die Helfer von Hand einbaut oder eine eigene Kopie hat,
+  wird gemessen. Was ein Tool nicht hat (keine Drosselung pro IP, keine E-Mail-Felder), lässt es weg.
+* `scripts/update-apps.mjs` lässt die Datei nach jedem Update laufen und nennt Tools ohne sie.
+* Eine neue Regel kommt hier dazu, wenn ein Fund ein **Muster** ist (nächster Abschnitt) und sich an einer Funktion
+  prüfen lässt, die jedes Tool hat. Sie erscheint mit der nächsten Version in allen Tools.
+
+## Wiederkehrende Funde
+
+Aus den Sicherheitsprüfungen vom November 2026 (suite-kit A, rsvp-app R, Abstimmungstool V, Wichteln W, Termine T): Was
+in mehr als einem Tool auftauchte, steht hier als Frage. Vor dem Abschluss eines Features mit öffentlichem Formular,
+persönlichem Link oder Anbindung durchgehen; ein Audit beginnt mit dieser Liste. Die Berichte liegen je Tool in
+`docs/AUDIT-2026-11.md`, dort steht zu jeder Kennung ein Test als Vorlage.
+
+| Frage | Funde | Abgesichert durch |
+| --- | --- | --- |
+| Zählt die Drosselung „pro IP“ ein IPv6-/64 als einen Besucher? | R-08, W-09, T-10 | `suite-kit/rules` |
+| Ist eine Adresse genau eine nackte Adresse - für Versand, „eine je Adresse“ und Drosselung dieselbe? | R-07, W-08 b | `suite-kit/rules` |
+| Steht in einer Mail an eine **unbestätigte** Adresse frei gewählter Text (Name, Anmerkung)? | W-08 a, T-11 | Test je Tool: Mail enthält den eingegebenen Namen nicht |
+| Dauert die Antwort gleich lang, ob es die Adresse gibt oder nicht? Mails an bekannte Adressen nicht abwarten. | W-01, T-04 | Test je Tool mit verzögertem Test-SMTP |
+| Sieht „gibt es schon“ von außen wirklich aus wie „neu“ - auch in dem, was danach öffentlich sichtbar ist (Zähler, Belegung, Sperren)? | R-11 | Test je Tool |
+| Zeigt die Bestätigungsseite **alles**, was mit dem Klick gilt - auch das, was ein Dritter eingetragen haben kann? | W-06, T-13 | Test je Tool |
+| Kann ein Dritter mit einem unbestätigten Eintrag die Adresse einer Person sperren? Unbestätigtes wird ersetzt, nicht geschützt. | W-06 (Behebung) | Test je Tool |
+| Prüft **jede** Aktion des persönlichen Links den Status (geschlossen, pausiert, beendet, Entwurf), nicht nur die Seite? | V-04, V-06, W-05, W-11, T-07, T-08 | Test je Aktion |
+| Sind Grenzen atomar - Prüfen und Schreiben in einer Transaktion, deren erste Anweisung schreibt, und mit Bedingung auf den Zustand, der beim Laden galt? | R-06, W-10 | Test mit gleichzeitigen Anfragen |
+| Entwertet ein neuer Link auch die Sitzungen aus dem alten? | W-07 | Test je Tool |
+| Beginnt eine Löschfrist von vorn, wenn etwas wieder geöffnet oder geändert wird? | W-03 | Test je Tool |
+| Gilt eine Verknüpfung mit einem anderen Tool erst, wenn **beide** Seiten sie für genau dieses Paar eingetragen haben - und gilt ein signierter Nachweis nur so lange, wie der Zustand dahinter? | R-02, R-04, V-01, V-02, W-02 | Test gegen das Test-Doppel |
+| Nennt `auskunft.js` Einträge unter einer unbestätigten Adresse als solche? | R-12 | `tests/e2e/auskunft.spec.ts` |
+| Blockiert eine Eingabe von außen den einzigen Prozess (Schleifen, Parser, große Antworten)? | T-01, A-03 | Messung im Test |
+
+**Regel für Audits und Durchsichten.** Jeder Fund bekommt die Angabe *nur hier* oder *Muster*. Ein Muster ist erst
+behoben, wenn es zusätzlich in suite-kit steht - in dieser Reihenfolge der Vorliebe:
+
+1. als geteilte Funktion, die die fehleranfällige Stelle ganz ersetzt (nicht nur ein Helfer zum Selbsteinbauen);
+2. als Prüfung in `suite-kit/rules`;
+3. als Zeile in der Tabelle oben.
+
+Und in [TODO.md](../TODO.md) steht je Muster eine Häkchenliste aller Tools, bis jedes es übernommen hat.
+
 ## Doku und Git
 
 * Je Tool: `README.md` (Funktionen, Env, Betrieb, Sicherheit), `CLAUDE.md` (Architektur und Regeln für die
@@ -320,6 +382,8 @@ grep -rn 'rounded-lg border border-gray-300 bg-white p-2' app --include=*.tsx | 
 grep -n "^USER\|npm ci\|FROM" Dockerfile                     # node:22-alpine, USER node, npm ci
 grep -n '127.0.0.1:\|proxy_net' docker-compose.yml            # Port nur lokal, Netz für Uptime Kuma
 grep -rln "function \(esc\|escapeHtml\|safeEqual\|csvCell\|toCsv\|readLimitedText\)\b" app   # leer (aus suite-kit)
+grep -n "clientIpFrom" app/lib/throttle.ts; grep -n "suite-kit/web" app/lib/form.ts   # je ein Treffer (keine eigene Rechnung)
+ls tests/unit/suite-rules.test.ts                             # vorhanden (gemeinsame Regeln, suite-kit/rules)
 ```
 
 ## Prüfung vom 2026-10-24

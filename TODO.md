@@ -77,6 +77,28 @@ Datenschutzerklärung, Laufzeiten, Oberfläche), Befunde in docs/KONVENTIONEN.md
 - [ ] Abstimmungstool, Seating, Zeitplan, Schichten, Termine, Inventur, Haushaltsbuch, Startseite (soweit sie
   `clientIp` bzw. E-Mail-Felder haben)
 
+## v0.17.0: gemeinsame Regeln in allen Tools (16.11.2026)
+
+`clientIpFrom` und `normalizeEmail` als fertige Funktionen in `suite-kit/web`, dazu `suite-kit/rules` und die Tabelle
+„Wiederkehrende Funde“ (docs/KONVENTIONEN.md). Löst den Punkt „v0.15.0 in allen Tools“ oben ab. Je Tool:
+`app/lib/throttle.ts` (`clientIp` über `clientIpFrom`), `app/lib/form.ts` (`normalizeEmail` aus suite-kit),
+`tests/unit/suite-rules.test.ts` anlegen; vorhandene Adressen mit `<>(),;:` einmal suchen.
+
+- [ ] rsvp-app
+- [ ] Abstimmungstool
+- [ ] Seating
+- [ ] Zeitplan
+- [ ] Schichten
+- [ ] Wichteln
+- [ ] Termine
+- [ ] Inventur, Haushaltsbuch, Startseite (soweit sie `clientIp` bzw. E-Mail-Felder haben)
+
+Später, wenn es sich lohnt (beides Muster aus der Tabelle, bisher je Tool gelöst):
+
+- [ ] Mail an eine unbestätigte Adresse als eigene Sorte in `renderMail`, die keinen frei gewählten Text annimmt
+- [ ] Rahmen von `auskunft.js` (`run({ collect, report, plan, erase, hints })`) als Modul, mit „unbestätigt“ als
+  Pflichtangabe je Treffer
+
 ## v0.16.0: Titel in der Antwort von `/api/rsvp-create` (15.11.2026)
 
 rsvp-app übernimmt ein schon vorhandenes Event nur noch nach Bestätigung und zeigt dazu den Titel (Audit Wichteln

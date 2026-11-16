@@ -4,8 +4,10 @@
 //   node scripts/update-apps.mjs v0.3.0            alle Tools
 //   node scripts/update-apps.mjs v0.3.0 seating    nur die genannten
 //
-// Je Tool: npm install github:druXter/suite-kit#<tag>, dann tsc --noEmit und eslint. Tests, Commit und Deployment
-// bleiben bewusst Handarbeit je Tool (docs/DESIGN.md, „Änderungen an alle Tools verteilen“).
+// Je Tool: npm install github:druXter/suite-kit#<tag>, dann tsc --noEmit, eslint und - wenn das Tool sie hat - die
+// gemeinsamen Regeln (tests/unit/suite-rules.test.ts, suite-kit/rules): Eine Regel, die mit dieser Version dazukam, ist
+// damit sofort in jedem Tool rot, das sie nicht erfüllt. Fehlt die Datei, steht das in der Ausgabe. Übrige Tests,
+// Commit und Deployment bleiben bewusst Handarbeit je Tool (docs/DESIGN.md, „Änderungen an alle Tools verteilen“).
 import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -21,6 +23,7 @@ if (!tag || !/^v\d+\.\d+\.\d+$/.test(tag)) {
 const parent = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const run = (cwd, cmd, args) => execFileSync(cmd, args, { cwd, stdio: 'inherit' })
 let failed = false
+const missingRules = []
 
 for (const tool of only.length ? only : TOOLS) {
   const dir = join(parent, tool)
@@ -34,10 +37,15 @@ for (const tool of only.length ? only : TOOLS) {
     run(dir, 'npm', ['install', `suite-kit@github:druXter/suite-kit#${tag}`])
     run(dir, 'npx', ['tsc', '--noEmit'])
     run(dir, 'npx', ['eslint', 'app'])
-    console.log(`✓ ${tool}: ${tag} installiert, Typen und Lint in Ordnung`)
+    const rules = join('tests', 'unit', 'suite-rules.test.ts')
+    const hasRules = existsSync(join(dir, rules))
+    if (hasRules) run(dir, 'npx', ['vitest', 'run', rules])
+    else missingRules.push(tool)
+    console.log(`✓ ${tool}: ${tag} installiert, Typen und Lint in Ordnung${hasRules ? ', gemeinsame Regeln grün' : ' - OHNE gemeinsame Regeln (tests/unit/suite-rules.test.ts fehlt)'}`)
   } catch {
     failed = true
     console.log(`✗ ${tool}: fehlgeschlagen - siehe oben`)
   }
 }
+if (missingRules.length) console.log(`\nOhne gemeinsame Regeln (docs/KONVENTIONEN.md, „Gemeinsame Regeln“): ${missingRules.join(', ')}`)
 process.exit(failed ? 1 : 0)

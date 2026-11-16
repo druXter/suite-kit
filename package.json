@@ -1,6 +1,6 @@
 {
   "name": "suite-kit",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "description": "Gemeinsame Grundlage der eigenständigen Tools der App-Suite: Konto-Föderation und Oberfläche (rsvp-app, abstimmungstool, seating, zeitplan, schichten)",
   "private": true,
   "type": "module",
@@ -19,6 +19,10 @@
       "types": "./dist/web/index.d.ts",
       "default": "./dist/web/index.js"
     },
+    "./rules": {
+      "types": "./dist/rules/index.d.ts",
+      "default": "./dist/rules/index.js"
+    },
     "./theme.css": {
       "style": "./ui/theme.css",
       "default": "./ui/theme.css"
@@ -31,6 +35,7 @@
     "dist/src",
     "dist/ui",
     "dist/web",
+    "dist/rules",
     "ui/theme.css",
     "bin"
   ],

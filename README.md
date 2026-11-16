@@ -272,6 +272,8 @@ Was jedes Tool braucht und überall gleich funktionieren muss, kommt aus suite-k
     Steuerzeichen werden ein Leerzeichen).
   * `isSingleEmail` - genau eine nackte E-Mail-Adresse (keine Anzeigenamen, Kommentare, Gruppen oder Listen, die
     nodemailer anders liest); `visitorOf(ip)` - Kennung für die Drosselung „pro IP“, IPv6 als /64 (seit v0.15.0).
+  * `normalizeEmail(input)` und `clientIpFrom(forwardedFor, hops)` - die fertigen Funktionen dazu für `form.ts` und
+    `throttle.ts` der Tools (seit v0.17.0), damit die Regel nicht je Tool nachgebaut wird.
   * `csvCell`, `toCsv`, `csvResponse` - CSV-Exporte mit Semikolon, CRLF, BOM und Formel-Schutz.
   * `readLimitedText(request, max)`, `readLimitedBytes(request, max)` - Body begrenzt einlesen (als Text bzw. Bytes,
     für Anfragen wie für Antworten), `null` heißt 413.
@@ -307,6 +309,16 @@ ist). Eine Lösung gilt einmal und höchstens 10 Minuten. Schlüssel und verbrau
 nach einem Neustart holt sich das Formular einfach eine neue Aufgabe. Das hält Bots ohne JavaScript und Massen-Spam ab;
 wer die Aufgabe nachbaut, zahlt nur Rechenzeit - deshalb bleibt die Drosselung. Regeln für den Einsatz in
 [docs/KONVENTIONEN.md](docs/KONVENTIONEN.md#öffentliche-formulare-bot-schutz).
+
+## Gemeinsame Regeln als Tests
+
+`suite-kit/rules` (seit v0.17.0) ist eine Sammlung von Prüfungen, die jedes Tool gegen seine **eigenen** Funktionen
+laufen lässt (`tests/unit/suite-rules.test.ts`, Vorlage in [docs/KONVENTIONEN.md](docs/KONVENTIONEN.md#gemeinsame-regeln-suite-kitrules-seit-v0170)):
+`suiteRules({ clientIp, normalizeEmail })` gibt Namen und Funktionen zurück, ohne Bindung an einen Test-Runner. Bisher:
+IPv6-/64 als ein Besucher, nur der Eintrag des eigenen Proxys, genau eine nackte E-Mail-Adresse. Anlass: Dieselben Lücken
+standen in mehreren Audits, weil jede Kopie für sich korrigiert werden musste. Kommt aus einem Audit eine Regel dazu,
+ist sie nach `scripts/update-apps.mjs` in jedem Tool rot, das sie nicht erfüllt. Was sich nicht an einer Funktion prüfen
+lässt, steht als Frage unter „Wiederkehrende Funde“ in den Konventionen.
 
 ## Entwicklung des Pakets
 
