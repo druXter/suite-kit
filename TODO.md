@@ -86,7 +86,7 @@ Datenschutzerklärung, Laufzeiten, Oberfläche), Befunde in docs/KONVENTIONEN.md
 
 - [ ] rsvp-app
 - [ ] Abstimmungstool
-- [ ] Seating
+- [x] Seating (16.11., eingespielt 21.11.2026; keine Adressen mit `<>(),;:` in der Datenbank)
 - [ ] Zeitplan
 - [ ] Schichten
 - [ ] Wichteln
