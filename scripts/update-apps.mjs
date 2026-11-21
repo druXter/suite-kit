@@ -4,7 +4,8 @@
 //   node scripts/update-apps.mjs v0.3.0            alle Tools
 //   node scripts/update-apps.mjs v0.3.0 seating    nur die genannten
 //
-// Je Tool: npm install github:druXter/suite-kit#<tag>, dann tsc --noEmit, eslint und - wenn das Tool sie hat - die
+// Je Tool: npm install github:druXter/suite-kit#<tag>, dann tsc --noEmit, npm run lint (das ganze Repo wie vor einem
+// Commit, auch die Skripte im Hauptordner - nicht nur app/) und - wenn das Tool sie hat - die
 // gemeinsamen Regeln (tests/unit/suite-rules.test.ts, suite-kit/rules): Eine Regel, die mit dieser Version dazukam, ist
 // damit sofort in jedem Tool rot, das sie nicht erfüllt. Fehlt die Datei, steht das in der Ausgabe. Übrige Tests,
 // Commit und Deployment bleiben bewusst Handarbeit je Tool (docs/DESIGN.md, „Änderungen an alle Tools verteilen“).
@@ -36,7 +37,7 @@ for (const tool of only.length ? only : TOOLS) {
   try {
     run(dir, 'npm', ['install', `suite-kit@github:druXter/suite-kit#${tag}`])
     run(dir, 'npx', ['tsc', '--noEmit'])
-    run(dir, 'npx', ['eslint', 'app'])
+    run(dir, 'npm', ['run', 'lint'])
     const rules = join('tests', 'unit', 'suite-rules.test.ts')
     const hasRules = existsSync(join(dir, rules))
     if (hasRules) run(dir, 'npx', ['vitest', 'run', rules])

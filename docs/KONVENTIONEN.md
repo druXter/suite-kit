@@ -21,6 +21,22 @@ man hier und zieht dann alle Tools nach, nicht umgekehrt.
   `inputClass` bzw. `fieldClass` (eigene Breite), Beschriftung mit `labelClass`, Knöpfe mit `buttonClass` - nie die
   Klassen kopieren (sonst fehlen z.B. die 16 px unter `sm` und iOS zoomt ins Formular). Bewusste Ausnahmen mit Kommentar
   (Live-Steuerung in Zeitplan: größere Knöpfe für die Bedienung mit einer Hand).
+* **Skripte im Hauptordner** (`create-user.js`, `auskunft.js`, Migrationen, `seed.js` …, seit 2026-11-21): eigenständige
+  Node-Skripte als CommonJS (`.js`, `require()`), laufen per `node <skript>` im Container ohne Build. Damit
+  `@typescript-eslint/no-require-imports` aus `eslint-config-next` sie nicht anmahnt, steht in jeder
+  `eslint.config.mjs` vor `globalIgnores` derselbe Block - **keine Liste einzelner Dateien**: Sie wurde bei jedem neuen
+  Skript vergessen (`auskunft.js` hielt `npm run lint` in sieben Tools rot, ohne dass es auffiel).
+
+  ```js
+  // Eigenständige Node-Skripte im Hauptordner (create-user.js, auskunft.js, …): CommonJS, laufen per `node <skript>`
+  // ohne Build - require() ist dort richtig. "*.js" trifft nur den Hauptordner und deckt jedes neue Skript dort ohne
+  // eigenen Eintrag ab; gelintet werden sie trotzdem (Regel in suite-kit docs/KONVENTIONEN.md).
+  { files: ["*.js"], rules: { "@typescript-eslint/no-require-imports": "off" } },
+  ```
+
+  `"*.js"` gilt in der Flat Config nur für den Hauptordner (`app/**`, `public/sw.js` bleiben unter der Regel). Die
+  Skripte werden weiter gelintet, nur `require()` ist erlaubt - nicht in `globalIgnores` eintragen. Ein neues Tool
+  übernimmt den Block mit dem Gerüst; `scripts/update-apps.mjs` prüft mit `npm run lint` das ganze Repo.
 * **Hilfsfunktionen, die jedes Tool braucht, kommen aus suite-kit**, nie als eigene Kopie (seit v0.5.1, README
   „Gemeinsame Helfer“): aus `suite-kit/web` `escapeHtml` (Mails), `csvCell`/`toCsv`/`csvResponse` (Exporte),
   `readLimitedText`/`readLimitedBytes` (Bodies) und die Header-Bausteine; aus `suite-kit` `safeEqual` (Geheimnisse) und
@@ -297,7 +313,8 @@ Seit v0.11.0 (2026-11-02; Bilderkennung in der Inventur, Zusammenfassung von Fre
   wichtigsten Seiten für Gäste und Verwaltung nach WCAG 2.1 A/AA, hell und dunkel, und meldet alle Befunde auf einmal.
   Ein Befund lässt den Test scheitern; Ausnahmen nur mit Begründung im Test. Eine neue Seite für Gäste kommt in die
   Liste. Regeln für die Oberfläche in [DESIGN.md](DESIGN.md) („Barrierefreiheit“).
-* Vor jedem Commit: Typen (`tsc --noEmit`), Lint, Unit-Tests; vor jedem Deploy zusätzlich alle E2E-Tests.
+* Vor jedem Commit: Typen (`tsc --noEmit`), Lint (`npm run lint`, das ganze Repo - nicht nur `eslint app`),
+  Unit-Tests; vor jedem Deploy zusätzlich alle E2E-Tests.
 
 ### Gemeinsame Regeln (`suite-kit/rules`, seit v0.17.0)
 
@@ -384,6 +401,7 @@ grep -n '127.0.0.1:\|proxy_net' docker-compose.yml            # Port nur lokal, 
 grep -rln "function \(esc\|escapeHtml\|safeEqual\|csvCell\|toCsv\|readLimitedText\)\b" app   # leer (aus suite-kit)
 grep -n "clientIpFrom" app/lib/throttle.ts; grep -n "suite-kit/web" app/lib/form.ts   # je ein Treffer (keine eigene Rechnung)
 ls tests/unit/suite-rules.test.ts                             # vorhanden (gemeinsame Regeln, suite-kit/rules)
+grep -n 'files: \["\*.js"\]' eslint.config.mjs; npm run lint   # ein Treffer; Lint grün (Skripte im Hauptordner)
 ```
 
 ## Prüfung vom 2026-10-24
