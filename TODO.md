@@ -105,6 +105,6 @@ rsvp-app übernimmt ein schon vorhandenes Event nur noch nach Bestätigung und z
 W-02). Ohne `title` zeigt es nur den Link.
 
 - [x] Wichteln schickt `title`, rsvp-app zeigt ihn und verlangt die Bestätigung.
-- [ ] Zeitplan und Schichten: `title` in `created`/`linked` mitschicken und beim `linked` nur eigene Events nennen
-  (wie Wichteln nach W-02 prüfen).
+- [x] Zeitplan und Schichten: `title` in `created`/`linked`, `linked` nur für eigene Events, nur bestätigte fremde
+  Verknüpfungen blockieren (21.11.2026).
 
