@@ -74,8 +74,8 @@ Datenschutzerklärung, Laufzeiten, Oberfläche), Befunde in docs/KONVENTIONEN.md
 
 - [x] Wichteln
 - [x] rsvp-app
-- [ ] Abstimmungstool, Seating, Zeitplan, Schichten, Termine, Inventur, Haushaltsbuch, Startseite (soweit sie
-  `clientIp` bzw. E-Mail-Felder haben)
+- [ ] Abstimmungstool, Seating, Zeitplan, Schichten, Termine, Inventur, Startseite (soweit sie `clientIp` bzw.
+  E-Mail-Felder haben; Haushaltsbuch über v0.17.0 erledigt)
 
 ## v0.17.0: gemeinsame Regeln in allen Tools (16.11.2026)
 
@@ -91,7 +91,9 @@ Datenschutzerklärung, Laufzeiten, Oberfläche), Befunde in docs/KONVENTIONEN.md
 - [ ] Schichten
 - [ ] Wichteln
 - [ ] Termine
-- [ ] Inventur, Haushaltsbuch, Startseite (soweit sie `clientIp` bzw. E-Mail-Felder haben)
+- [x] Haushaltsbuch (22.11.2026 mit der Behebung seiner Sicherheitsprüfung eingespielt; keine Adressen mit `<>(),;:`
+  in der Datenbank)
+- [ ] Inventur, Startseite (soweit sie `clientIp` bzw. E-Mail-Felder haben)
 
 Später, wenn es sich lohnt (beides Muster aus der Tabelle, bisher je Tool gelöst):
 
