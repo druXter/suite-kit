@@ -74,8 +74,8 @@ Datenschutzerklärung, Laufzeiten, Oberfläche), Befunde in docs/KONVENTIONEN.md
 
 - [x] Wichteln
 - [x] rsvp-app
-- [ ] Abstimmungstool, Seating, Zeitplan, Schichten, Termine, Inventur, Startseite (soweit sie `clientIp` bzw.
-  E-Mail-Felder haben; Haushaltsbuch über v0.17.0 erledigt)
+- [x] Abstimmungstool, Seating, Zeitplan, Schichten, Termine, Inventur, Startseite, Haushaltsbuch - über v0.17.0
+  erledigt (siehe unten)
 
 ## v0.17.0: gemeinsame Regeln in allen Tools (16.11.2026)
 
@@ -84,16 +84,18 @@ Datenschutzerklärung, Laufzeiten, Oberfläche), Befunde in docs/KONVENTIONEN.md
 `app/lib/throttle.ts` (`clientIp` über `clientIpFrom`), `app/lib/form.ts` (`normalizeEmail` aus suite-kit),
 `tests/unit/suite-rules.test.ts` anlegen; vorhandene Adressen mit `<>(),;:` einmal suchen.
 
-- [ ] rsvp-app
-- [ ] Abstimmungstool
+- [x] rsvp-app, Abstimmungstool, Zeitplan, Schichten, Wichteln, Termine, Startseite, Inventur (24.11.2026 eingespielt,
+  dazu die AStA-Instanzen von Schichten und Wichteln; in keiner Datenbank Adressen mit `<>(),;:`). rsvp-app hat kein
+  eigenes `normalizeEmail` (alle Formulare prüfen mit `isSingleEmail`), der Test prüft dort nur `clientIp`. Im
+  Abstimmungstool bleibt `clientIp` die volle Adresse, weil `ipRules` zweistufig zählt (je /64 und darunter je
+  Adresse, damit ein Hörsaal nicht gemeinsam gesperrt wird); die IP-Regeln laufen dort gegen die Netz-Stufe.
 - [x] Seating (16.11., eingespielt 21.11.2026; keine Adressen mit `<>(),;:` in der Datenbank)
-- [ ] Zeitplan
-- [ ] Schichten
-- [ ] Wichteln
-- [ ] Termine
 - [x] Haushaltsbuch (22.11.2026 mit der Behebung seiner Sicherheitsprüfung eingespielt; keine Adressen mit `<>(),;:`
   in der Datenbank)
-- [ ] Inventur, Startseite (soweit sie `clientIp` bzw. E-Mail-Felder haben)
+- [x] Next.js 16.4.3 → 16.4.6 in allen Tools (24.11.2026, im Haushaltsbuch schon vorher): Advisories u. a.
+  GHSA-pc58-hwjq-p385, GHSA-7qx7-33qx-rqx2, GHSA-f3mh-rxg3-f5g2; `next build` brach mit 16.4.3 abwechselnd mit
+  „SecurityFatalError“ ab. Offen nach `npm audit --omit=dev`: `effect` (ReDoS, über `@prisma/config`, nur im
+  Prisma-CLI beim Bauen) - der angebotene „Fix“ wäre ein Downgrade auf Prisma 6.12.0, deshalb bewusst nicht.
 
 Später, wenn es sich lohnt (beides Muster aus der Tabelle, bisher je Tool gelöst):
 
